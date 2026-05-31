@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeetCode Pattern Trainer - Google Interview Mode</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div>
+        <h1>LeetCode Pattern Trainer</h1>
+        <p class="subtitle">Train pattern recognition, hint-driven solving, and Google-style interview explanations.</p>
+      </div>
+      <div class="header-tools">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+          <span class="theme-icon theme-sun" aria-hidden="true"></span>
+          <span class="theme-icon theme-moon" aria-hidden="true"></span>
+          <span class="theme-knob" aria-hidden="true"></span>
+          <span class="sr-only" id="themeToggleText">Dark mode</span>
+        </button>
+        <div class="stats">
+          <div class="stat"><strong id="score">0</strong><span>Correct</span></div>
+          <div class="stat"><strong id="streak">0</strong><span>Streak</span></div>
+          <div class="stat"><strong id="done">0</strong><span>Done</span></div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="Training modes">
+      <button class="tab active" data-mode="drill" type="button">Drill: Identify Pattern</button>
+      <button class="tab" data-mode="solve" type="button">Solve: Step Hints</button>
+      <button class="tab" data-mode="interview" type="button">Interview: Google Q&A</button>
+      <button class="tab" data-mode="library" type="button">Library: Pattern DB</button>
+    </nav>
+
+    <section class="layout">
+      <aside class="left-rail">
+        <div class="card side-card">
+          <div class="card-body">
+            <div class="section-title">3-Second Pattern Signals</div>
+            <div class="memory-card"><strong>Array / HashMap</strong><br><span class="tiny">lookup by value, complement, frequency, grouping key</span></div>
+            <div class="memory-card"><strong>Sliding Window</strong><br><span class="tiny">substring/subarray + longest/shortest + at most K</span></div>
+            <div class="memory-card"><strong>Two Pointers</strong><br><span class="tiny">sorted array, pair sum, remove duplicates, two-end scan</span></div>
+            <div class="memory-card"><strong>Binary Search</strong><br><span class="tiny">O(log n), minimum feasible, maximize minimum, answer space</span></div>
+            <div class="memory-card"><strong>Prefix / HashMap</strong><br><span class="tiny">subarray sum + negative numbers, complement, frequency</span></div>
+            <div class="memory-card"><strong>Stack</strong><br><span class="tiny">nested structure, next greater, undo, monotonic boundary</span></div>
+            <div class="memory-card"><strong>Linked List</strong><br><span class="tiny">fast/slow pointers, cycle, reverse links, dummy node</span></div>
+            <div class="memory-card"><strong>Tree DFS/BFS</strong><br><span class="tiny">ancestor bounds, level order, path state, subtree result</span></div>
+            <div class="memory-card"><strong>Graph</strong><br><span class="tiny">dependency, shortest path, connected components, cycle</span></div>
+            <div class="memory-card"><strong>Heap</strong><br><span class="tiny">top k, streaming median, repeated best candidate</span></div>
+            <div class="memory-card"><strong>Greedy</strong><br><span class="tiny">local choice, farthest reach, one-pass optimum, exchange proof</span></div>
+            <div class="memory-card"><strong>Dynamic Programming</strong><br><span class="tiny">count ways, max/min value, take/skip, state transition</span></div>
+          </div>
+        </div>
+
+        <div class="card side-card review-card">
+          <div class="card-body">
+            <div class="section-title">Wrong / Review Queue</div>
+            <div class="review-list" id="reviewList"></div>
+          </div>
+        </div>
+
+        <div class="card side-card">
+          <div class="card-body">
+            <div class="section-title">Training Settings</div>
+            <div class="control-row problem-search-row">
+              <label for="problemSearch">Find Problem</label>
+              <input id="problemSearch" class="search compact-search" placeholder="LC 11 / water / greedy" autocomplete="off" />
+              <div class="problem-search-results" id="problemSearchResults"></div>
+            </div>
+            <div class="control-row">
+              <label for="topicFilter">Topic</label>
+              <select id="topicFilter" class="select"></select>
+            </div>
+            <div class="control-row">
+              <label><input type="checkbox" id="hideSolved" /> Show review queue only</label>
+            </div>
+            <div class="section-title">Progress</div>
+            <div class="meter"><div id="progress"></div></div>
+            <p class="tiny" id="progressText">0 / 0</p>
+          </div>
+        </div>
+
+        <div class="card side-card">
+          <div class="card-body">
+            <div class="calendar-head">
+              <div>
+                <div class="section-title">Answer Calendar</div>
+                <p class="tiny" id="calendarSummary">No answers today yet</p>
+              </div>
+              <div class="calendar-nav">
+                <button class="icon-btn" id="calendarPrev" type="button" aria-label="Previous month">‹</button>
+                <button class="icon-btn" id="calendarNext" type="button" aria-label="Next month">›</button>
+              </div>
+            </div>
+            <div class="calendar-month" id="calendarMonth"></div>
+            <div class="calendar-weekdays">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="center-stage">
+        <div class="card">
+          <div class="card-body">
+            <div id="mainPanel">
+              <div class="topbar">
+                <span class="pill" id="questionIndex">Question 1</span>
+                <span class="difficulty medium" id="difficulty">Medium</span>
+              </div>
+              <h2 class="title" id="title"></h2>
+              <div class="desc" id="description"></div>
+
+              <div id="drillPanel">
+                <div class="section-title">Which pattern best fits this problem?</div>
+                <div class="options" id="options"></div>
+                <div class="feedback" id="feedback"></div>
+              </div>
+
+            </div>
+
+            <div id="libraryPanel" class="hidden">
+              <div class="section-title">Library: Patterns, Signals, and Follow-ups</div>
+              <input id="librarySearch" class="search" placeholder="Search LC 3 / sliding / graph / duplicate / DP" />
+              <div class="library-list" id="libraryList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="right-rail">
+        <div class="card explanation-card">
+          <div class="card-body">
+            <div class="section-title">Explanation Workspace</div>
+            <div class="tiny">Open hints, outline, code, or interview practice without losing the problem view.</div>
+            <div class="actions workspace-actions" id="mainActions">
+              <button class="btn secondary" id="hintBtn" type="button" disabled>Next Hint</button>
+              <button class="btn ghost" id="answerBtn" type="button" disabled>Solutions</button>
+              <button class="btn ghost" id="followupBtn" type="button" disabled>Follow-ups</button>
+              <button class="btn warn" id="interviewBtn" type="button" disabled>Enter Google Q&A</button>
+              <button class="btn" id="nextBtn" type="button">Next Problem</button>
+            </div>
+            <div class="explain-shell hidden" id="explainShell">
+              <div class="explain-body">
+                <div class="box" id="hintBox">
+                  <div class="section-title">Hints: Build From the Invariant</div>
+                  <div id="hints"></div>
+                </div>
+                <div class="box" id="answerBox">
+                  <div class="section-title">Solutions</div>
+                  <div id="answerText"></div>
+                </div>
+                <div class="box" id="templateBox">
+                  <div class="section-title">C++ Templates</div>
+                  <div id="templateText"></div>
+                </div>
+                <div class="box" id="followupBox">
+                  <div class="section-title">Follow-up Strategy</div>
+                  <div id="followupText"></div>
+                </div>
+                <div class="box" id="interviewBox">
+                  <div class="section-title">Google Interviewer Q&A</div>
+                  <div class="tiny">Practice a two-minute explanation, then compare it with the solution outline.</div>
+                  <div id="interviewQuestions"></div>
+                </div>
+              </div>
+            </div>
+            <div class="empty-workspace" id="emptyWorkspace">
+              Choose a pattern first, then open Hints, Outline, Code, or Interview here.
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <script src="trainer.js?v=solutions-help-next-fixed"></script>
+</body>
+</html>
