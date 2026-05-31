@@ -14,7 +14,7 @@ After pushing this repository to GitHub, enable GitHub Pages from:
 
 Then open:
 
-`https://<your-github-name>.github.io/<repo-name>/trainer.html`
+`https://twinkylee55688.github.io/leetcode-pattern-trainer/trainer.html`
 
 ## Notes
 
