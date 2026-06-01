@@ -1364,12 +1364,26 @@ const lc150CompletionProblems=[
 // 2. Write the base case before the transition.
 // 3. Identify whether the answer is max, min, count, or boolean.
 // Fill in the LeetCode function signature, then preserve the invariant above.`,followups:["Can we reduce memory?","What changes if input is very large?","How would you explain correctness?"],review:"Multidimensional DP: state transition, base case, and optimal substructure."},
-{id:"LC 64",title:"Minimum Path Sum",difficulty:"Medium",pattern:"Dynamic Programming",prompt:"Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.",signal:"Multidimensional DP problem: state transition, base case, and optimal substructure.",hints:["Define the state in one sentence.","Write the base case before the transition.","Identify whether the answer is max, min, count, or boolean.","Compress space only after the full state is clear."],interviewer:["What is the key invariant?","What edge cases should we clarify?","Why does this pattern fit?","What is the time and space complexity?"],answer:["Model this as a Dynamic Programming problem.","Define the state in one sentence.","Write the base case before the transition.","Identify whether the answer is max, min, count, or boolean."],complexity:"O(states * transitions) time, O(states) space",code:`// Study skeleton for 64. Minimum Path Sum
-// Pattern: Dynamic Programming
-// 1. Define the state in one sentence.
-// 2. Write the base case before the transition.
-// 3. Identify whether the answer is max, min, count, or boolean.
-// Fill in the LeetCode function signature, then preserve the invariant above.`,followups:["Can we reduce memory?","What changes if input is very large?","How would you explain correctness?"],review:"Multidimensional DP: state transition, base case, and optimal substructure."},
+{id:"LC 64",title:"Minimum Path Sum",difficulty:"Medium",pattern:"Dynamic Programming",prompt:"Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.",signal:"Grid + minimum cost path + only right/down moves -> DP where each cell keeps the best cost to reach it.",hints:["Define dp[i][j] as the minimum path sum from (0,0) to (i,j).","Only two previous cells can enter (i,j): top and left.","First row can only come from the left; first column can only come from above.","You may update grid in-place because each cell only needs already-computed top/left values."],interviewer:["What is the DP state?","Why is the transition only from top or left?","Can we reduce extra space?","What edge cases should we test?"],answer:["Let grid[i][j] become the minimum cost to reach that cell.","Initialize the first column by accumulating from above.","Initialize the first row by accumulating from the left.","For every other cell, add min(grid[i-1][j], grid[i][j-1]).","Return grid[m-1][n-1]."],complexity:"O(mn) time, O(1) extra space",code:`int minPathSum(vector<vector<int>>& grid) {
+    int m = grid.size();
+    int n = grid[0].size();
+
+    for (int i = 1; i < m; ++i) {
+        grid[i][0] += grid[i - 1][0];
+    }
+
+    for (int j = 1; j < n; ++j) {
+        grid[0][j] += grid[0][j - 1];
+    }
+
+    for (int i = 1; i < m; ++i) {
+        for (int j = 1; j < n; ++j) {
+            grid[i][j] += min(grid[i - 1][j], grid[i][j - 1]);
+        }
+    }
+
+    return grid[m - 1][n - 1];
+}`,followups:["What if grid cannot be mutated?","What if diagonal moves are allowed?","What if there are obstacles?"],review:"Minimum path sum is grid DP: best cost at each cell equals cell value plus min(top, left)."},
 {id:"LC 63",title:"Unique Paths II",difficulty:"Medium",pattern:"Dynamic Programming",prompt:"You are given an m x n integer array grid . There is a robot initially located at the top-left corner (i.e., grid[0][0] ). The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1] ). The robot can only move either down or right at any point in time.",signal:"Multidimensional DP problem: state transition, base case, and optimal substructure.",hints:["Define the state in one sentence.","Write the base case before the transition.","Identify whether the answer is max, min, count, or boolean.","Compress space only after the full state is clear."],interviewer:["What is the key invariant?","What edge cases should we clarify?","Why does this pattern fit?","What is the time and space complexity?"],answer:["Model this as a Dynamic Programming problem.","Define the state in one sentence.","Write the base case before the transition.","Identify whether the answer is max, min, count, or boolean."],complexity:"O(states * transitions) time, O(states) space",code:`// Study skeleton for 63. Unique Paths II
 // Pattern: Dynamic Programming
 // 1. Define the state in one sentence.
@@ -2372,6 +2386,27 @@ const englishNotes={
 "LC 215":{signal:"Kth largest / top-k points to a heap or quickselect.",hints:["Sorting works but costs O(n log n).","Maintain a min-heap of size k.","The heap top is the current kth largest.","After scanning all values, the top is the answer."],review:"For top-k, a min-heap of size k keeps the kth largest at the top."},
 "LC 238":{signal:"Product except self without division points to prefix/suffix decomposition.",hints:["answer[i] equals product of everything left of i times everything right of i.","First pass stores prefix products in ans.","Second pass multiplies a running suffix product from the right.","The output array does not count as extra space."],review:"Except self means left information times right information."}
 };
+Object.assign(alternativeSolutions,{
+"LC 64":{title:"Alternative: 1D DP Without Mutating Grid",note:"Use this when the input grid must stay unchanged. O(mn) time, O(n) space.",code:`int minPathSum(vector<vector<int>>& grid) {
+    int m = grid.size();
+    int n = grid[0].size();
+    vector<int> dp(n, 0);
+
+    dp[0] = grid[0][0];
+    for (int j = 1; j < n; ++j) {
+        dp[j] = dp[j - 1] + grid[0][j];
+    }
+
+    for (int i = 1; i < m; ++i) {
+        dp[0] += grid[i][0];
+        for (int j = 1; j < n; ++j) {
+            dp[j] = min(dp[j], dp[j - 1]) + grid[i][j];
+        }
+    }
+
+    return dp[n - 1];
+}`}
+});
 const englishAltMeta={
 "LC 1":["Alternative: Sort + Two Pointers (preserve original indices)","Use this when discussing sorted input or memory tradeoffs. Time O(n log n), space O(n)."],
 "LC 3":["Alternative: HashSet Window","More intuitive window implementation: maintain a set with no duplicates. Time O(n)."],
@@ -2563,6 +2598,1274 @@ Object.assign(studyMeta,{
 });
 
 const officialLc150Ids=["LC 88","LC 27","LC 26","LC 80","LC 169","LC 189","LC 121","LC 122","LC 55","LC 45","LC 274","LC 380","LC 238","LC 134","LC 135","LC 42","LC 13","LC 12","LC 58","LC 14","LC 151","LC 6","LC 28","LC 68","LC 125","LC 392","LC 167","LC 11","LC 15","LC 209","LC 3","LC 30","LC 76","LC 36","LC 54","LC 48","LC 73","LC 289","LC 383","LC 205","LC 290","LC 242","LC 49","LC 1","LC 202","LC 219","LC 128","LC 228","LC 56","LC 57","LC 452","LC 20","LC 71","LC 155","LC 150","LC 224","LC 141","LC 2","LC 21","LC 138","LC 92","LC 25","LC 19","LC 82","LC 61","LC 86","LC 146","LC 104","LC 100","LC 226","LC 101","LC 105","LC 106","LC 117","LC 114","LC 112","LC 129","LC 124","LC 173","LC 222","LC 236","LC 199","LC 637","LC 102","LC 103","LC 530","LC 230","LC 98","LC 200","LC 130","LC 133","LC 399","LC 207","LC 210","LC 909","LC 433","LC 127","LC 208","LC 211","LC 212","LC 17","LC 77","LC 46","LC 39","LC 52","LC 22","LC 79","LC 108","LC 148","LC 427","LC 23","LC 53","LC 918","LC 35","LC 74","LC 162","LC 33","LC 34","LC 153","LC 4","LC 215","LC 502","LC 373","LC 295","LC 67","LC 190","LC 191","LC 136","LC 137","LC 201","LC 9","LC 66","LC 172","LC 69","LC 50","LC 149","LC 70","LC 198","LC 139","LC 322","LC 300","LC 120","LC 64","LC 63","LC 5","LC 97","LC 72","LC 123","LC 188","LC 221"];
+const solidSolutionPatches={
+"LC 70":{signal:"Counting ways to climb 1 or 2 steps is Fibonacci-style 1D DP.",hints:["Let ways[i] be the number of ways to reach step i.","The last move to i came from i-1 or i-2.","So ways[i] = ways[i-1] + ways[i-2].","Compress to two variables because only the previous two states matter."],interviewer:["What is the DP state?","Why does Fibonacci appear here?","Can you reduce space?","What happens for n = 1 or n = 2?"],answer:["Use two variables for ways to reach the previous two steps.","For each step from 3 to n, add the previous two counts.","Shift the variables forward.","Return the count for n."],complexity:"O(n) time, O(1) space",code:`int climbStairs(int n) {
+    if (n <= 2) return n;
+    int prev2 = 1;
+    int prev1 = 2;
+    for (int step = 3; step <= n; ++step) {
+        int cur = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}`,followups:["Can you write it as matrix exponentiation?","What if steps can be 1, 2, or 3?","What if some steps are blocked?"],review:"Climbing Stairs is Fibonacci DP: current ways equals previous one plus previous two."},
+"LC 198":{signal:"Cannot take adjacent houses -> DP with take/skip state.",hints:["At each house, choose rob it or skip it.","If you rob current, add nums[i] to the best before the previous house.","If you skip current, keep the previous best.","Only two previous values are needed."],interviewer:["What is the DP state?","Why can adjacent houses not both be used?","Can you do O(1) space?","What edge cases matter?"],answer:["Let prev2 be best up to i-2 and prev1 be best up to i-1.","For each house, current best is max(prev1, prev2 + nums[i]).","Shift prev2 and prev1 forward.","Return prev1."],complexity:"O(n) time, O(1) space",code:`int rob(vector<int>& nums) {
+    int prev2 = 0;
+    int prev1 = 0;
+    for (int money : nums) {
+        int cur = max(prev1, prev2 + money);
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}`,followups:["What if houses are circular?","Can you reconstruct which houses were robbed?","What if negative values are allowed?"],review:"House Robber is take/skip DP; taking current depends on the best answer two houses back."},
+"LC 392":{signal:"Subsequence check means scan both strings with two pointers.",hints:["Pointer i tracks how much of s has been matched.","Pointer j scans t from left to right.","When s[i] == t[j], consume that character of s.","At the end, s is a subsequence only if all of s was consumed."],interviewer:["What do the two pointers represent?","What if s is empty?","What if we check many s strings against the same t?","What is the complexity?"],answer:["Use i for s and j for t.","Scan t once.","When characters match, increment i.","Return whether i reached s.size()."],complexity:"O(|t|) time, O(1) space",code:`bool isSubsequence(string s, string t) {
+    int i = 0;
+    for (char c : t) {
+        if (i < s.size() && s[i] == c) ++i;
+    }
+    return i == s.size();
+}`,followups:["What if there are many incoming s queries?","Can you preprocess t?","What if strings are very long streams?"],review:"Is Subsequence is a one-pass two-pointer match; consume s only when t provides the next needed character."},
+"LC 122":{signal:"Unlimited transactions means every positive day-to-day gain can be captured.",hints:["You can buy and sell multiple times, but cannot hold multiple shares.","Any increasing run can be split into daily gains without changing total profit.","Add prices[i] - prices[i-1] whenever it is positive.","This is greedy because local positive gains compose into the global optimum."],interviewer:["Why is greedy valid?","Can you hold multiple stocks?","What if prices only decrease?","How would fees change it?"],answer:["Initialize profit to zero.","For each adjacent pair, if today's price is higher than yesterday's, add the difference.","Ignore non-positive differences.","Return total profit."],complexity:"O(n) time, O(1) space",code:`int maxProfit(vector<int>& prices) {
+    int profit = 0;
+    for (int i = 1; i < prices.size(); ++i) {
+        if (prices[i] > prices[i - 1]) {
+            profit += prices[i] - prices[i - 1];
+        }
+    }
+    return profit;
+}`,followups:["What if there is a transaction fee?","What if there is a cooldown day?","What if only k transactions are allowed?"],review:"For unlimited stock transactions, sum every positive adjacent price difference."},
+"LC 36":{signal:"Sudoku validity is duplicate detection across rows, columns, and 3x3 boxes.",hints:["Only filled cells matter; skip '.'.","Each digit must be unique in its row.","Each digit must be unique in its column.","Each digit must be unique in its 3x3 box."],interviewer:["How do you map a cell to its box?","Do empty cells count?","Is the board always 9x9?","What is the space complexity?"],answer:["Use three 9x9 boolean tables for rows, columns, and boxes.","For each filled cell, compute digit index and box index.","If any table already contains that digit, return false.","Mark all three tables and continue."],complexity:"O(81) time, O(1) space",code:`bool isValidSudoku(vector<vector<char>>& board) {
+    bool row[9][9] = {};
+    bool col[9][9] = {};
+    bool box[9][9] = {};
+
+    for (int r = 0; r < 9; ++r) {
+        for (int c = 0; c < 9; ++c) {
+            if (board[r][c] == '.') continue;
+            int d = board[r][c] - '1';
+            int b = (r / 3) * 3 + (c / 3);
+            if (row[r][d] || col[c][d] || box[b][d]) return false;
+            row[r][d] = col[c][d] = box[b][d] = true;
+        }
+    }
+    return true;
+}`,followups:["Can you use bit masks instead of bool arrays?","How would this change for a different board size?","Does this require solving the Sudoku?"],review:"Valid Sudoku is three duplicate checks: row, column, and 3x3 box."},
+"LC 54":{signal:"Spiral order means maintaining shrinking top/bottom/left/right boundaries.",hints:["Use four boundaries: top, bottom, left, right.","Traverse top row, right column, bottom row, left column.","After each direction, shrink that boundary.","Check boundaries before traversing bottom row or left column."],interviewer:["What are the boundaries?","Why do we need boundary checks after shrinking?","What about one row or one column?","What is the complexity?"],answer:["Initialize top, bottom, left, and right.","Loop while top <= bottom and left <= right.","Traverse the four sides in order, shrinking after each side.","Guard bottom and left traversals because the matrix may collapse."],complexity:"O(mn) time, O(1) extra space",code:`vector<int> spiralOrder(vector<vector<int>>& matrix) {
+    vector<int> ans;
+    int top = 0, bottom = matrix.size() - 1;
+    int left = 0, right = matrix[0].size() - 1;
+
+    while (top <= bottom && left <= right) {
+        for (int c = left; c <= right; ++c) ans.push_back(matrix[top][c]);
+        ++top;
+
+        for (int r = top; r <= bottom; ++r) ans.push_back(matrix[r][right]);
+        --right;
+
+        if (top <= bottom) {
+            for (int c = right; c >= left; --c) ans.push_back(matrix[bottom][c]);
+            --bottom;
+        }
+
+        if (left <= right) {
+            for (int r = bottom; r >= top; --r) ans.push_back(matrix[r][left]);
+            ++left;
+        }
+    }
+    return ans;
+}`,followups:["Can you do it with direction vectors and visited?","How do single-row cases behave?","Can you stream the output?"],review:"Spiral Matrix is boundary simulation; shrink one side after completing that side."},
+"LC 48":{signal:"Rotate image in-place can be done by transpose then reverse each row.",hints:["A 90-degree clockwise rotation maps (r,c) to (c,n-1-r).","Transpose swaps matrix[r][c] with matrix[c][r].","Reversing each row after transpose completes the clockwise rotation.","Do not allocate another matrix because the problem asks in-place."],interviewer:["Why transpose plus reverse works?","Can you rotate counter-clockwise?","What is the space complexity?","What if the matrix is not square?"],answer:["Transpose the square matrix across its main diagonal.","Reverse every row.","The composition maps each original cell to its clockwise-rotated position.","Use O(1) extra space."],complexity:"O(n^2) time, O(1) space",code:`void rotate(vector<vector<int>>& matrix) {
+    int n = matrix.size();
+    for (int r = 0; r < n; ++r) {
+        for (int c = r + 1; c < n; ++c) {
+            swap(matrix[r][c], matrix[c][r]);
+        }
+    }
+
+    for (int r = 0; r < n; ++r) {
+        reverse(matrix[r].begin(), matrix[r].end());
+    }
+}`,followups:["How would you rotate counter-clockwise?","Can you do it layer by layer?","Why does this require a square matrix?"],review:"Rotate Image clockwise is transpose, then reverse each row."},
+"LC 73":{signal:"Set Matrix Zeroes asks for marking rows and columns without losing original zero information.",hints:["If you zero immediately, you destroy information needed later.","Use first row and first column as marker storage.","Track whether the first row and first column originally had zeroes.","Apply markers to inner cells, then handle first row/column last."],interviewer:["Why not zero cells immediately?","How do first row and first column markers work?","Why handle first row and column last?","What is the space complexity?"],answer:["Detect whether first row and first column need to become zero.","For inner zeroes, mark matrix[i][0] and matrix[0][j].","Zero inner cells based on those markers.","Finally zero first row and first column if their flags are set."],complexity:"O(mn) time, O(1) space",code:`void setZeroes(vector<vector<int>>& matrix) {
+    int m = matrix.size();
+    int n = matrix[0].size();
+    bool firstRowZero = false;
+    bool firstColZero = false;
+
+    for (int c = 0; c < n; ++c) {
+        if (matrix[0][c] == 0) firstRowZero = true;
+    }
+    for (int r = 0; r < m; ++r) {
+        if (matrix[r][0] == 0) firstColZero = true;
+    }
+
+    for (int r = 1; r < m; ++r) {
+        for (int c = 1; c < n; ++c) {
+            if (matrix[r][c] == 0) {
+                matrix[r][0] = 0;
+                matrix[0][c] = 0;
+            }
+        }
+    }
+
+    for (int r = 1; r < m; ++r) {
+        for (int c = 1; c < n; ++c) {
+            if (matrix[r][0] == 0 || matrix[0][c] == 0) {
+                matrix[r][c] = 0;
+            }
+        }
+    }
+
+    if (firstRowZero) {
+        for (int c = 0; c < n; ++c) matrix[0][c] = 0;
+    }
+    if (firstColZero) {
+        for (int r = 0; r < m; ++r) matrix[r][0] = 0;
+    }
+}`,followups:["Can you solve it with O(m+n) space first?","Why must the first row/column be handled last?","What if matrix has one row or one column?"],review:"Set Matrix Zeroes uses first row and first column as markers, plus two flags for their original zero state."},
+"LC 138":{signal:"Random pointers require preserving original-node identity; hashmap clone mapping is the safest default.",hints:["Create a clone node for every original node.","Map original node pointer to cloned node pointer.","Second pass wires next and random using the map.","Return the clone of head."],interviewer:["Why do we need a map?","Can random point backward or to itself?","Can we do O(1) extra space?","What if head is null?"],answer:["If head is null, return null.","First pass: clone every node and store old -> new.","Second pass: assign cloned next and random pointers from the map.","Return mp[head]."],complexity:"O(n) time, O(n) space",code:`Node* copyRandomList(Node* head) {
+    if (!head) return nullptr;
+
+    unordered_map<Node*, Node*> clone;
+    for (Node* cur = head; cur; cur = cur->next) {
+        clone[cur] = new Node(cur->val);
+    }
+
+    for (Node* cur = head; cur; cur = cur->next) {
+        clone[cur]->next = cur->next ? clone[cur->next] : nullptr;
+        clone[cur]->random = cur->random ? clone[cur->random] : nullptr;
+    }
+
+    return clone[head];
+}`,followups:["Can you do it with O(1) extra space by interleaving nodes?","What if random points to null?","How do you avoid copying the same node twice?"],review:"Copy Random List is identity mapping: original node pointer -> cloned node pointer."},
+"LC 92":{signal:"Reverse a sublist by using a dummy node and repeatedly moving nodes to the front of the reversed window.",hints:["A dummy node handles reversing from the head.","Move prev to the node before position left.","curr starts at the first node in the reversal range.","Repeatedly remove curr->next and insert it after prev."],interviewer:["Why use a dummy node?","What pointers must be preserved before rewiring?","What if left is 1?","What is the complexity?"],answer:["Create dummy before head.","Move prev to the node before left.","Use head-insertion inside the sublist for right-left steps.","Return dummy.next."],complexity:"O(n) time, O(1) space",code:`ListNode* reverseBetween(ListNode* head, int left, int right) {
+    ListNode dummy(0, head);
+    ListNode* prev = &dummy;
+
+    for (int i = 1; i < left; ++i) {
+        prev = prev->next;
+    }
+
+    ListNode* cur = prev->next;
+    for (int i = 0; i < right - left; ++i) {
+        ListNode* move = cur->next;
+        cur->next = move->next;
+        move->next = prev->next;
+        prev->next = move;
+    }
+
+    return dummy.next;
+}`,followups:["Can you reverse by detaching the segment first?","What if left equals right?","How do you avoid losing the tail?"],review:"Reverse Linked List II is pointer rewiring around a fixed predecessor before the reversed range."}
+,"LC 34":{signal:"Sorted array + first and last occurrence asks for binary search on the boundary positions.",hints:["Search for the first index where nums[i] >= target.","Search for the first index where nums[i] > target.","The answer range is [left, rightExclusive - 1].","If left is out of bounds or nums[left] != target, the target does not exist."],interviewer:["What boundary are you binary searching?","Why not stop at any matching index?","How do you handle target missing?","What is the complexity?"],answer:["Write a lowerBound helper returning the first index with value >= target.","Write an upperBound helper returning the first index with value > target.","If lowerBound points outside the array or not at target, return [-1,-1].","Otherwise return [lowerBound, upperBound - 1]."],complexity:"O(log n) time, O(1) space",code:`vector<int> searchRange(vector<int>& nums, int target) {
+    auto lowerBound = [&](int x) {
+        int l = 0;
+        int r = nums.size();
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] < x) l = mid + 1;
+            else r = mid;
+        }
+        return l;
+    };
+
+    auto upperBound = [&](int x) {
+        int l = 0;
+        int r = nums.size();
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] <= x) l = mid + 1;
+            else r = mid;
+        }
+        return l;
+    };
+
+    int left = lowerBound(target);
+    if (left == nums.size() || nums[left] != target) {
+        return {-1, -1};
+    }
+
+    int right = upperBound(target) - 1;
+    return {left, right};
+}`,followups:["Can you write it with one generic bound helper?","Can you write separate first/last binary searches?","How does this differ from searching for any occurrence?"],review:"LC34 is boundary binary search: find the first target and the first value greater than target."}
+};
+Object.assign(solidSolutionPatches,{
+"LC 67":{signal:"Binary string addition is grade-school addition with carry from right to left.",hints:["Start from the end of both strings.","Keep a carry bit.","Append sum % 2 to the answer.","Reverse at the end."],interviewer:["How do you handle different lengths?","What happens after both strings are exhausted?","Why reverse the answer?","What is the complexity?"],answer:["Use two indices from the ends of a and b.","Add current bits plus carry.","Push the low bit and update carry.","Reverse the built string."],complexity:"O(max(m,n)) time, O(max(m,n)) space",code:`string addBinary(string a, string b) {
+    string ans;
+    int i = a.size() - 1;
+    int j = b.size() - 1;
+    int carry = 0;
+
+    while (i >= 0 || j >= 0 || carry) {
+        int sum = carry;
+        if (i >= 0) sum += a[i--] - '0';
+        if (j >= 0) sum += b[j--] - '0';
+        ans.push_back(char('0' + (sum % 2)));
+        carry = sum / 2;
+    }
+
+    reverse(ans.begin(), ans.end());
+    return ans;
+}`,followups:["Can you do it without reversing?","How would this work for base 10 strings?","What if input is streamed from the end?"],review:"Add Binary is right-to-left addition with a carry."},
+"LC 190":{signal:"Reverse bits by shifting the answer left and copying the low bit of n each round.",hints:["There are exactly 32 bits.","Take n & 1 as the next bit.","Shift ans left before adding that bit.","Shift n right to consume bits."],interviewer:["Why exactly 32 iterations?","Should n be unsigned?","Can you optimize repeated calls?","What is the complexity?"],answer:["Initialize ans = 0.","Repeat 32 times.","Shift ans left and OR the current low bit of n.","Shift n right."],complexity:"O(32) time, O(1) space",code:`uint32_t reverseBits(uint32_t n) {
+    uint32_t ans = 0;
+    for (int i = 0; i < 32; ++i) {
+        ans = (ans << 1) | (n & 1);
+        n >>= 1;
+    }
+    return ans;
+}`,followups:["How would you cache bytes for many calls?","What if the integer width changes?","Why unsigned matters?"],review:"Reverse Bits copies low bits of n into the high-to-low order of the answer."},
+"LC 191":{signal:"Counting 1 bits can repeatedly remove the lowest set bit.",hints:["n & (n - 1) clears the lowest set bit.","Each loop removes one 1 bit.","Count how many removals happen.","Unsigned input avoids sign issues."],interviewer:["What does n & (n - 1) do?","Is this better than checking all 32 bits?","What if n is zero?","What is the complexity?"],answer:["Initialize count to zero.","While n is nonzero, set n = n & (n - 1).","Increment count each time.","Return count."],complexity:"O(k) time where k is number of set bits, O(1) space",code:`int hammingWeight(uint32_t n) {
+    int count = 0;
+    while (n) {
+        n &= (n - 1);
+        ++count;
+    }
+    return count;
+}`,followups:["Can you use a lookup table?","Can you use compiler builtins?","What is the fixed-width complexity?"],review:"Number of 1 Bits is lowest-set-bit deletion."},
+"LC 136":{signal:"Every duplicate cancels under xor, leaving the single number.",hints:["x ^ x = 0.","x ^ 0 = x.","Xor is commutative, so order does not matter.","Xor all numbers together."],interviewer:["Why does xor cancellation work?","Does order matter?","What if every number appears three times?","What is the complexity?"],answer:["Initialize ans = 0.","Xor every number into ans.","Pairs cancel to zero.","Return the remaining value."],complexity:"O(n) time, O(1) space",code:`int singleNumber(vector<int>& nums) {
+    int ans = 0;
+    for (int x : nums) ans ^= x;
+    return ans;
+}`,followups:["What if every number appears three times?","What if two numbers are single?","Can a hashmap solve it?"],review:"Single Number is xor cancellation."},
+"LC 9":{signal:"Palindrome Number can reverse only the second half of the digits to avoid overflow.",hints:["Negative numbers are not palindromes.","Numbers ending in 0 are not palindromes unless the number is 0.","Build reversedHalf until it reaches or passes x.","Compare x with reversedHalf or reversedHalf / 10."],interviewer:["Why reverse only half?","How do you avoid overflow?","What about 10 or negative numbers?","What is the complexity?"],answer:["Reject negatives and nonzero numbers ending in zero.","Move digits from x into reversedHalf until reversedHalf >= x.","For even length, compare x == reversedHalf.","For odd length, compare x == reversedHalf / 10."],complexity:"O(log n) time, O(1) space",code:`bool isPalindrome(int x) {
+    if (x < 0 || (x % 10 == 0 && x != 0)) return false;
+
+    int reversedHalf = 0;
+    while (x > reversedHalf) {
+        reversedHalf = reversedHalf * 10 + x % 10;
+        x /= 10;
+    }
+
+    return x == reversedHalf || x == reversedHalf / 10;
+}`,followups:["Can you solve it by converting to string?","Why does reversing the whole number risk overflow?","How do odd digit counts work?"],review:"Palindrome Number is safest by reversing only half of the digits."},
+"LC 172":{signal:"Trailing zeroes come from factors of 10, which are limited by factors of 5.",hints:["A trailing zero needs 2 * 5.","There are always more factors of 2 than 5 in n!.","Count multiples of 5, 25, 125, and so on.","Repeatedly divide n by 5 and accumulate."],interviewer:["Why count fives instead of tens?","Why include 25 and 125?","What is the complexity?","What if n is zero?"],answer:["Initialize ans = 0.","While n > 0, divide n by 5.","Add the quotient to ans.","Return ans."],complexity:"O(log_5 n) time, O(1) space",code:`int trailingZeroes(int n) {
+    int ans = 0;
+    while (n > 0) {
+        n /= 5;
+        ans += n;
+    }
+    return ans;
+}`,followups:["Why not compute factorial?","How would this change in another base?","Why do powers of 5 contribute multiple times?"],review:"Factorial trailing zeroes are counted by factors of 5."},
+"LC 74":{signal:"A sorted 2D matrix with row ordering can be treated as one sorted array.",hints:["Map virtual index mid to row = mid / n and col = mid % n.","Search over [0, m*n).","Compare matrix[row][col] with target.","This is ordinary binary search on a flattened view."],interviewer:["Why is the flattened order sorted?","How do you map index to row and column?","What if matrix is empty?","What is the complexity?"],answer:["Let m and n be dimensions.","Binary search from 0 to m*n - 1.","Map mid to matrix[mid/n][mid%n].","Return true if found, otherwise false."],complexity:"O(log(mn)) time, O(1) space",code:`bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    int m = matrix.size();
+    int n = matrix[0].size();
+    int l = 0;
+    int r = m * n - 1;
+
+    while (l <= r) {
+        int mid = l + (r - l) / 2;
+        int value = matrix[mid / n][mid % n];
+        if (value == target) return true;
+        if (value < target) l = mid + 1;
+        else r = mid - 1;
+    }
+
+    return false;
+}`,followups:["What if each row and column is sorted but rows are not globally ordered?","Can you binary search row then column?","What is the flattened index mapping?"],review:"Search a 2D Matrix is binary search on a flattened sorted matrix."},
+"LC 162":{signal:"Peak element can be found by moving toward the rising slope.",hints:["Compare nums[mid] with nums[mid + 1].","If nums[mid] < nums[mid+1], a peak exists on the right.","Otherwise a peak exists on the left including mid.","This works because virtual boundaries are negative infinity."],interviewer:["Why does moving uphill find a peak?","Why compare mid and mid+1?","What about one element?","What is the complexity?"],answer:["Binary search while l < r.","If nums[mid] < nums[mid+1], move l to mid + 1.","Else move r to mid.","Return l."],complexity:"O(log n) time, O(1) space",code:`int findPeakElement(vector<int>& nums) {
+    int l = 0;
+    int r = nums.size() - 1;
+
+    while (l < r) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] < nums[mid + 1]) l = mid + 1;
+        else r = mid;
+    }
+
+    return l;
+}`,followups:["What if adjacent equal values are allowed?","Can linear scan solve it?","Why is any peak acceptable?"],review:"Find Peak Element uses slope direction to keep a side that must contain a peak."},
+"LC 153":{signal:"Minimum in rotated sorted array is the boundary where sorted order wraps.",hints:["Compare nums[mid] with nums[right].","If nums[mid] > nums[right], the minimum is to the right.","Otherwise the minimum is at mid or to the left.","Keep the interval containing the rotation boundary."],interviewer:["Why compare with right instead of left?","What if the array is not rotated?","What if duplicates exist?","What is the complexity?"],answer:["Binary search while l < r.","If nums[mid] > nums[r], move l to mid + 1.","Otherwise move r to mid.","Return nums[l]."],complexity:"O(log n) time, O(1) space",code:`int findMin(vector<int>& nums) {
+    int l = 0;
+    int r = nums.size() - 1;
+
+    while (l < r) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] > nums[r]) l = mid + 1;
+        else r = mid;
+    }
+
+    return nums[l];
+}`,followups:["What if duplicates are allowed?","How do you find the rotation index?","Why does an unrotated array still work?"],review:"Find Minimum in Rotated Sorted Array binary-searches the rotation boundary."},
+"LC 17":{signal:"Phone digit combinations are classic backtracking over choices per digit.",hints:["Map each digit to its letters.","Build one character per input digit.","When path length equals digits length, record it.","Backtrack by pushing and popping one letter."],interviewer:["What is the recursion state?","What if digits is empty?","How many combinations exist?","What is the complexity?"],answer:["Return empty list for empty digits.","Use a digit-to-letters table.","DFS by index into digits and current path.","Append path when index reaches digits length."],complexity:"O(4^n * n) time, O(n) recursion space excluding output",code:`vector<string> letterCombinations(string digits) {
+    if (digits.empty()) return {};
+    vector<string> letters = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    vector<string> ans;
+    string path;
+
+    function<void(int)> dfs = [&](int idx) {
+        if (idx == digits.size()) {
+            ans.push_back(path);
+            return;
+        }
+        for (char ch : letters[digits[idx] - '0']) {
+            path.push_back(ch);
+            dfs(idx + 1);
+            path.pop_back();
+        }
+    };
+
+    dfs(0);
+    return ans;
+}`,followups:["Can you solve it iteratively?","Why is output size exponential?","What if digits contain 0 or 1?"],review:"Letter Combinations is DFS over one letter choice per digit."},
+"LC 77":{signal:"Combinations means choose k numbers from 1..n with backtracking and pruning.",hints:["The path stores chosen numbers.","Start controls the next candidate number.","When path size is k, record it.","Prune when not enough numbers remain."],interviewer:["What is the recursion state?","How do you avoid duplicates?","Can you prune?","What is the complexity?"],answer:["DFS with start and current path.","If path size is k, push it to answer.","Loop x from start while enough numbers remain.","Choose x, recurse with x+1, then undo."],complexity:"O(C(n,k) * k) time, O(k) recursion space excluding output",code:`vector<vector<int>> combine(int n, int k) {
+    vector<vector<int>> ans;
+    vector<int> path;
+
+    function<void(int)> dfs = [&](int start) {
+        if (path.size() == k) {
+            ans.push_back(path);
+            return;
+        }
+
+        int need = k - path.size();
+        for (int x = start; x <= n - need + 1; ++x) {
+            path.push_back(x);
+            dfs(x + 1);
+            path.pop_back();
+        }
+    };
+
+    dfs(1);
+    return ans;
+}`,followups:["How does pruning work?","How is this different from permutations?","Can you generate in lexicographic order?"],review:"Combinations uses increasing start index so each set is generated once."},
+"LC 46":{signal:"Permutations means choose every unused number for the next position.",hints:["The path order matters.","Use a used array to avoid reusing a number.","When path length equals nums length, record it.","Undo both path and used state after recursion."],interviewer:["What is the recursion state?","How do you prevent reusing elements?","What if nums contains duplicates?","What is the complexity?"],answer:["Track path and used flags.","At each depth, try every unused number.","Mark used, recurse, then undo.","Record path when it reaches nums.size()."],complexity:"O(n! * n) time, O(n) recursion space excluding output",code:`vector<vector<int>> permute(vector<int>& nums) {
+    vector<vector<int>> ans;
+    vector<int> path;
+    vector<bool> used(nums.size(), false);
+
+    function<void()> dfs = [&]() {
+        if (path.size() == nums.size()) {
+            ans.push_back(path);
+            return;
+        }
+
+        for (int i = 0; i < nums.size(); ++i) {
+            if (used[i]) continue;
+            used[i] = true;
+            path.push_back(nums[i]);
+            dfs();
+            path.pop_back();
+            used[i] = false;
+        }
+    };
+
+    dfs();
+    return ans;
+}`,followups:["How would duplicates change it?","Can you do in-place swapping?","Why is time factorial?"],review:"Permutations is backtracking over unused elements for each position."}
+});
+Object.assign(solidSolutionPatches,{
+"LC 289":{signal:"Game of Life needs simultaneous updates, so encode old and new state in the same cell.",hints:["You cannot update a cell and immediately let neighbors see only the new state.","Use transitional values: live->dead and dead->live.","Count live neighbors from the original state.","Finalize every cell after all transitions are marked."],interviewer:["Why is simultaneous update important?","How do transitional states preserve old values?","How many neighbors do we check?","What is the complexity?"],answer:["For each cell, count live neighbors using abs(board[r][c]) == 1.","Mark live-to-dead as -1 and dead-to-live as 2.","After all cells are marked, convert positive values to 1 and others to 0.","This uses O(1) extra space."],complexity:"O(mn) time, O(1) space",code:`void gameOfLife(vector<vector<int>>& board) {
+    int m = board.size(), n = board[0].size();
+    vector<int> dirs = {-1, 0, 1};
+
+    for (int r = 0; r < m; ++r) {
+        for (int c = 0; c < n; ++c) {
+            int live = 0;
+            for (int dr : dirs) {
+                for (int dc : dirs) {
+                    if (dr == 0 && dc == 0) continue;
+                    int nr = r + dr, nc = c + dc;
+                    if (nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
+                    if (abs(board[nr][nc]) == 1) ++live;
+                }
+            }
+
+            if (board[r][c] == 1 && (live < 2 || live > 3)) board[r][c] = -1;
+            if (board[r][c] == 0 && live == 3) board[r][c] = 2;
+        }
+    }
+
+    for (int r = 0; r < m; ++r) {
+        for (int c = 0; c < n; ++c) {
+            board[r][c] = board[r][c] > 0 ? 1 : 0;
+        }
+    }
+}`,followups:["What if the board is infinite?","Can you use a copy board?","Why do transitional values work?"],review:"Game of Life in-place uses encoded transition states so every neighbor read still sees the old generation."},
+"LC 82":{signal:"Sorted list duplicate removal needs deleting the entire duplicate run, not keeping one copy.",hints:["Use a dummy node because the head may be deleted.","prev points to the last confirmed unique node.","If curr has duplicates, skip the entire run.","Otherwise advance prev normally."],interviewer:["Why use a dummy node?","How do you skip all duplicates?","What if duplicates start at head?","What is the complexity?"],answer:["Create dummy before head.","Walk with prev while prev->next exists.","If prev->next starts a duplicate run, skip all nodes with that value.","Otherwise move prev forward."],complexity:"O(n) time, O(1) space",code:`ListNode* deleteDuplicates(ListNode* head) {
+    ListNode dummy(0, head);
+    ListNode* prev = &dummy;
+
+    while (prev->next) {
+        ListNode* cur = prev->next;
+        if (cur->next && cur->val == cur->next->val) {
+            int duplicate = cur->val;
+            while (prev->next && prev->next->val == duplicate) {
+                prev->next = prev->next->next;
+            }
+        } else {
+            prev = prev->next;
+        }
+    }
+
+    return dummy.next;
+}`,followups:["How is this different from keeping one duplicate?","What if the list is not sorted?","How do you avoid losing the tail?"],review:"Remove Duplicates from Sorted List II skips the whole duplicate run using a predecessor pointer."},
+"LC 61":{signal:"Rotate List is pointer rewiring after reducing k modulo length.",hints:["First compute list length and tail.","k may be larger than length, so use k %= length.","Connect tail to head to form a cycle.","Break the cycle at the new tail."],interviewer:["Why use k modulo length?","Where is the new tail?","How do you avoid losing nodes?","What if head is null?"],answer:["Handle empty or single-node lists.","Find length and tail.","Make the list circular.","Move length - k steps to find new tail, set new head, then break the cycle."],complexity:"O(n) time, O(1) space",code:`ListNode* rotateRight(ListNode* head, int k) {
+    if (!head || !head->next || k == 0) return head;
+
+    int len = 1;
+    ListNode* tail = head;
+    while (tail->next) {
+        tail = tail->next;
+        ++len;
+    }
+
+    k %= len;
+    if (k == 0) return head;
+
+    tail->next = head;
+    int stepsToNewTail = len - k;
+    ListNode* newTail = tail;
+    while (stepsToNewTail--) {
+        newTail = newTail->next;
+    }
+
+    ListNode* newHead = newTail->next;
+    newTail->next = nullptr;
+    return newHead;
+}`,followups:["What if k is huge?","Can you do it without making a cycle?","What if the list has one node?"],review:"Rotate List makes a cycle, then breaks it after length-k steps."},
+"LC 86":{signal:"Partition List is stable two-list construction: nodes below x and nodes at least x.",hints:["Preserve original relative order.","Use two dummy heads for small and large partitions.","Append each node to the correct list.","Terminate the large list to avoid cycles."],interviewer:["Do we need stable order?","Why two dummy nodes?","Why set large tail next to null?","What is the complexity?"],answer:["Create before and after dummy lists.","Walk the original list and append each node to the right list.","Connect before tail to after head.","Set after tail next to null and return before head."],complexity:"O(n) time, O(1) space",code:`ListNode* partition(ListNode* head, int x) {
+    ListNode beforeDummy(0), afterDummy(0);
+    ListNode* before = &beforeDummy;
+    ListNode* after = &afterDummy;
+
+    while (head) {
+        if (head->val < x) {
+            before->next = head;
+            before = before->next;
+        } else {
+            after->next = head;
+            after = after->next;
+        }
+        head = head->next;
+    }
+
+    after->next = nullptr;
+    before->next = afterDummy.next;
+    return beforeDummy.next;
+}`,followups:["What if order does not matter?","Why can old next pointers create cycles?","Can you do it by swapping values?"],review:"Partition List uses two stable chains and reconnects them at the end."},
+"LC 106":{signal:"Postorder's last element is root; inorder splits left and right subtrees.",hints:["Use a hashmap from value to inorder index.","Postorder root is consumed from the end.","Build right subtree before left because postorder is left-right-root.","The inorder range defines the current subtree."],interviewer:["Why build right before left?","How does inorder split subtrees?","What is the recursion state?","What is the complexity?"],answer:["Map inorder values to indices.","Keep an index at the end of postorder.","Recursive helper takes inorder bounds.","Create root from postorder index, build right then left, and return root."],complexity:"O(n) time, O(n) space",code:`TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+    unordered_map<int, int> pos;
+    for (int i = 0; i < inorder.size(); ++i) pos[inorder[i]] = i;
+    int post = postorder.size() - 1;
+
+    function<TreeNode*(int,int)> build = [&](int l, int r) -> TreeNode* {
+        if (l > r) return nullptr;
+        int val = postorder[post--];
+        TreeNode* root = new TreeNode(val);
+        int mid = pos[val];
+        root->right = build(mid + 1, r);
+        root->left = build(l, mid - 1);
+        return root;
+    };
+
+    return build(0, inorder.size() - 1);
+}`,followups:["Why are values assumed unique?","Can you build from preorder and inorder?","What is recursion depth?"],review:"Inorder plus postorder reconstruction consumes roots from postorder's end and splits by inorder index."},
+"LC 117":{signal:"Connect next right pointers level by level using already-built next pointers.",hints:["No perfect-tree assumption.","Use a dummy head for the next level.","Walk the current level through next pointers.","Append each child to the next-level chain."],interviewer:["Why not rely on complete tree structure?","How does dummy simplify the next level?","Can you do O(1) extra space?","What edge cases matter?"],answer:["Start with cur at root.","For each level, use dummy and tail to build next level.","Walk cur across the current level through next pointers.","Move cur to dummy.next for the next level."],complexity:"O(n) time, O(1) extra space",code:`Node* connect(Node* root) {
+    Node* cur = root;
+    while (cur) {
+        Node dummy(0);
+        Node* tail = &dummy;
+
+        while (cur) {
+            if (cur->left) {
+                tail->next = cur->left;
+                tail = tail->next;
+            }
+            if (cur->right) {
+                tail->next = cur->right;
+                tail = tail->next;
+            }
+            cur = cur->next;
+        }
+
+        cur = dummy.next;
+    }
+    return root;
+}`,followups:["Can BFS solve it?","Why is this O(1) extra space?","How does it differ from perfect binary tree version?"],review:"Populating Next Right Pointers II builds each next level while traversing the current level's next chain."},
+"LC 114":{signal:"Flatten tree to linked list means preorder traversal rewired in-place.",hints:["Flatten left and right subtrees first.","If a left subtree exists, move it to the right.","Attach the original right subtree to the tail of the flattened left subtree.","Set left to null."],interviewer:["What order should the final list follow?","Why store original right subtree?","Can you do iterative preorder?","What is the complexity?"],answer:["Recursively flatten left and right.","If root has left, save original right.","Move left subtree to right and null out left.","Find the tail of moved subtree and attach saved right."],complexity:"O(n) time, O(h) recursion space",code:`void flatten(TreeNode* root) {
+    if (!root) return;
+
+    flatten(root->left);
+    flatten(root->right);
+
+    TreeNode* left = root->left;
+    TreeNode* right = root->right;
+
+    if (left) {
+        root->right = left;
+        root->left = nullptr;
+
+        TreeNode* tail = root->right;
+        while (tail->right) tail = tail->right;
+        tail->right = right;
+    }
+}`,followups:["Can you avoid repeated tail scans?","Can you solve with reverse preorder?","Can you solve iteratively with a stack?"],review:"Flatten Binary Tree rewires preorder order into right pointers and clears left pointers."},
+"LC 173":{signal:"BST iterator is controlled inorder traversal with a stack of left ancestors.",hints:["Inorder traversal of BST is sorted.","Push all left nodes from the current root.","next pops the smallest available node.","After popping, push the left chain of its right child."],interviewer:["Why does stack top hold the next smallest?","What is amortized O(1)?","What is the space complexity?","What if next is called without hasNext?"],answer:["Constructor pushes the root's left chain.","next pops the stack top.","If popped node has right child, push its left chain.","hasNext checks whether stack is nonempty."],complexity:"O(1) amortized next, O(h) space",code:`class BSTIterator {
+    stack<TreeNode*> st;
+
+    void pushLeft(TreeNode* node) {
+        while (node) {
+            st.push(node);
+            node = node->left;
+        }
+    }
+
+public:
+    BSTIterator(TreeNode* root) {
+        pushLeft(root);
+    }
+
+    int next() {
+        TreeNode* node = st.top();
+        st.pop();
+        pushLeft(node->right);
+        return node->val;
+    }
+
+    bool hasNext() {
+        return !st.empty();
+    }
+};`,followups:["Can you support previous?","Why is next amortized O(1)?","Can you materialize all values first?"],review:"BST Iterator lazily performs inorder traversal with a stack."},
+"LC 222":{signal:"Complete tree node count can use subtree heights to skip perfect subtrees.",hints:["In a complete tree, equal leftmost heights mean the subtree is perfect.","A perfect subtree with height h has 2^h - 1 nodes.","If left and right heights differ, recurse into children.","Height computation follows left edges."],interviewer:["What property of complete trees helps?","How do you detect a perfect subtree?","What is the complexity?","What if the tree is not complete?"],answer:["Compute leftmost height from root->left and root->right.","If heights are equal, left subtree is perfect; count it and recurse right.","Otherwise right subtree is perfect one level smaller; count it and recurse left.","Return total nodes."],complexity:"O(log^2 n) time, O(log n) recursion space",code:`int countNodes(TreeNode* root) {
+    if (!root) return 0;
+
+    auto height = [](TreeNode* node) {
+        int h = 0;
+        while (node) {
+            ++h;
+            node = node->left;
+        }
+        return h;
+    };
+
+    int lh = height(root->left);
+    int rh = height(root->right);
+
+    if (lh == rh) {
+        return (1 << lh) + countNodes(root->right);
+    }
+    return (1 << rh) + countNodes(root->left);
+}`,followups:["Why does equal height mean left subtree is perfect?","Can O(n) DFS solve it?","What about very deep trees and shifting overflow?"],review:"Count Complete Tree Nodes skips perfect subtrees using leftmost heights."},
+"LC 637":{signal:"Average by tree level is BFS with fixed queue size per level.",hints:["Queue contains one level's frontier.","At each level, record queue size before popping.","Sum values for exactly that many nodes.","Push children for the next level."],interviewer:["Why BFS?","Why store level size?","Should sum be int or double/long long?","What is the complexity?"],answer:["If root is null, return empty.","Use a queue for BFS.","For each level, sum all nodes in that level and divide by count.","Push children while processing."],complexity:"O(n) time, O(width) space",code:`vector<double> averageOfLevels(TreeNode* root) {
+    vector<double> ans;
+    if (!root) return ans;
+
+    queue<TreeNode*> q;
+    q.push(root);
+    while (!q.empty()) {
+        int size = q.size();
+        long long sum = 0;
+        for (int i = 0; i < size; ++i) {
+            TreeNode* node = q.front();
+            q.pop();
+            sum += node->val;
+            if (node->left) q.push(node->left);
+            if (node->right) q.push(node->right);
+        }
+        ans.push_back((double)sum / size);
+    }
+    return ans;
+}`,followups:["Can DFS by depth solve it?","Why use long long for sum?","What is width space?"],review:"Average of Levels is level-order BFS with one sum per fixed-size level."},
+"LC 103":{signal:"Zigzag level order is BFS level traversal with alternating write direction.",hints:["BFS gives one level at a time.","Use a vector of level size.","Place values left-to-right or right-to-left depending on a flag.","Flip the flag after every level."],interviewer:["Why not reverse every other vector?","How do you preserve level boundaries?","What is the complexity?","Can DFS solve it?"],answer:["Use a queue for BFS.","For each level, allocate vector<int> level(size).","Write node values at index i or size-1-i based on direction.","Flip direction after the level."],complexity:"O(n) time, O(width) space",code:`vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+    vector<vector<int>> ans;
+    if (!root) return ans;
+
+    queue<TreeNode*> q;
+    q.push(root);
+    bool leftToRight = true;
+
+    while (!q.empty()) {
+        int size = q.size();
+        vector<int> level(size);
+        for (int i = 0; i < size; ++i) {
+            TreeNode* node = q.front();
+            q.pop();
+            int idx = leftToRight ? i : size - 1 - i;
+            level[idx] = node->val;
+            if (node->left) q.push(node->left);
+            if (node->right) q.push(node->right);
+        }
+        ans.push_back(level);
+        leftToRight = !leftToRight;
+    }
+
+    return ans;
+}`,followups:["Can DFS fill by depth?","Can you reverse every other level instead?","How do you handle an empty tree?"],review:"Zigzag Level Order is BFS plus alternating index placement."},
+"LC 530":{signal:"Minimum difference in BST comes from adjacent values in sorted inorder order.",hints:["Inorder traversal of BST is sorted.","The minimum absolute difference must be between adjacent inorder values.","Track previous visited value.","Update best difference at each node."],interviewer:["Why only adjacent inorder values?","How do you avoid storing all values?","What is recursion space?","What if tree has one node?"],answer:["Run inorder DFS.","Keep prev pointer/value from the previous node.","At each node, update best with node->val - prev.","Return best."],complexity:"O(n) time, O(h) space",code:`int getMinimumDifference(TreeNode* root) {
+    int best = INT_MAX;
+    TreeNode* prev = nullptr;
+
+    function<void(TreeNode*)> inorder = [&](TreeNode* node) {
+        if (!node) return;
+        inorder(node->left);
+        if (prev) best = min(best, node->val - prev->val);
+        prev = node;
+        inorder(node->right);
+    };
+
+    inorder(root);
+    return best;
+}`,followups:["Can you do iterative inorder?","Why not compare every pair?","What if duplicates are allowed?"],review:"Minimum Absolute Difference in BST is adjacent difference in inorder order."},
+"LC 130":{signal:"Surrounded Regions keeps border-connected O cells and flips the rest.",hints:["Only O regions not connected to border are captured.","Start DFS/BFS from border O cells.","Mark safe cells temporarily.","Flip remaining O to X and safe marks back to O."],interviewer:["Why start from the border?","What cells are safe?","Can DFS overflow stack?","What is the complexity?"],answer:["Mark all border-connected O cells as safe.","Scan all cells after marking.","Flip unmarked O cells to X.","Restore safe marks back to O."],complexity:"O(mn) time, O(mn) worst-case space",code:`void solve(vector<vector<char>>& board) {
+    int m = board.size(), n = board[0].size();
+    function<void(int,int)> dfs = [&](int r, int c) {
+        if (r < 0 || r >= m || c < 0 || c >= n || board[r][c] != 'O') return;
+        board[r][c] = '#';
+        dfs(r + 1, c);
+        dfs(r - 1, c);
+        dfs(r, c + 1);
+        dfs(r, c - 1);
+    };
+
+    for (int r = 0; r < m; ++r) {
+        dfs(r, 0);
+        dfs(r, n - 1);
+    }
+    for (int c = 0; c < n; ++c) {
+        dfs(0, c);
+        dfs(m - 1, c);
+    }
+
+    for (int r = 0; r < m; ++r) {
+        for (int c = 0; c < n; ++c) {
+            if (board[r][c] == 'O') board[r][c] = 'X';
+            else if (board[r][c] == '#') board[r][c] = 'O';
+        }
+    }
+}`,followups:["Can BFS avoid recursion depth?","Why are border-connected cells not captured?","Can this be solved with Union Find?"],review:"Surrounded Regions is reverse flood fill from border O cells."}
+});
+Object.assign(solidSolutionPatches,{
+"LC 39":{signal:"Combination Sum is backtracking where candidates can be reused by recursing with the same index.",complexity:"O(number of combinations * average length) time, O(target/minCandidate) recursion space",code:`vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+    vector<vector<int>> ans;
+    vector<int> path;
+    sort(candidates.begin(), candidates.end());
+
+    function<void(int,int)> dfs = [&](int start, int remain) {
+        if (remain == 0) {
+            ans.push_back(path);
+            return;
+        }
+        for (int i = start; i < candidates.size() && candidates[i] <= remain; ++i) {
+            path.push_back(candidates[i]);
+            dfs(i, remain - candidates[i]);
+            path.pop_back();
+        }
+    };
+
+    dfs(0, target);
+    return ans;
+}`,hints:["Sort candidates for pruning.","Use start index to avoid duplicate orderings.","Recurse with i, not i + 1, because reuse is allowed.","Record path when remain becomes zero."],answer:["Backtrack with start and remaining target.","Try candidates from start forward.","Reuse current candidate by recursing with the same index.","Undo after recursion."],review:"Combination Sum is choose/recurse/undo with same-index recursion for reuse."},
+"LC 79":{signal:"Word Search is grid backtracking with visited marking and four-direction movement.",complexity:"O(mn * 4^L) time, O(L) recursion space",code:`bool exist(vector<vector<char>>& board, string word) {
+    int m = board.size(), n = board[0].size();
+
+    function<bool(int,int,int)> dfs = [&](int r, int c, int idx) {
+        if (idx == word.size()) return true;
+        if (r < 0 || r >= m || c < 0 || c >= n || board[r][c] != word[idx]) return false;
+
+        char saved = board[r][c];
+        board[r][c] = '#';
+        bool found = dfs(r + 1, c, idx + 1) ||
+                     dfs(r - 1, c, idx + 1) ||
+                     dfs(r, c + 1, idx + 1) ||
+                     dfs(r, c - 1, idx + 1);
+        board[r][c] = saved;
+        return found;
+    };
+
+    for (int r = 0; r < m; ++r)
+        for (int c = 0; c < n; ++c)
+            if (dfs(r, c, 0)) return true;
+    return false;
+}`,hints:["Try every cell as a start.","Mark the current cell visited before exploring neighbors.","Restore it after recursion.","Stop once the whole word is matched."],answer:["DFS from each board cell.","Match one character per recursion depth.","Temporarily mark visited cells.","Return true as soon as any path matches."],review:"Word Search is path backtracking with in-place visited marking."},
+"LC 108":{signal:"Sorted array to BST uses the middle element as root to keep the tree height balanced.",complexity:"O(n) time, O(log n) recursion space",code:`TreeNode* sortedArrayToBST(vector<int>& nums) {
+    function<TreeNode*(int,int)> build = [&](int l, int r) -> TreeNode* {
+        if (l > r) return nullptr;
+        int mid = l + (r - l) / 2;
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = build(l, mid - 1);
+        root->right = build(mid + 1, r);
+        return root;
+    };
+    return build(0, nums.size() - 1);
+}`,hints:["A balanced BST needs roughly equal left and right subtree sizes.","Choose the middle element as root.","Recursively build left and right halves.","Base case is empty range."],answer:["Pick mid as root.","Build left from left half.","Build right from right half.","Return root."],review:"Sorted Array to BST is divide and conquer using the middle value as root."},
+"LC 148":{signal:"Sort List needs O(n log n) linked-list merge sort.",complexity:"O(n log n) time, O(log n) recursion space",code:`ListNode* sortList(ListNode* head) {
+    if (!head || !head->next) return head;
+
+    ListNode* slow = head;
+    ListNode* fast = head->next;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    ListNode* mid = slow->next;
+    slow->next = nullptr;
+
+    ListNode* left = sortList(head);
+    ListNode* right = sortList(mid);
+
+    ListNode dummy;
+    ListNode* tail = &dummy;
+    while (left && right) {
+        if (left->val <= right->val) {
+            tail->next = left;
+            left = left->next;
+        } else {
+            tail->next = right;
+            right = right->next;
+        }
+        tail = tail->next;
+    }
+    tail->next = left ? left : right;
+    return dummy.next;
+}`,hints:["Use slow/fast pointers to split the list.","Break the list into two halves.","Sort both halves recursively.","Merge two sorted linked lists."],answer:["Split list around the middle.","Recursively sort both halves.","Merge sorted halves with a dummy node.","Return merged head."],review:"Sort List is merge sort adapted to linked-list pointer splitting and merging."},
+"LC 23":{signal:"Merge k sorted lists uses a min-heap over the current head of each list.",complexity:"O(N log k) time, O(k) space",code:`ListNode* mergeKLists(vector<ListNode*>& lists) {
+    auto cmp = [](ListNode* a, ListNode* b) {
+        return a->val > b->val;
+    };
+    priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> pq(cmp);
+
+    for (ListNode* node : lists) {
+        if (node) pq.push(node);
+    }
+
+    ListNode dummy;
+    ListNode* tail = &dummy;
+    while (!pq.empty()) {
+        ListNode* node = pq.top();
+        pq.pop();
+        tail->next = node;
+        tail = tail->next;
+        if (node->next) pq.push(node->next);
+    }
+    return dummy.next;
+}`,hints:["Each list is already sorted.","A heap gives the smallest current head.","After taking a node, push its next node.","The heap size is at most k."],answer:["Push all non-null list heads into a min-heap.","Repeatedly pop the smallest node.","Append it to the answer.","Push its next node if present."],review:"Merge k Sorted Lists is repeated best-candidate selection with a min-heap."},
+"LC 918":{signal:"Circular maximum subarray is max(normal Kadane, total sum - minimum subarray).",complexity:"O(n) time, O(1) space",code:`int maxSubarraySumCircular(vector<int>& nums) {
+    int total = 0;
+    int curMax = 0, bestMax = nums[0];
+    int curMin = 0, bestMin = nums[0];
+
+    for (int x : nums) {
+        curMax = max(x, curMax + x);
+        bestMax = max(bestMax, curMax);
+        curMin = min(x, curMin + x);
+        bestMin = min(bestMin, curMin);
+        total += x;
+    }
+
+    if (bestMax < 0) return bestMax;
+    return max(bestMax, total - bestMin);
+}`,hints:["Non-wrapping answer is ordinary Kadane.","Wrapping answer equals total minus the minimum middle subarray.","All-negative arrays must return the largest single value.","Track max subarray and min subarray in one pass."],answer:["Compute best normal subarray.","Compute minimum subarray.","If all values are negative, return best normal.","Otherwise return max(best normal, total - best minimum)."],review:"Maximum circular subarray is Kadane plus total minus minimum subarray."},
+"LC 139":{signal:"Word Break is boolean DP over prefixes of the string.",complexity:"O(n^2 * substring cost) time, O(n + dict) space",code:`bool wordBreak(string s, vector<string>& wordDict) {
+    unordered_set<string> dict(wordDict.begin(), wordDict.end());
+    vector<bool> dp(s.size() + 1, false);
+    dp[0] = true;
+
+    for (int i = 1; i <= s.size(); ++i) {
+        for (int j = 0; j < i; ++j) {
+            if (dp[j] && dict.count(s.substr(j, i - j))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+
+    return dp[s.size()];
+}`,hints:["dp[i] means s[0..i) can be segmented.","Try the last word boundary j.","Need dp[j] true and s[j..i) in dictionary.","dp[0] is true for the empty prefix."],answer:["Put dictionary words in a set.","Use dp over prefix length.","For each i, try all previous cut positions j.","Return dp[n]."],review:"Word Break asks whether each prefix can end with a dictionary word."},
+"LC 322":{signal:"Coin Change is min-count DP over amounts.",complexity:"O(amount * number_of_coins) time, O(amount) space",code:`int coinChange(vector<int>& coins, int amount) {
+    const int INF = amount + 1;
+    vector<int> dp(amount + 1, INF);
+    dp[0] = 0;
+
+    for (int a = 1; a <= amount; ++a) {
+        for (int coin : coins) {
+            if (coin <= a) {
+                dp[a] = min(dp[a], dp[a - coin] + 1);
+            }
+        }
+    }
+
+    return dp[amount] == INF ? -1 : dp[amount];
+}`,hints:["dp[a] is the fewest coins to make amount a.","Initialize impossible states to a large value.","For each coin, transition from dp[a-coin].","Return -1 if amount remains impossible."],answer:["Create dp[0..amount].","Set dp[0] = 0.","For each amount, try every coin.","Take the minimum valid transition."],review:"Coin Change is minimum coins for every amount up to target."},
+"LC 300":{signal:"LIS can be solved by maintaining smallest tail value for each subsequence length.",complexity:"O(n log n) time, O(n) space",code:`int lengthOfLIS(vector<int>& nums) {
+    vector<int> tails;
+    for (int x : nums) {
+        auto it = lower_bound(tails.begin(), tails.end(), x);
+        if (it == tails.end()) tails.push_back(x);
+        else *it = x;
+    }
+    return tails.size();
+}`,hints:["tails[len] stores the smallest possible tail for length len+1.","A smaller tail is always better for future extension.","Use lower_bound for strictly increasing subsequences.","The answer is tails.size()."],answer:["Maintain a tails array.","For each x, find first tail >= x.","Replace it, or append if x is larger than all tails.","Return number of tails."],review:"LIS O(n log n) keeps minimal possible tails, not the actual subsequence."},
+"LC 120":{signal:"Triangle minimum path sum is bottom-up DP from the last row.",complexity:"O(n^2) time, O(n) space",code:`int minimumTotal(vector<vector<int>>& triangle) {
+    vector<int> dp = triangle.back();
+
+    for (int r = triangle.size() - 2; r >= 0; --r) {
+        for (int c = 0; c <= r; ++c) {
+            dp[c] = triangle[r][c] + min(dp[c], dp[c + 1]);
+        }
+    }
+
+    return dp[0];
+}`,hints:["Start with the last row as known costs.","Move upward one row at a time.","Each cell can go to c or c+1 below.","dp[c] becomes the best cost from that cell to the bottom."],answer:["Copy last row into dp.","For each row from bottom-1 to top, update dp[c].","Use min of two children below.","Return dp[0]."],review:"Triangle DP is easiest bottom-up: each cell chooses the cheaper child below."},
+"LC 63":{signal:"Unique Paths II is path-count DP with obstacles zeroing blocked states.",complexity:"O(mn) time, O(n) space",code:`int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+    int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+    vector<int> dp(n, 0);
+    dp[0] = obstacleGrid[0][0] == 0 ? 1 : 0;
+
+    for (int r = 0; r < m; ++r) {
+        for (int c = 0; c < n; ++c) {
+            if (obstacleGrid[r][c] == 1) dp[c] = 0;
+            else if (c > 0) dp[c] += dp[c - 1];
+        }
+    }
+
+    return dp[n - 1];
+}`,hints:["dp[c] stores ways to reach current row, column c.","Obstacle cells contribute zero ways.","From an open cell, ways come from above dp[c] and left dp[c-1].","Initialize start to one if it is open."],answer:["Use a one-row dp array.","Set start ways based on obstacle at (0,0).","For each cell, zero dp[c] if blocked.","Otherwise add left ways when c > 0."],review:"Unique Paths II is path counting where obstacles reset the state to zero."},
+"LC 5":{signal:"Longest palindromic substring can expand around every possible center.",complexity:"O(n^2) time, O(1) extra space",code:`string longestPalindrome(string s) {
+    int bestStart = 0, bestLen = 1;
+
+    auto expand = [&](int l, int r) {
+        while (l >= 0 && r < s.size() && s[l] == s[r]) {
+            --l;
+            ++r;
+        }
+        int len = r - l - 1;
+        if (len > bestLen) {
+            bestLen = len;
+            bestStart = l + 1;
+        }
+    };
+
+    for (int i = 0; i < s.size(); ++i) {
+        expand(i, i);
+        expand(i, i + 1);
+    }
+
+    return s.substr(bestStart, bestLen);
+}`,hints:["A palindrome is determined by its center.","There are odd and even centers.","Expand while characters match.","Track the best interval found."],answer:["For every index, expand odd and even centers.","After expansion, update best length and start.","Return the best substring."],review:"Longest Palindromic Substring is center expansion over odd and even centers."},
+"LC 97":{signal:"Interleaving String is 2D DP over how many chars are taken from s1 and s2.",complexity:"O(mn) time, O(n) space",code:`bool isInterleave(string s1, string s2, string s3) {
+    int m = s1.size(), n = s2.size();
+    if (m + n != s3.size()) return false;
+
+    vector<bool> dp(n + 1, false);
+    dp[0] = true;
+
+    for (int i = 0; i <= m; ++i) {
+        for (int j = 0; j <= n; ++j) {
+            if (i == 0 && j == 0) continue;
+            bool ok = false;
+            if (i > 0) ok = ok || (dp[j] && s1[i - 1] == s3[i + j - 1]);
+            if (j > 0) ok = ok || (dp[j - 1] && s2[j - 1] == s3[i + j - 1]);
+            dp[j] = ok;
+        }
+    }
+
+    return dp[n];
+}`,hints:["Lengths must add up.","dp[j] means current i and j chars can form prefix of s3.","Transition from taking next char of s1 or s2.","Use one row because only current and previous row are needed."],answer:["Reject if lengths do not add up.","Use DP over counts taken from s1 and s2.","Check whether current s3 char can come from s1 or s2.","Return dp[n]."],review:"Interleaving String tracks whether prefixes of s1 and s2 can form the prefix of s3."},
+"LC 72":{signal:"Edit Distance is DP over prefixes of two words.",complexity:"O(mn) time, O(n) space",code:`int minDistance(string word1, string word2) {
+    int m = word1.size(), n = word2.size();
+    vector<int> dp(n + 1);
+    for (int j = 0; j <= n; ++j) dp[j] = j;
+
+    for (int i = 1; i <= m; ++i) {
+        int prevDiag = dp[0];
+        dp[0] = i;
+        for (int j = 1; j <= n; ++j) {
+            int old = dp[j];
+            if (word1[i - 1] == word2[j - 1]) dp[j] = prevDiag;
+            else dp[j] = 1 + min({dp[j], dp[j - 1], prevDiag});
+            prevDiag = old;
+        }
+    }
+
+    return dp[n];
+}`,hints:["dp[i][j] is edit distance between prefixes.","If last chars match, no new operation is needed.","Otherwise choose insert, delete, or replace.","Initialize empty-string conversions."],answer:["Initialize first row as insertions.","For each character of word1, update one DP row.","Use previous diagonal for replace/match.","Return dp[n]."],review:"Edit Distance compares prefixes and takes min of insert, delete, replace."},
+"LC 221":{signal:"Maximal Square DP uses the smallest neighboring square plus one.",complexity:"O(mn) time, O(n) space",code:`int maximalSquare(vector<vector<char>>& matrix) {
+    int m = matrix.size(), n = matrix[0].size();
+    vector<int> dp(n + 1, 0);
+    int best = 0;
+
+    for (int r = 1; r <= m; ++r) {
+        int prevDiag = 0;
+        for (int c = 1; c <= n; ++c) {
+            int old = dp[c];
+            if (matrix[r - 1][c - 1] == '1') {
+                dp[c] = 1 + min({dp[c], dp[c - 1], prevDiag});
+                best = max(best, dp[c]);
+            } else {
+                dp[c] = 0;
+            }
+            prevDiag = old;
+        }
+    }
+
+    return best * best;
+}`,hints:["dp cell is side length of largest square ending there.","A square can grow only if top, left, and top-left support it.","For '0', dp is zero.","Track max side and return area."],answer:["Use one-row DP with a previous-diagonal variable.","For each 1 cell, compute min(top,left,diag)+1.","For 0 cell, reset to zero.","Return best side squared."],review:"Maximal Square grows from the minimum of top, left, and diagonal neighbors."},
+"LC 201":{signal:"Bitwise AND over a range keeps only the common binary prefix.",complexity:"O(32) time, O(1) space",code:`int rangeBitwiseAnd(int left, int right) {
+    int shift = 0;
+    while (left < right) {
+        left >>= 1;
+        right >>= 1;
+        ++shift;
+    }
+    return left << shift;
+}`,hints:["Any changing low bit becomes zero across the range.","Shift both endpoints until they match.","The remaining value is the common prefix.","Shift it back to restore position."],answer:["Count how many right shifts are needed until left equals right.","That equal value is the common prefix.","Shift it back by the count.","Return the result."],review:"Range Bitwise AND preserves only the common prefix of left and right."},
+"LC 50":{signal:"Pow(x,n) uses fast exponentiation by squaring.",complexity:"O(log n) time, O(1) space",code:`double myPow(double x, int n) {
+    long long exp = n;
+    if (exp < 0) {
+        x = 1.0 / x;
+        exp = -exp;
+    }
+
+    double ans = 1.0;
+    while (exp > 0) {
+        if (exp & 1) ans *= x;
+        x *= x;
+        exp >>= 1;
+    }
+    return ans;
+}`,hints:["Use long long for n to handle INT_MIN.","Negative exponent means invert x.","Square the base each step.","Multiply answer when current bit is 1."],answer:["Convert exponent to long long.","If negative, invert base and negate exponent.","Use binary exponentiation.","Return accumulated answer."],review:"Pow is binary exponentiation; each exponent bit decides whether to multiply current base."},
+"LC 137":{signal:"Single Number II can count each bit modulo 3.",complexity:"O(32n) time, O(1) space",code:`int singleNumber(vector<int>& nums) {
+    int ans = 0;
+    for (int bit = 0; bit < 32; ++bit) {
+        int count = 0;
+        for (int x : nums) {
+            count += (x >> bit) & 1;
+        }
+        if (count % 3) {
+            ans |= (1 << bit);
+        }
+    }
+    return ans;
+}`,hints:["Numbers appearing three times contribute bit counts divisible by 3.","Count every bit position separately.","If count % 3 is one, the single number has that bit.","32-bit reconstruction handles negative values in int representation."],answer:["For each bit 0..31, count how many numbers contain it.","Take count modulo 3.","Set that bit in the answer if remainder is nonzero.","Return reconstructed integer."],review:"Single Number II is bit counting modulo three."},
+"LC 373":{signal:"K smallest pair sums uses a min-heap frontier over sorted rows.",complexity:"O(k log min(k,m)) time, O(min(k,m)) space",code:`vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+    vector<vector<int>> ans;
+    if (nums1.empty() || nums2.empty() || k == 0) return ans;
+
+    using T = tuple<int,int,int>;
+    priority_queue<T, vector<T>, greater<T>> pq;
+    for (int i = 0; i < nums1.size() && i < k; ++i) {
+        pq.emplace(nums1[i] + nums2[0], i, 0);
+    }
+
+    while (k-- > 0 && !pq.empty()) {
+        auto [sum, i, j] = pq.top();
+        pq.pop();
+        ans.push_back({nums1[i], nums2[j]});
+        if (j + 1 < nums2.size()) {
+            pq.emplace(nums1[i] + nums2[j + 1], i, j + 1);
+        }
+    }
+
+    return ans;
+}`,hints:["Each nums1[i] defines a sorted row of pairs with nums2.","Seed the heap with the first pair of each row.","Pop the smallest pair, then advance that row.","Only seed up to k rows."],answer:["Push pairs (i,0) for first min(k,m) rows.","Pop smallest sum from heap.","Append that pair.","Push next pair from the same row."],review:"K smallest pair sums is heap frontier expansion over sorted pair rows."},
+"LC 295":{signal:"Median stream uses two heaps: max-heap lower half and min-heap upper half.",complexity:"O(log n) addNum, O(1) findMedian, O(n) space",code:`class MedianFinder {
+    priority_queue<int> lo;
+    priority_queue<int, vector<int>, greater<int>> hi;
+
+public:
+    void addNum(int num) {
+        lo.push(num);
+        hi.push(lo.top());
+        lo.pop();
+
+        if (hi.size() > lo.size()) {
+            lo.push(hi.top());
+            hi.pop();
+        }
+    }
+
+    double findMedian() {
+        if (lo.size() > hi.size()) return lo.top();
+        return ((double)lo.top() + hi.top()) / 2.0;
+    }
+};`,hints:["Lower half is a max-heap.","Upper half is a min-heap.","Keep lower half same size or one larger.","Median is top of lower heap or average of both tops."],answer:["Insert into lower heap, then move its top to upper heap.","Rebalance if upper becomes larger.","For odd count, median is lower top.","For even count, average both tops."],review:"Median Finder maintains two balanced heaps split around the median."}
+});
+Object.assign(solidSolutionPatches,{
+"LC 224":{signal:"Basic Calculator can scan with current result, sign, and a stack for parenthesized contexts.",complexity:"O(n) time, O(n) space",code:`int calculate(string s) {
+    long result = 0;
+    long number = 0;
+    int sign = 1;
+    stack<long> st;
+
+    for (char ch : s) {
+        if (isdigit(ch)) {
+            number = number * 10 + (ch - '0');
+        } else if (ch == '+') {
+            result += sign * number;
+            number = 0;
+            sign = 1;
+        } else if (ch == '-') {
+            result += sign * number;
+            number = 0;
+            sign = -1;
+        } else if (ch == '(') {
+            st.push(result);
+            st.push(sign);
+            result = 0;
+            sign = 1;
+        } else if (ch == ')') {
+            result += sign * number;
+            number = 0;
+            result *= st.top();
+            st.pop();
+            result += st.top();
+            st.pop();
+        }
+    }
+
+    return result + sign * number;
+}`,hints:["Keep result for the current parenthesis level.","Keep sign for the next number.","On '(', push previous result and sign.","On ')', finish current level and combine with previous context."],answer:["Scan characters once.","Accumulate multi-digit numbers.","Apply number when an operator or closing parenthesis appears.","Use stack to save result/sign before parentheses."],review:"Basic Calculator is expression scanning with a stack of parenthesis contexts."},
+"LC 25":{signal:"Reverse nodes in k-group needs checking a full group before rewiring that group.",complexity:"O(n) time, O(1) space",code:`ListNode* reverseKGroup(ListNode* head, int k) {
+    ListNode dummy(0, head);
+    ListNode* groupPrev = &dummy;
+
+    while (true) {
+        ListNode* kth = groupPrev;
+        for (int i = 0; i < k && kth; ++i) kth = kth->next;
+        if (!kth) break;
+
+        ListNode* groupNext = kth->next;
+        ListNode* prev = groupNext;
+        ListNode* cur = groupPrev->next;
+
+        while (cur != groupNext) {
+            ListNode* tmp = cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = tmp;
+        }
+
+        ListNode* oldStart = groupPrev->next;
+        groupPrev->next = kth;
+        groupPrev = oldStart;
+    }
+
+    return dummy.next;
+}`,hints:["Use a dummy before head.","Find the kth node before reversing.","If fewer than k nodes remain, stop.","Reverse pointers only within the confirmed group."],answer:["For each group, locate kth node.","Save groupNext.","Reverse until reaching groupNext.","Reconnect previous group to kth and advance groupPrev."],review:"Reverse Nodes in k-Group reverses only complete groups after confirming the kth node exists."},
+"LC 124":{signal:"Binary Tree Maximum Path Sum needs a gain returned upward and a separate global best path.",complexity:"O(n) time, O(h) recursion space",code:`int maxPathSum(TreeNode* root) {
+    int best = INT_MIN;
+
+    function<int(TreeNode*)> gain = [&](TreeNode* node) {
+        if (!node) return 0;
+        int left = max(0, gain(node->left));
+        int right = max(0, gain(node->right));
+        best = max(best, node->val + left + right);
+        return node->val + max(left, right);
+    };
+
+    gain(root);
+    return best;
+}`,hints:["A path can split at the current node for the global answer.","But a returned path to the parent can only choose one side.","Ignore negative child gains by clamping to zero.","Initialize best to INT_MIN for all-negative trees."],answer:["DFS returns max gain extendable to parent.","Compute left and right nonnegative gains.","Update global best using node + left + right.","Return node plus the better side."],review:"Maximum Path Sum separates global split path from one-branch upward gain."},
+"LC 399":{signal:"Evaluate Division is weighted graph traversal where edge weights are ratios.",complexity:"O(Q * (V + E)) time, O(V + E) space",code:`vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+    unordered_map<string, vector<pair<string,double>>> graph;
+    for (int i = 0; i < equations.size(); ++i) {
+        string a = equations[i][0], b = equations[i][1];
+        double v = values[i];
+        graph[a].push_back({b, v});
+        graph[b].push_back({a, 1.0 / v});
+    }
+
+    vector<double> ans;
+    for (auto& q : queries) {
+        string src = q[0], dst = q[1];
+        if (!graph.count(src) || !graph.count(dst)) {
+            ans.push_back(-1.0);
+            continue;
+        }
+
+        unordered_set<string> seen;
+        queue<pair<string,double>> bfs;
+        bfs.push({src, 1.0});
+        seen.insert(src);
+        double value = -1.0;
+
+        while (!bfs.empty()) {
+            auto [node, product] = bfs.front();
+            bfs.pop();
+            if (node == dst) {
+                value = product;
+                break;
+            }
+            for (auto& [next, weight] : graph[node]) {
+                if (!seen.count(next)) {
+                    seen.insert(next);
+                    bfs.push({next, product * weight});
+                }
+            }
+        }
+        ans.push_back(value);
+    }
+    return ans;
+}`,hints:["Treat variables as graph nodes.","Equation a/b=v gives edge a->b weight v and b->a weight 1/v.","For a query, traverse from numerator to denominator.","Multiply edge weights along the path."],answer:["Build a bidirectional weighted graph.","For each query, BFS/DFS from source.","Carry the product so far.","Return product if target is reached, otherwise -1."],review:"Evaluate Division is weighted graph search with multiplicative path weights."},
+"LC 210":{signal:"Course Schedule II asks for a topological order of a directed prerequisite graph.",complexity:"O(V + E) time, O(V + E) space",code:`vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+    vector<vector<int>> graph(numCourses);
+    vector<int> indegree(numCourses, 0);
+
+    for (auto& p : prerequisites) {
+        graph[p[1]].push_back(p[0]);
+        ++indegree[p[0]];
+    }
+
+    queue<int> q;
+    for (int c = 0; c < numCourses; ++c) {
+        if (indegree[c] == 0) q.push(c);
+    }
+
+    vector<int> order;
+    while (!q.empty()) {
+        int course = q.front();
+        q.pop();
+        order.push_back(course);
+        for (int next : graph[course]) {
+            if (--indegree[next] == 0) q.push(next);
+        }
+    }
+
+    return order.size() == numCourses ? order : vector<int>{};
+}`,hints:["Prerequisites form directed edges.","Indegree counts unmet prerequisites.","Start with courses that have zero indegree.","If not all courses are processed, a cycle exists."],answer:["Build graph and indegree array.","Push all zero-indegree courses.","Pop courses and reduce neighbor indegrees.","Return order only if it contains all courses."],review:"Course Schedule II is Kahn's topological sort."},
+"LC 909":{signal:"Snakes and Ladders is shortest path on board squares, so use BFS.",complexity:"O(n^2) time, O(n^2) space",code:`int snakesAndLadders(vector<vector<int>>& board) {
+    int n = board.size();
+
+    auto get = [&](int square) {
+        int quot = (square - 1) / n;
+        int rem = (square - 1) % n;
+        int row = n - 1 - quot;
+        int col = (quot % 2 == 0) ? rem : n - 1 - rem;
+        return pair<int,int>{row, col};
+    };
+
+    vector<int> dist(n * n + 1, -1);
+    queue<int> q;
+    q.push(1);
+    dist[1] = 0;
+
+    while (!q.empty()) {
+        int cur = q.front();
+        q.pop();
+        if (cur == n * n) return dist[cur];
+
+        for (int move = 1; move <= 6 && cur + move <= n * n; ++move) {
+            int next = cur + move;
+            auto [r, c] = get(next);
+            if (board[r][c] != -1) next = board[r][c];
+            if (dist[next] == -1) {
+                dist[next] = dist[cur] + 1;
+                q.push(next);
+            }
+        }
+    }
+    return -1;
+}`,hints:["Each square is a graph node.","Each die roll creates edges to up to six next squares.","Snakes/ladders redirect the destination once.","BFS gives minimum number of moves."],answer:["Map square number to board coordinates.","BFS from square 1.","For each roll, apply snake or ladder if present.","Return distance when reaching final square."],review:"Snakes and Ladders is BFS over square numbers with board-coordinate mapping."},
+"LC 52":{signal:"N-Queens II counts valid queen placements using columns and diagonals as occupied sets.",complexity:"O(n!) time, O(n) recursion space",code:`int totalNQueens(int n) {
+    int ans = 0;
+    vector<bool> col(n, false), diag1(2 * n - 1, false), diag2(2 * n - 1, false);
+
+    function<void(int)> dfs = [&](int row) {
+        if (row == n) {
+            ++ans;
+            return;
+        }
+        for (int c = 0; c < n; ++c) {
+            int d1 = row - c + n - 1;
+            int d2 = row + c;
+            if (col[c] || diag1[d1] || diag2[d2]) continue;
+            col[c] = diag1[d1] = diag2[d2] = true;
+            dfs(row + 1);
+            col[c] = diag1[d1] = diag2[d2] = false;
+        }
+    };
+
+    dfs(0);
+    return ans;
+}`,hints:["Place one queen per row.","Track occupied columns.","Track both diagonal families.","Count solutions instead of storing boards."],answer:["Backtrack row by row.","Try each column not under attack.","Mark column and diagonals, recurse, then undo.","Increment count when row reaches n."],review:"N-Queens II is row-by-row backtracking with column and diagonal conflict sets."},
+"LC 427":{signal:"Construct Quad Tree recursively compresses a square if all values inside are equal.",complexity:"O(n^2 log n) worst-case time with direct scans, O(log n) recursion space",code:`Node* construct(vector<vector<int>>& grid) {
+    function<Node*(int,int,int)> build = [&](int r, int c, int len) -> Node* {
+        bool same = true;
+        for (int i = r; i < r + len && same; ++i) {
+            for (int j = c; j < c + len; ++j) {
+                if (grid[i][j] != grid[r][c]) {
+                    same = false;
+                    break;
+                }
+            }
+        }
+
+        if (same) return new Node(grid[r][c] == 1, true);
+
+        int half = len / 2;
+        Node* node = new Node(true, false);
+        node->topLeft = build(r, c, half);
+        node->topRight = build(r, c + half, half);
+        node->bottomLeft = build(r + half, c, half);
+        node->bottomRight = build(r + half, c + half, half);
+        return node;
+    };
+
+    return build(0, 0, grid.size());
+}`,hints:["A leaf represents a square region with one value.","If region is mixed, split into four equal quadrants.","Recursively build each quadrant.","The node value is arbitrary for non-leaf nodes."],answer:["Write a recursive build over row, col, length.","Scan the region to see if all values match.","Return leaf if uniform.","Otherwise split into four children."],review:"Quad Tree construction recursively checks uniform regions and splits mixed regions into four quadrants."},
+"LC 502":{signal:"IPO uses sorted projects plus a max-heap of currently affordable profits.",complexity:"O(n log n + k log n) time, O(n) space",code:`int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+    vector<pair<int,int>> projects;
+    for (int i = 0; i < profits.size(); ++i) {
+        projects.push_back({capital[i], profits[i]});
+    }
+    sort(projects.begin(), projects.end());
+
+    priority_queue<int> affordable;
+    int i = 0;
+    while (k--) {
+        while (i < projects.size() && projects[i].first <= w) {
+            affordable.push(projects[i].second);
+            ++i;
+        }
+        if (affordable.empty()) break;
+        w += affordable.top();
+        affordable.pop();
+    }
+
+    return w;
+}`,hints:["Sort projects by required capital.","As capital grows, push newly affordable profits into a max-heap.","Each round choose the highest profit among affordable projects.","Stop if no project is affordable."],answer:["Pair capital and profit and sort by capital.","Maintain pointer to newly affordable projects.","Use max-heap to choose best affordable profit.","Repeat at most k times."],review:"IPO is greedy selection from currently affordable projects using a max-heap."},
+"LC 123":{signal:"At most two stock transactions can be tracked with four rolling states.",complexity:"O(n) time, O(1) space",code:`int maxProfit(vector<int>& prices) {
+    int buy1 = INT_MIN, sell1 = 0;
+    int buy2 = INT_MIN, sell2 = 0;
+
+    for (int price : prices) {
+        buy1 = max(buy1, -price);
+        sell1 = max(sell1, buy1 + price);
+        buy2 = max(buy2, sell1 - price);
+        sell2 = max(sell2, buy2 + price);
+    }
+
+    return sell2;
+}`,hints:["State after first buy, first sell, second buy, second sell.","Buying costs price, selling gains price.","Second buy can use profit from first sell.","Update states in order for each price."],answer:["Maintain buy1/sell1/buy2/sell2.","For every price, update best state values.","Return sell2 as max profit after at most two transactions."],review:"Stock III compresses two-transaction DP into buy/sell rolling states."},
+"LC 188":{signal:"At most k stock transactions is DP over transaction count and holding state.",complexity:"O(kn) time, O(k) space",code:`int maxProfit(int k, vector<int>& prices) {
+    int n = prices.size();
+    if (n == 0 || k == 0) return 0;
+
+    if (k >= n / 2) {
+        int profit = 0;
+        for (int i = 1; i < n; ++i) {
+            if (prices[i] > prices[i - 1]) profit += prices[i] - prices[i - 1];
+        }
+        return profit;
+    }
+
+    vector<int> buy(k + 1, INT_MIN);
+    vector<int> sell(k + 1, 0);
+
+    for (int price : prices) {
+        for (int t = 1; t <= k; ++t) {
+            buy[t] = max(buy[t], sell[t - 1] - price);
+            sell[t] = max(sell[t], buy[t] + price);
+        }
+    }
+
+    return sell[k];
+}`,hints:["If k is large, it becomes unlimited transactions.","buy[t] means best state after buying for transaction t.","sell[t] means best state after selling transaction t.","Transition buy from sell[t-1] and sell from buy[t]."],answer:["Handle unlimited-transaction shortcut.","Maintain buy and sell arrays by transaction count.","For each price and transaction count, update buy then sell.","Return sell[k]."],review:"Stock IV generalizes stock DP over transaction count with buy/sell states."}
+});
+Object.keys(solidSolutionPatches).forEach(id=>{const q=problems.find(p=>p.id===id);if(q)Object.assign(q,solidSolutionPatches[id]);});
 const patternSignals={"Array / HashMap":"lookup by value, complement, frequency, grouping key","Sliding Window":"substring/subarray + longest/shortest + at most K","Two Pointers":"sorted array, pair sum, remove duplicates, two-end scan","Binary Search":"O(log n), minimum feasible, maximize minimum, answer space","HashMap / Prefix":"subarray sum + negative numbers, complement, frequency","Stack":"nested structure, next greater, undo, monotonic boundary","Linked List":"fast/slow pointers, cycle, reverse links, dummy node","Tree DFS/BFS":"ancestor bounds, level order, path state, subtree result","Graph":"dependency, shortest path, connected components, cycle","Heap":"top k, streaming median, repeated best candidate","Greedy":"local choice, farthest reach, one-pass optimum, exchange proof","Dynamic Programming":"count ways, max/min value, take/skip, state transition","Matrix":"grid boundary, row/column marker, direction walk, in-place state","Backtracking":"choose, recurse, prune, undo; generate all valid states","Bit Manipulation":"xor cancellation, bit count, masks, shifts, common prefix bits","Math":"formula, gcd/slope, fast power, digit or divisor invariant"};
 
 function note(q){return englishNotes[q.id]||{signal:q.signal,hints:q.hints,review:q.review};}
@@ -2618,6 +3921,7 @@ function boundaryChecklist(q){return "Boundary checklist: empty input, single el
 function spokenPlan(q){return (q.answer||[]).map((step,i)=>`Step ${i+1}: ${step}`).join(" ");}
 function patternSpeech(q){const primary=q.pattern;if(primary.includes("Heap"))return "The heap is only the selection mechanism; I still start by defining the ranking key and what the heap is allowed to discard.";if(primary.includes("Sliding"))return "I would describe the window invariant first, then explain exactly when the left boundary is allowed to move.";if(primary.includes("Two Pointers"))return "I would name what each pointer represents and why every pointer move discards only impossible candidates.";if(primary.includes("Binary"))return "I would state the monotonic predicate, because that is the real reason binary search is legal.";if(primary.includes("Stack"))return "I would explain what the top of the stack means; once that is clear, each push and pop has a purpose.";if(primary.includes("Tree"))return "I would say whether the traversal is carrying state down, combining answers up, or processing one level at a time.";if(primary.includes("Graph"))return "I would define nodes, edges, and visited state before talking about DFS, BFS, or topological order.";if(primary.includes("Linked"))return "I would focus on pointer safety: what moves, what stays reachable, and what terminates the loop.";if(primary.includes("Greedy"))return "I would give the local choice and the reason it cannot block a better future answer.";if(primary.includes("Dynamic"))return "I would define the state in one sentence, then show the transition and base case.";if(primary.includes("Matrix"))return "I would define coordinates, boundaries, and whether the board state can be mutated before writing loops.";if(primary.includes("Backtracking"))return "I would describe the partial candidate, legal choices, pruning rule, and undo step.";if(primary.includes("Bit"))return "I would name what each bit represents, then use xor, masks, shifts, or common-prefix behavior deliberately.";if(primary.includes("Math"))return "I would start from the numeric invariant or formula, then mention overflow and boundary cases.";return "I would make the maintained state explicit, then tie each update back to that state.";}
 function interviewerAnswer(q,question,idx){const n=note(q),lower=question.toLowerCase(),step=q.answer[idx]||q.answer[0]||n.review||n.signal;if(lower.includes("brute"))return `My baseline would be the direct enumeration version: try the candidates literally and measure what repeated work appears. Then I would replace that repeated work with ${patternLabel(q)}, keeping the same output contract but making the state reusable.`;if(lower.includes("why"))return `The correctness hinge is: ${n.review||n.signal} I would say that before the code, because it explains why the algorithm is not just trying moves randomly.`;if(lower.includes("complex"))return `For complexity, I would count progress. In this solution each main item or state advances a bounded number of times, which gives ${q.complexity}. I would also mention the extra structure that drives the space cost.`;if(lower.includes("edge")||lower.includes("boundary"))return `I would test the smallest legal input, a case with duplicates or equal values when relevant, a no-answer or empty-answer case if the problem allows it, and a max-size case that stresses ${q.pattern}.`;if(lower.includes("duplicate"))return `I would first ask whether duplicates change the identity of the answer or only the count. If the answer is value-based, I can skip or count duplicates; if it is index-based, I must preserve positions.`;if(lower.includes("stream"))return `For streaming input, I would avoid any step that requires seeing all values first. I would keep only the live summary needed for the answer, such as a heap, rolling counts, or current best state.`;if(lower.includes("heap"))return `I would use the heap only after the ranking key is known. For this problem, the heap keeps the strongest candidates and lets weaker ones fall out without sorting the entire input.`;if(lower.includes("bucket"))return `Bucket sort becomes attractive when the ranking value has a small bounded range, like frequency from 1 to n. It trades heap comparisons for direct placement into frequency buckets.`;if(lower.includes("large"))return `If that parameter gets large, I would re-check whether the optimized structure still helps. For example, when k is close to the number of unique values, full ordering or bucket grouping can be simpler than maintaining a tiny frontier.`;if(lower.includes("sorted"))return `Sorted input changes the available moves: I can often replace lookup or nested search with directional pointer movement, because comparisons tell me which side cannot work.`;if(lower.includes("bfs"))return `BFS is the version I would choose when levels, shortest distance, or iterative depth safety matters. The queue makes the frontier explicit.`;if(lower.includes("dfs"))return `DFS is the version I would choose when the solution is naturally recursive or when I need to carry path state down the structure.`;return `${step} ${patternSpeech(q)} In an interview I would finish that answer by naming the boundary case it protects and how it affects ${q.complexity}.`;}
+function renderReciteMode(q){const n=note(q),m=meta(q),constraints=(m.constraints||[]).slice(0,2),clarify=(q.interviewer||[]).slice(0,2).join(" / ");return `<div class="recite-grid"><div class="recite-card checkpoint"><strong>Say This Before Looking</strong><p>In 30 seconds, name the pattern, the invariant, and the complexity. Then open the full Q&A only after you can say it smoothly.</p></div><div class="recite-card"><strong>Prompt</strong><p>${esc(q.title)}: ${esc(splitPrompt(q.prompt).statement)}</p></div><div class="recite-card"><strong>Clarify</strong><p>${esc(clarify||"Ask about input size, empty input, duplicates, mutation, and required complexity.")}</p>${constraints.length?`<ul>${constraints.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</div><div class="recite-card"><strong>Pattern Signal</strong><p>${esc(n.signal)}</p></div><div class="recite-card"><strong>Invariant</strong><p>${esc(n.review||patternSpeech(q))}</p></div><div class="recite-card"><strong>Complexity</strong><p>${esc(q.complexity)}</p></div></div>`;}
 function renderInterviewScript(q){const n=note(q),m=meta(q),constraints=(m.constraints||[]).slice(0,3),followups=(q.followups||[]).slice(0,2);return `<div class="interview-script"><div class="memory-card"><strong>Memorize This Opening</strong><p class="say-line">"Let me first clarify the input, output, and edge cases. Then I will explain a brute force baseline, improve it with ${esc(patternLabel(q))}, and finish with complexity and tests."</p></div><div class="script-row"><span>0:00</span><div><strong>Clarify Out Loud</strong><p class="say-line">"For ${esc(q.title)}, I want to confirm the constraints before choosing the algorithm."</p><ul>${constraints.map(x=>`<li>${esc(x)}</li>`).join("")}<li>Can the input be empty, contain duplicates, or be mutated?</li></ul></div></div><div class="script-row"><span>0:20</span><div><strong>Brute Force Sentence</strong><p class="say-line">"A straightforward solution is to enumerate the possible candidates and compute the answer directly. That is useful as a correctness baseline, but it repeats work and will not meet the constraints."</p></div></div><div class="script-row"><span>0:40</span><div><strong>Pattern Sentence</strong><p class="say-line">"The signal I see is: ${esc(n.signal)} So my main idea is ${esc(patternLabel(q))}."</p>${acceptedPatterns(q).length>1?`<p class="note-line">Primary label: ${esc(q.pattern)}. Also acceptable: ${esc(acceptedPatterns(q).slice(1).join(" / "))}.</p>`:""}</div></div><div class="script-row"><span>1:00</span><div><strong>Algorithm Walkthrough</strong><p class="say-line">"${esc(spokenPlan(q))}"</p></div></div><div class="script-row"><span>1:30</span><div><strong>Correctness Proof Sentence</strong><p class="say-line">"The invariant is: ${esc(n.review||n.signal)} After each step, the state still represents exactly what I need, and every discarded candidate is impossible or no longer needed."</p></div></div><div class="script-row"><span>1:50</span><div><strong>Complexity + Tests</strong><p class="say-line">"The complexity is ${esc(q.complexity)}. I would test empty or minimum input, duplicates, boundary values, and a case that exercises the key invariant."</p></div></div>${followups.length?`<div class="script-row"><span>2:10</span><div><strong>Follow-up Language</strong>${followups.map((f,idx)=>{const a=followupAnswer(q,f,idx);return `<div class="mini-qa"><b>${esc(f)}</b><p class="say-line">"${esc(a.takeaway)} ${esc(a.angle)}"</p></div>`;}).join("")}</div></div>`:""}<div class="self-qa"><strong>Practice Q&A</strong>${q.interviewer.map((qq,idx)=>`<div class="qa-pair"><p class="question">Q${idx+1}. ${esc(qq)}</p><p class="answer">A${idx+1}. ${esc(interviewerAnswer(q,qq,idx))}</p></div>`).join("")}</div></div>`;}
 function initTopicFilter(){const sel=$("topicFilter");sel.innerHTML='<option value="all">All topics</option>'+patterns.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join("");}
 function saveStats(){localStorage.setItem("lc_score_ext",score);localStorage.setItem("lc_streak_ext",streak);localStorage.setItem("lc_done_ext",done);localStorage.setItem("lc_wrongBank_ext",JSON.stringify(wrongBank));localStorage.setItem("lc_daily_ext",JSON.stringify(dailyStats));}
@@ -2633,17 +3937,18 @@ function recordDaily(problemId,correct){const key=dateKey();const prev=dailyStat
 function renderCalendar(){const grid=$("calendarGrid"),monthLabel=$("calendarMonth"),summary=$("calendarSummary");if(!grid||!monthLabel||!summary)return;const monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];const year=calendarCursor.getFullYear(),month=calendarCursor.getMonth();monthLabel.textContent=`${monthNames[month]} ${year}`;grid.innerHTML="";const todayKey=dateKey(),today=summarizeDay(dailyStats[todayKey]);summary.textContent=today.total?`Today ${today.total} unique answered, ${today.correct} correct`:"No answers today yet";const first=new Date(year,month,1),days=new Date(year,month+1,0).getDate();for(let i=0;i<first.getDay();i++){const blank=document.createElement("div");blank.className="calendar-day is-empty";grid.appendChild(blank);}for(let day=1;day<=days;day++){const key=dateKey(new Date(year,month,day)),data=summarizeDay(dailyStats[key]);const accuracy=data.total?Math.round((data.correct/data.total)*100):0;const level=!data.total?0:data.total>=8?4:data.total>=5?3:data.total>=3?2:1;const cell=document.createElement("div");cell.className=`calendar-day ${data.total?"has-work":""} ${key===todayKey?"is-today":""} ${level?`level-${level}`:""}`;cell.title=data.total?`${key}: ${data.total} unique answered, ${data.correct} correct, ${accuracy}% accuracy`:`${key}: no answers`;cell.innerHTML=`<span class="day-number">${day}</span><span class="day-score">${data.total?`${data.correct}/${data.total}`:""}</span>`;grid.appendChild(cell);}}
 function applyFilter(){const topic=$("topicFilter").value,wrongOnly=$("hideSolved").checked;filtered=problems.filter(q=>topic==="all"||acceptedPatterns(q).some(p=>p===topic||p.includes(topic)));if(wrongOnly&&wrongBank.length){const wrongSet=new Set(wrongBank),wrongTitles=new Set(wrongBank.map(key=>reviewProblemFromKey(key)).filter(Boolean).map(q=>q.title));filtered=filtered.filter(q=>wrongSet.has(q.id)||wrongSet.has(q.title)||wrongTitles.has(q.title));}if(!filtered.length)filtered=[...problems];filtered=shuffle(filtered);current=0;renderQuestion();}
 function getOptionsForQuestion(q){if(!optionSets[q.id]){const accepted=acceptedPatterns(q);const distractors=patterns.filter(p=>!accepted.includes(p));optionSets[q.id]=shuffle([...accepted,...shuffle(distractors).slice(0,Math.max(0,6-accepted.length))]);}return optionSets[q.id];}
-const explainPanels=["hintBox","answerBox","templateBox","comparisonBox","followupBox","interviewBox"];
+const explainPanels=["hintBox","answerBox","templateBox","comparisonBox","followupBox","reciteBox","interviewBox"];
 function resetExplanation(){if($("explainShell"))$("explainShell").classList.add("hidden");explainPanels.forEach(id=>{const box=$(id);if(box)box.className="box";});}
 function setExplainPanel(panelId){explainPanels.forEach(id=>{const box=$(id);if(box)box.classList.toggle("active",id===panelId&&box.classList.contains("show"));});}
 function revealPanel(panelId){const shell=$("explainShell");if(shell)shell.classList.remove("hidden");setExplainPanel(panelId);}
-function renderQuestion(){selected=false;hintCount=0;const q=filtered[current%filtered.length];$("questionIndex").textContent=`${q.id} · Question ${current+1}`;$("difficulty").textContent=q.difficulty;$("difficulty").className=`difficulty ${q.difficulty.toLowerCase()}`;$("title").textContent=q.title;$("description").innerHTML=renderPrompt(q);$("feedback").className="feedback";$("feedback").innerHTML="";resetExplanation();$("hints").innerHTML="";$("answerText").innerHTML="";$("templateText").innerHTML="";$("comparisonText").innerHTML="";$("followupText").innerHTML="";$("interviewQuestions").innerHTML="";$("hintBtn").disabled=activeMode==="drill";$("answerBtn").disabled=activeMode==="drill";$("followupBtn").disabled=activeMode==="drill";$("interviewBtn").disabled=activeMode==="drill";const finalOptions=getOptionsForQuestion(q);const optionsEl=$("options");optionsEl.innerHTML="";finalOptions.forEach(opt=>{const btn=document.createElement("button");btn.className="option";btn.textContent=opt;btn.onclick=()=>choosePattern(btn,opt);optionsEl.appendChild(btn);});if(activeMode==="solve"){autoUnlock();showHint();}if(activeMode==="interview"){autoUnlock();showInterview();}updateStats();}
-function autoUnlock(){selected=true;const q=filtered[current%filtered.length],n=note(q),accepted=acceptedPatterns(q);document.querySelectorAll(".option").forEach(b=>{if(accepted.includes(b.textContent))b.classList.add("correct")});$("hintBtn").disabled=false;$("answerBtn").disabled=false;$("followupBtn").disabled=false;$("interviewBtn").disabled=false;$("feedback").className="feedback show good";$("feedback").innerHTML=`<strong>Accepted patterns:</strong> ${esc(patternLabel(q))}<br>${esc(n.signal)}`;}
-function choosePattern(btn,opt){if(selected)return;selected=true;const q=filtered[current%filtered.length],n=note(q),accepted=acceptedPatterns(q);const isCorrect=isAcceptedPattern(q,opt);document.querySelectorAll(".option").forEach(b=>{if(accepted.includes(b.textContent))b.classList.add("correct")});done++;recordDaily(q.id,isCorrect);if(isCorrect){score++;streak++;btn.classList.add("correct");wrongBank=wrongBank.filter(x=>x!==q.id&&x!==q.title);$("feedback").className="feedback show good";$("feedback").innerHTML=`<strong>Correct: ${esc(opt)} is accepted.</strong><br><strong>Primary:</strong> ${esc(q.pattern)}<br>${esc(patternReason(q,opt))}<br>${esc(n.signal)}`;}else{streak=0;btn.classList.add("wrong");wrongBank.push(reviewKey(q));$("feedback").className="feedback show bad";$("feedback").innerHTML=`<strong>Better fit: ${esc(patternLabel(q))}</strong><br>${accepted.map(p=>`${esc(p)}: ${esc(patternReason(q,p))}`).join("<br>")}<br>${esc(n.signal)}`;}$("hintBtn").disabled=false;$("answerBtn").disabled=false;$("followupBtn").disabled=false;$("interviewBtn").disabled=false;saveStats();updateStats();}
+function renderQuestion(){selected=false;hintCount=0;const q=filtered[current%filtered.length];$("questionIndex").textContent=`${q.id} · Question ${current+1}`;$("difficulty").textContent=q.difficulty;$("difficulty").className=`difficulty ${q.difficulty.toLowerCase()}`;$("title").textContent=q.title;$("description").innerHTML=renderPrompt(q);$("feedback").className="feedback";$("feedback").innerHTML="";resetExplanation();$("hints").innerHTML="";$("answerText").innerHTML="";$("templateText").innerHTML="";$("comparisonText").innerHTML="";$("followupText").innerHTML="";$("reciteText").innerHTML="";$("interviewQuestions").innerHTML="";$("hintBtn").disabled=activeMode==="drill";$("answerBtn").disabled=activeMode==="drill";$("followupBtn").disabled=activeMode==="drill";$("reciteBtn").disabled=activeMode==="drill";$("interviewBtn").disabled=activeMode==="drill";const finalOptions=getOptionsForQuestion(q);const optionsEl=$("options");optionsEl.innerHTML="";finalOptions.forEach(opt=>{const btn=document.createElement("button");btn.className="option";btn.textContent=opt;btn.onclick=()=>choosePattern(btn,opt);optionsEl.appendChild(btn);});if(activeMode==="solve"){autoUnlock();showHint();}if(activeMode==="interview"){autoUnlock();showInterview();}updateStats();}
+function autoUnlock(){selected=true;const q=filtered[current%filtered.length],n=note(q),accepted=acceptedPatterns(q);document.querySelectorAll(".option").forEach(b=>{if(accepted.includes(b.textContent))b.classList.add("correct")});$("hintBtn").disabled=false;$("answerBtn").disabled=false;$("followupBtn").disabled=false;$("reciteBtn").disabled=false;$("interviewBtn").disabled=false;$("feedback").className="feedback show good";$("feedback").innerHTML=`<strong>Accepted patterns:</strong> ${esc(patternLabel(q))}<br>${esc(n.signal)}`;}
+function choosePattern(btn,opt){if(selected)return;selected=true;const q=filtered[current%filtered.length],n=note(q),accepted=acceptedPatterns(q);const isCorrect=isAcceptedPattern(q,opt);document.querySelectorAll(".option").forEach(b=>{if(accepted.includes(b.textContent))b.classList.add("correct")});done++;recordDaily(q.id,isCorrect);if(isCorrect){score++;streak++;btn.classList.add("correct");wrongBank=wrongBank.filter(x=>x!==q.id&&x!==q.title);$("feedback").className="feedback show good";$("feedback").innerHTML=`<strong>Correct: ${esc(opt)} is accepted.</strong><br><strong>Primary:</strong> ${esc(q.pattern)}<br>${esc(patternReason(q,opt))}<br>${esc(n.signal)}`;}else{streak=0;btn.classList.add("wrong");wrongBank.push(reviewKey(q));$("feedback").className="feedback show bad";$("feedback").innerHTML=`<strong>Better fit: ${esc(patternLabel(q))}</strong><br>${accepted.map(p=>`${esc(p)}: ${esc(patternReason(q,p))}`).join("<br>")}<br>${esc(n.signal)}`;}$("hintBtn").disabled=false;$("answerBtn").disabled=false;$("followupBtn").disabled=false;$("reciteBtn").disabled=false;$("interviewBtn").disabled=false;saveStats();updateStats();}
 function showHint(){const q=filtered[current%filtered.length],n=note(q);$("hintBox").classList.add("show");if(hintCount<n.hints.length){const div=document.createElement("div");div.className="hint-step";div.innerHTML=`<strong>Hint ${hintCount+1}</strong><p>${esc(n.hints[hintCount])}</p><small>${hintCount===0?"Start with brute force, then name the bottleneck.":hintCount===1?"State the data structure or invariant clearly.":hintCount===2?"Before coding, define pointer/state updates.":"Finish with boundary cases and complexity."}</small>`;$("hints").appendChild(div);hintCount++;}revealPanel("hintBox");if(hintCount>=n.hints.length)$("hintBtn").disabled=true;}
 function showAnswer(){const q=filtered[current%filtered.length],comparison=renderFollowupComparison(q);$("answerBox").classList.add("show");$("templateBox").classList.add("show");$("comparisonBox").classList.toggle("show",!!comparison);$("answerText").innerHTML=codeReadingHelp(q);$("templateText").innerHTML=renderTemplateSet(q);$("comparisonText").innerHTML=comparison;revealPanel("answerBox");}
 function ensureCodeRendered(){const q=filtered[current%filtered.length];if(!$("templateText").innerHTML)$("templateText").innerHTML=renderTemplateSet(q);$("templateBox").classList.add("show");}
 function showFollowups(){const q=filtered[current%filtered.length];$("followupBox").classList.add("show");$("followupText").innerHTML=renderFollowupPanel(q);revealPanel("followupBox");}
+function showRecite(){const q=filtered[current%filtered.length];$("reciteBox").classList.add("show");$("reciteText").innerHTML=renderReciteMode(q);revealPanel("reciteBox");}
 function showInterview(){const q=filtered[current%filtered.length];$("interviewBox").classList.add("show");$("interviewQuestions").innerHTML=renderInterviewScript(q);$("interviewBtn").disabled=true;revealPanel("interviewBox");}
 function nextQuestion(){current=(current+1)%filtered.length;renderQuestion();}
 function setMode(mode){activeMode=mode;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode===mode));const isLibrary=mode==="library";$("mainPanel").classList.toggle("hidden",isLibrary);$("libraryPanel").classList.toggle("hidden",!isLibrary);if(isLibrary)renderLibrary();else renderQuestion();}
@@ -2652,5 +3957,5 @@ function problemSearchMatches(query){const q=query.toLowerCase().trim();if(!q)re
 function openProblem(q){const pool=scopedProblemPool();filtered=pool.includes(q)?pool:[q,...pool.filter(p=>p.id!==q.id)];current=Math.max(0,filtered.findIndex(p=>p.id===q.id));activeMode="drill";document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode==="drill"));$("mainPanel").classList.remove("hidden");$("libraryPanel").classList.add("hidden");renderQuestion();}
 function renderProblemSearch(){const input=$("problemSearch"),box=$("problemSearchResults");if(!input||!box)return;const matches=problemSearchMatches(input.value);box.innerHTML="";box.classList.toggle("show",Boolean(input.value.trim()));if(!matches.length){box.innerHTML='<div class="tiny">No matching problems.</div>';return;}matches.forEach(q=>{const btn=document.createElement("button");btn.type="button";btn.className="problem-search-item";btn.innerHTML=`<strong>${esc(q.id)}. ${esc(q.title)}</strong><span>${esc(patternLabel(q))} · ${esc(q.difficulty)}</span>`;btn.onclick=()=>{input.value=`${q.id}. ${q.title}`;box.classList.remove("show");openProblem(q);};box.appendChild(btn);});}
 function initTheme(){const btn=$("themeToggle"),label=$("themeToggleText");if(!btn)return;const apply=theme=>{const isDark=theme==="dark";document.documentElement.dataset.theme=theme;btn.classList.toggle("is-dark",isDark);btn.setAttribute("aria-pressed",String(isDark));btn.setAttribute("aria-label",isDark?"Switch to light mode":"Switch to dark mode");if(label)label.textContent=isDark?"Light mode":"Dark mode";};const animateSwitch=()=>{btn.classList.remove("is-animating");void btn.offsetWidth;btn.classList.add("is-animating");setTimeout(()=>btn.classList.remove("is-animating"),520);};const saved=localStorage.getItem("lc_theme_ext")||"light";apply(saved);btn.addEventListener("click",()=>{const next=document.documentElement.dataset.theme==="dark"?"light":"dark";localStorage.setItem("lc_theme_ext",next);animateSwitch();apply(next);});}
-function bind(){initTheme();initTopicFilter();renderPatternSignals();initPatternSignalToggle();$("hintBtn").addEventListener("click",showHint);$("answerBtn").addEventListener("click",showAnswer);$("followupBtn").addEventListener("click",showFollowups);$("interviewBtn").addEventListener("click",showInterview);$("nextBtn").addEventListener("click",nextQuestion);$("topicFilter").addEventListener("change",applyFilter);$("hideSolved").addEventListener("change",applyFilter);$("librarySearch").addEventListener("input",renderLibrary);if($("problemSearch")){$("problemSearch").addEventListener("input",renderProblemSearch);$("problemSearch").addEventListener("focus",renderProblemSearch);document.addEventListener("click",event=>{const input=$("problemSearch"),box=$("problemSearchResults");if(input&&box&&!input.contains(event.target)&&!box.contains(event.target))box.classList.remove("show");});}$("calendarPrev").addEventListener("click",()=>{calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()-1,1);renderCalendar();});$("calendarNext").addEventListener("click",()=>{calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+1,1);renderCalendar();});document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setMode(t.dataset.mode)));if(location.hash==="#library")setMode("library");else{filtered=shuffle(problems);renderQuestion();}}
+function bind(){initTheme();initTopicFilter();renderPatternSignals();initPatternSignalToggle();$("hintBtn").addEventListener("click",showHint);$("answerBtn").addEventListener("click",showAnswer);$("followupBtn").addEventListener("click",showFollowups);$("reciteBtn").addEventListener("click",showRecite);$("interviewBtn").addEventListener("click",showInterview);$("nextBtn").addEventListener("click",nextQuestion);$("topicFilter").addEventListener("change",applyFilter);$("hideSolved").addEventListener("change",applyFilter);$("librarySearch").addEventListener("input",renderLibrary);if($("problemSearch")){$("problemSearch").addEventListener("input",renderProblemSearch);$("problemSearch").addEventListener("focus",renderProblemSearch);document.addEventListener("click",event=>{const input=$("problemSearch"),box=$("problemSearchResults");if(input&&box&&!input.contains(event.target)&&!box.contains(event.target))box.classList.remove("show");});}$("calendarPrev").addEventListener("click",()=>{calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()-1,1);renderCalendar();});$("calendarNext").addEventListener("click",()=>{calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+1,1);renderCalendar();});document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setMode(t.dataset.mode)));if(location.hash==="#library")setMode("library");else{filtered=shuffle(problems);renderQuestion();}}
 document.addEventListener("DOMContentLoaded",bind);

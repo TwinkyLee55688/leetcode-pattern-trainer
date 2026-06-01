@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Leetcode Pattern Trainer - Top Interview 150</title>
-  <link rel="stylesheet" href="style.css?v=20260601-mobile-comparison" />
+  <link rel="stylesheet" href="style.css?v=20260602-solid-solutions" />
 </head>
 <body>
   <main class="app">
@@ -133,6 +133,7 @@
               <button class="btn secondary" id="hintBtn" type="button" disabled>Next Hint</button>
               <button class="btn ghost" id="answerBtn" type="button" disabled>Solutions</button>
               <button class="btn ghost" id="followupBtn" type="button" disabled>Follow-ups</button>
+              <button class="btn help" id="reciteBtn" type="button" disabled>Recite Mode</button>
               <button class="btn warn" id="interviewBtn" type="button" disabled>Enter Google Q&A</button>
               <button class="btn" id="nextBtn" type="button">Next Problem</button>
             </div>
@@ -157,6 +158,11 @@
                   <div class="section-title">Follow-up Strategy</div>
                   <div id="followupText"></div>
                 </div>
+                <div class="box" id="reciteBox">
+                  <div class="section-title">Recite Mode</div>
+                  <div class="tiny">Say the answer out loud before opening the full interview script.</div>
+                  <div id="reciteText"></div>
+                </div>
                 <div class="box" id="interviewBox">
                   <div class="section-title">Google Interviewer Q&A</div>
                   <div class="tiny">Practice a two-minute explanation, then compare it with the solution outline.</div>
@@ -172,6 +178,6 @@
       </aside>
     </section>
   </main>
-  <script src="trainer.js?v=20260601-mobile-comparison"></script>
+  <script src="trainer.js?v=20260602-solid-solutions"></script>
 </body>
 </html>
