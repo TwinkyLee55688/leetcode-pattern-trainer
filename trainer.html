@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeetCode Pattern Trainer - Google Interview Mode</title>
+  <title>Leetcode Pattern Trainer - Top Interview 150</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="app">
     <header class="app-header">
       <div>
-        <h1>LeetCode Pattern Trainer</h1>
+        <h1>Leetcode Pattern Trainer - Top Interview 150</h1>
         <p class="subtitle">Train pattern recognition, hint-driven solving, and Google-style interview explanations.</p>
       </div>
       <div class="header-tools">
@@ -40,18 +40,7 @@
         <div class="card side-card">
           <div class="card-body">
             <div class="section-title">3-Second Pattern Signals</div>
-            <div class="memory-card"><strong>Array / HashMap</strong><br><span class="tiny">lookup by value, complement, frequency, grouping key</span></div>
-            <div class="memory-card"><strong>Sliding Window</strong><br><span class="tiny">substring/subarray + longest/shortest + at most K</span></div>
-            <div class="memory-card"><strong>Two Pointers</strong><br><span class="tiny">sorted array, pair sum, remove duplicates, two-end scan</span></div>
-            <div class="memory-card"><strong>Binary Search</strong><br><span class="tiny">O(log n), minimum feasible, maximize minimum, answer space</span></div>
-            <div class="memory-card"><strong>Prefix / HashMap</strong><br><span class="tiny">subarray sum + negative numbers, complement, frequency</span></div>
-            <div class="memory-card"><strong>Stack</strong><br><span class="tiny">nested structure, next greater, undo, monotonic boundary</span></div>
-            <div class="memory-card"><strong>Linked List</strong><br><span class="tiny">fast/slow pointers, cycle, reverse links, dummy node</span></div>
-            <div class="memory-card"><strong>Tree DFS/BFS</strong><br><span class="tiny">ancestor bounds, level order, path state, subtree result</span></div>
-            <div class="memory-card"><strong>Graph</strong><br><span class="tiny">dependency, shortest path, connected components, cycle</span></div>
-            <div class="memory-card"><strong>Heap</strong><br><span class="tiny">top k, streaming median, repeated best candidate</span></div>
-            <div class="memory-card"><strong>Greedy</strong><br><span class="tiny">local choice, farthest reach, one-pass optimum, exchange proof</span></div>
-            <div class="memory-card"><strong>Dynamic Programming</strong><br><span class="tiny">count ways, max/min value, take/skip, state transition</span></div>
+            <div id="patternSignalList" class="pattern-signal-list"></div>
           </div>
         </div>
 
@@ -157,6 +146,9 @@
                 <div class="box" id="templateBox">
                   <div class="section-title">C++ Templates</div>
                   <div id="templateText"></div>
+                </div>
+                <div class="box" id="comparisonBox">
+                  <div id="comparisonText"></div>
                 </div>
                 <div class="box" id="followupBox">
                   <div class="section-title">Follow-up Strategy</div>
