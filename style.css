@@ -1157,13 +1157,52 @@ code { font-family: "Consolas", "Monaco", "Courier New", ui-monospace, monospace
 .left-rail .side-card:first-child .card-body {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: auto;
+  grid-auto-rows: 112px;
   gap: 8px;
-  align-items: start;
+  align-items: stretch;
   align-content: start;
 }
 
 .left-rail .side-card:first-child .section-title {
   grid-column: 1 / -1;
+}
+
+.signal-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 28px;
+}
+
+.mini-toggle {
+  min-height: 26px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mini-toggle:hover {
+  color: var(--heading);
+  border-color: rgba(96, 165, 250, .52);
+}
+
+.pattern-signal-card.is-collapsed .card-body {
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+}
+
+.pattern-signal-card.is-collapsed .pattern-signal-list {
+  display: none;
+}
+
+.left-rail .pattern-signal-card.is-collapsed .memory-card {
+  display: none !important;
 }
 
 .pattern-signal-list {
@@ -1172,6 +1211,11 @@ code { font-family: "Consolas", "Monaco", "Courier New", ui-monospace, monospace
 }
 
 .left-rail .memory-card {
+  box-sizing: border-box;
+  align-self: stretch;
+  height: 112px;
+  max-height: 112px;
+  min-height: 0;
   margin: 0;
   padding: 8px 10px;
   border: 1px solid rgba(96, 165, 250, .32);
@@ -1180,6 +1224,7 @@ code { font-family: "Consolas", "Monaco", "Courier New", ui-monospace, monospace
   background: color-mix(in srgb, var(--surface) 82%, var(--primary-soft));
   line-height: 1.3;
   font-size: 12px;
+  overflow: hidden;
 }
 
 .pattern-title {
@@ -1194,22 +1239,26 @@ code { font-family: "Consolas", "Monaco", "Courier New", ui-monospace, monospace
 }
 
 .left-rail .memory-card strong {
-  display: block;
+  display: -webkit-box;
   margin-bottom: 0;
   font-size: 13.5px;
   line-height: 1.15;
   color: var(--heading);
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .left-rail .memory-card .tiny {
-  display: block;
+  display: -webkit-box;
   margin-top: 5px;
   font-size: 12px;
   line-height: 1.35;
   color: var(--text);
   white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .left-rail .memory-card .tiny::before {
@@ -1625,7 +1674,13 @@ input[type="checkbox"] { accent-color: var(--primary); }
 @media (max-width: 640px) {
   .app {
     width: 100%;
-    padding: 16px 10px 36px;
+    padding: 12px 8px 32px;
+  }
+
+  .layout,
+  .left-rail,
+  .right-rail {
+    gap: 10px;
   }
 
   .tabs {
@@ -1640,7 +1695,32 @@ input[type="checkbox"] { accent-color: var(--primary); }
   }
 
   .card-body {
-    padding: 16px;
+    padding: 12px;
+  }
+
+  .box {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .solution-card,
+  .help-card,
+  .hint-step,
+  .qa-pair,
+  .followup-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .interview-script {
+    gap: 10px;
+  }
+
+  .interview-script > .memory-card {
+    margin: 0;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(34, 197, 94, .07);
   }
 
   .workspace-actions {
@@ -1654,10 +1734,54 @@ input[type="checkbox"] { accent-color: var(--primary); }
 
   .script-row {
     grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .script-row strong,
+  .self-qa > strong,
+  .memory-card strong {
+    font-size: 16px;
+    line-height: 1.25;
   }
 
   .script-row > span {
-    font-size: 13px;
+    width: fit-content;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(166, 226, 46, .12);
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .say-line,
+  .script-row p,
+  .script-row li,
+  .qa-pair .answer,
+  .mini-qa p {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .say-line {
+    padding: 10px 0 10px 12px;
+    border-left: 3px solid var(--primary);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .mini-qa {
+    padding: 10px 0;
+    border-radius: 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+    background: transparent;
+  }
+
+  .self-qa {
+    padding: 12px;
+    border-radius: 12px;
   }
 
   .comparison-table {

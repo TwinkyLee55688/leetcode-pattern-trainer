@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Leetcode Pattern Trainer - Top Interview 150</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20260601-mobile-comparison" />
 </head>
 <body>
   <main class="app">
@@ -37,9 +37,12 @@
 
     <section class="layout">
       <aside class="left-rail">
-        <div class="card side-card">
+        <div class="card side-card pattern-signal-card" id="patternSignalCard">
           <div class="card-body">
-            <div class="section-title">3-Second Pattern Signals</div>
+            <div class="section-title signal-title-row">
+              <span>3-Second Pattern Signals</span>
+              <button class="mini-toggle" id="patternSignalToggle" type="button" aria-pressed="false">Hide</button>
+            </div>
             <div id="patternSignalList" class="pattern-signal-list"></div>
           </div>
         </div>
@@ -169,6 +172,6 @@
       </aside>
     </section>
   </main>
-  <script src="trainer.js?v=solutions-help-next-fixed"></script>
+  <script src="trainer.js?v=20260601-mobile-comparison"></script>
 </body>
 </html>
