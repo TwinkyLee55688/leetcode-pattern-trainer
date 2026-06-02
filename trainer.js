@@ -458,7 +458,7 @@ public:
     }
     return ans;
 }`,followups:["Do it in-place for mutable char array?","Preserve multiple spaces?","Handle tabs?"],review:"Scanning words from the end reverses order while normalizing spaces."},
-{id:"LC 6",title:"Zigzag Conversion",difficulty:"Medium",pattern:"Array / HashMap",prompt:"Given a string s and numRows, write it in a zigzag pattern and read row by row.",signal:"simulation with directional row movement points to row buckets.",hints:["If numRows is 1, the string is unchanged.","Maintain current row and direction.","Append each character to its row.","Reverse direction at the top and bottom rows."],interviewer:["What happens when numRows is 1?","Can you derive index jumps?","Why simulation is acceptable?","Complexity?"],answer:["Create numRows strings.","Walk through s with row and direction.","Append each char to rows[row].","Flip direction at row 0 and row numRows-1, then concatenate rows."],complexity:"O(n) time, O(n) space",code:`string convert(string s, int numRows) {
+{id:"LC 6",title:"Zigzag Conversion",difficulty:"Medium",pattern:"Array / HashMap",secondaryPatterns:["Simulation"],patternReasons:{"Array / HashMap":"The clean default stores characters in row buckets, then concatenates the buckets.","Simulation":"You simulate the pen moving down rows, then diagonally back up."},prompt:"Given a string s and numRows, pretend you write the string with a pen that moves down the rows, then bounces diagonally back up, repeating that path. Return the text read row by row. The output is not the order you write characters; it is row 0, then row 1, then row 2, and so on.",signal:"Track the row path, not columns. For 3 rows the path is 0,1,2,1,0,1,2,1...; append each char to that row, then join rows.",hints:["Forget geometry first: for numRows = 3, the row index pattern is 0,1,2,1,0,1,2,1,... .","PAYPALISHIRING becomes row0 = PAHN, row1 = APLSIIG, row2 = YIR.","The final answer is row0 + row1 + row2, so PAHN + APLSIIG + YIR.","Code only needs current row and direction: dir = +1 going down, dir = -1 going up."],interviewer:["Can you list the row index sequence for numRows = 3?","What happens when numRows is 1?","Why is row simulation O(n)?","Can you derive the cycle-length formula?"],answer:["Make numRows buckets, one string per visual row.","Move a row pointer through the repeating path: 0 -> 1 -> ... -> numRows-1 -> numRows-2 -> ... -> 0.","Put each character into the bucket for the current row.","At the top or bottom row, reverse direction.","Join all row buckets from top to bottom."],complexity:"O(n) time, O(n) space",code:`string convert(string s, int numRows) {
     if (numRows == 1 || s.size() <= numRows) return s;
     vector<string> rows(numRows);
     int row = 0, dir = 1;
@@ -471,7 +471,7 @@ public:
     string ans;
     for (string& r : rows) ans += r;
     return ans;
-}`,followups:["Use arithmetic jumps?","Memory optimization?","Edge case numRows=1?"],review:"Zigzag is often easiest as a row simulation."},
+}`,followups:["Use arithmetic jumps?","Memory optimization?","Edge case numRows=1?"],review:"Mental model: generate row numbers first, then group characters by row. The drawn zigzag is only a visualization."},
 {id:"LC 28",title:"Find the Index of the First Occurrence in a String",difficulty:"Easy",pattern:"Sliding Window",prompt:"Given haystack and needle, return the index of the first occurrence of needle in haystack, or -1.",signal:"substring search can start with a fixed-size window comparison.",hints:["Check every possible start from 0 to n-m.","Compare characters until mismatch.","Return the first full match.","If none match, return -1."],interviewer:["What if needle is longer than haystack?","Can you use KMP?","What is brute force complexity?","What about empty needle?"],answer:["Let n and m be lengths.","For each start i where i + m <= n, compare needle against haystack.","If every character matches, return i.","Return -1 if no start works."],complexity:"O(n*m) worst-case time, O(1) space",code:`int strStr(string haystack, string needle) {
     int n = haystack.size(), m = needle.size();
     for (int i = 0; i + m <= n; ++i) {
@@ -2455,7 +2455,7 @@ const studyMeta={
 Object.assign(studyMeta,{
 "LC 122":{sourceUrl:"https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",examples:[{"input":"prices = [7,1,5,3,6,4]","output":"7","note":"Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 5-1 = 4. Then buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 6-3 = 3. Total profit is 4 + 3 = 7."},{"input":"prices = [1,2,3,4,5]","output":"4","note":"Buy on day 1 (price = 1) and sell on day 5 (price = 5), profit = 5-1 = 4. Total profit is 4."}],constraints:["1 \u003c= prices.length \u003c= 3 * 10^4","0 \u003c= prices[i] \u003c= 10^4"]},
 "LC 392":{sourceUrl:"https://leetcode.com/problems/is-subsequence/",examples:[{"input":"s = \"abc\", t = \"ahbgdc\"","output":"true"},{"input":"s = \"axc\", t = \"ahbgdc\"","output":"false"}],constraints:["0 \u003c= s.length \u003c= 100","0 \u003c= t.length \u003c= 10^4","s and t consist only of lowercase English letters."]},
-"LC 30":{sourceUrl:"https://leetcode.com/problems/substring-with-concatenation-of-all-words/",examples:[],constraints:["1 \u003c= s.length \u003c= 10^4","1 \u003c= words.length \u003c= 5000","1 \u003c= words[i].length \u003c= 30","s and words[i] consist of lowercase English letters."]},
+"LC 30":{sourceUrl:"https://leetcode.com/problems/substring-with-concatenation-of-all-words/",examples:[{"input":"s = \"barfoothefoobarman\", words = [\"foo\",\"bar\"]","output":"[0,9]","note":"\"barfoo\" starts at 0 and \"foobar\" starts at 9."},{"input":"s = \"wordgoodgoodgoodbestword\", words = [\"word\",\"good\",\"best\",\"word\"]","output":"[]","note":"There is no substring that concatenates every required word exactly once."},{"input":"s = \"barfoofoobarthefoobarman\", words = [\"bar\",\"foo\",\"the\"]","output":"[6,9,12]","note":"Valid starts form \"foobarthe\", \"barthefoo\", and \"thefoobar\"."}],constraints:["1 \u003c= s.length \u003c= 10^4","1 \u003c= words.length \u003c= 5000","1 \u003c= words[i].length \u003c= 30","s and words[i] consist of lowercase English letters."]},
 "LC 36":{sourceUrl:"https://leetcode.com/problems/valid-sudoku/",examples:[{"input":"board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"] ,[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"] ,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"] ,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"] ,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"] ,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"] ,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"] ,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"] ,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]","output":"true"},{"input":"board = [[\"8\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"] ,[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"] ,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"] ,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"] ,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"] ,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"] ,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"] ,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"] ,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]","output":"false","note":"Same as Example 1, except with the 5 in the top left corner being modified to 8 . Since there are two 8's in the top left 3x3 sub-box, it is invalid."}],constraints:["board.length == 9","board[i].length == 9","board[i][j] is a digit 1-9 or '.' ."]},
 "LC 54":{sourceUrl:"https://leetcode.com/problems/spiral-matrix/",examples:[{"input":"matrix = [[1,2,3],[4,5,6],[7,8,9]]","output":"[1,2,3,6,9,8,7,4,5]"},{"input":"matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]","output":"[1,2,3,4,8,12,11,10,9,5,6,7]"}],constraints:["m == matrix.length","n == matrix[i].length","1 \u003c= m, n \u003c= 10","-100 \u003c= matrix[i][j] \u003c= 100"]},
 "LC 48":{sourceUrl:"https://leetcode.com/problems/rotate-image/",examples:[{"input":"matrix = [[1,2,3],[4,5,6],[7,8,9]]","output":"[[7,4,1],[8,5,2],[9,6,3]]"},{"input":"matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]","output":"[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]"}],constraints:["n == matrix.length == matrix[i].length","1 \u003c= n \u003c= 20","-1000 \u003c= matrix[i][j] \u003c= 1000"]},
@@ -2472,12 +2472,12 @@ Object.assign(studyMeta,{
 "LC 117":{sourceUrl:"https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/",examples:[{"input":"root = [1,2,3,4,5,null,7]","output":"[1,#,2,3,#,4,5,7,#] Explanation: Given the above binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with '#' signifying the end of each level."},{"input":"root = []","output":"[]"}],constraints:["The number of nodes in the tree is in the range [0, 6000] .","-100 \u003c= Node.val \u003c= 100","You may only use constant extra space.","The recursive approach is fine. You may assume implicit stack space does not count as extra space for this problem."]},
 "LC 114":{sourceUrl:"https://leetcode.com/problems/flatten-binary-tree-to-linked-list/",examples:[{"input":"root = [1,2,5,3,4,null,6]","output":"[1,null,2,null,3,null,4,null,5,null,6]"},{"input":"root = []","output":"[]"}],constraints:["The number of nodes in the tree is in the range [0, 2000] .","-100 \u003c= Node.val \u003c= 100"]},
 "LC 124":{sourceUrl:"https://leetcode.com/problems/binary-tree-maximum-path-sum/",examples:[{"input":"root = [1,2,3]","output":"6","note":"The optimal path is 2 -> 1 -> 3 with a path sum of 2 + 1 + 3 = 6."},{"input":"root = [-10,9,20,null,null,15,7]","output":"42","note":"The optimal path is 15 -> 20 -> 7 with a path sum of 15 + 20 + 7 = 42."}],constraints:["The number of nodes in the tree is in the range [1, 3 * 10^4] .","-1000 \u003c= Node.val \u003c= 1000"]},
-"LC 173":{sourceUrl:"https://leetcode.com/problems/binary-search-tree-iterator/",examples:[],constraints:["The number of nodes in the tree is in the range [1, 10^5] .","0 \u003c= Node.val \u003c= 10^6","At most 10^5 calls will be made to hasNext , and next .","Could you implement next() and hasNext() to run in average O(1) time and use O(h) memory, where h is the height of the tree?"]},
+"LC 173":{sourceUrl:"https://leetcode.com/problems/binary-search-tree-iterator/",examples:[{"input":"operations = [\"BSTIterator\",\"next\",\"next\",\"hasNext\",\"next\",\"hasNext\",\"next\",\"hasNext\",\"next\",\"hasNext\"], args = [[[7,3,15,null,null,9,20]],[],[],[],[],[],[],[],[],[]]","output":"[null,3,7,true,9,true,15,true,20,false]","note":"The iterator returns the BST inorder sequence: 3, 7, 9, 15, 20."}],constraints:["The number of nodes in the tree is in the range [1, 10^5] .","0 \u003c= Node.val \u003c= 10^6","At most 10^5 calls will be made to hasNext , and next .","Could you implement next() and hasNext() to run in average O(1) time and use O(h) memory, where h is the height of the tree?"]},
 "LC 222":{sourceUrl:"https://leetcode.com/problems/count-complete-tree-nodes/",examples:[{"input":"root = [1,2,3,4,5,6]","output":"6"},{"input":"root = []","output":"0"}],constraints:["The number of nodes in the tree is in the range [0, 5 * 10^4] .","0 \u003c= Node.val \u003c= 5 * 10^4","The tree is guaranteed to be complete ."]},
 "LC 637":{sourceUrl:"https://leetcode.com/problems/average-of-levels-in-binary-tree/",examples:[{"input":"root = [3,9,20,null,null,15,7]","output":"[3.00000,14.50000,11.00000] Explanation: The average value of nodes on level 0 is 3, on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11]."},{"input":"root = [3,9,20,15,7]","output":"[3.00000,14.50000,11.00000]"}],constraints:["The number of nodes in the tree is in the range [1, 10^4] .","-2^31 \u003c= Node.val \u003c= 2^31 - 1"]},
 "LC 103":{sourceUrl:"https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/",examples:[{"input":"root = [3,9,20,null,null,15,7]","output":"[[3],[20,9],[15,7]]"},{"input":"root = [1]","output":"[[1]]"}],constraints:["The number of nodes in the tree is in the range [0, 2000] .","-100 \u003c= Node.val \u003c= 100"]},
 "LC 530":{sourceUrl:"https://leetcode.com/problems/minimum-absolute-difference-in-bst/",examples:[{"input":"root = [4,2,6,1,3]","output":"1"},{"input":"root = [1,0,48,null,null,12,49]","output":"1"}],constraints:["The number of nodes in the tree is in the range [2, 10^4] .","0 \u003c= Node.val \u003c= 10^5"]},
-"LC 130":{sourceUrl:"https://leetcode.com/problems/surrounded-regions/",examples:[],constraints:["m == board.length","n == board[i].length","1 \u003c= m, n \u003c= 200","board[i][j] is 'X' or 'O' ."]},
+"LC 130":{sourceUrl:"https://leetcode.com/problems/surrounded-regions/",examples:[{"input":"board = [[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"O\",\"O\",\"X\"],[\"X\",\"X\",\"O\",\"X\"],[\"X\",\"O\",\"X\",\"X\"]]","output":"[[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"O\",\"X\",\"X\"]]","note":"The bottom O stays because it touches the border; the enclosed region is captured."},{"input":"board = [[\"X\"]]","output":"[[\"X\"]]"}],constraints:["m == board.length","n == board[i].length","1 \u003c= m, n \u003c= 200","board[i][j] is 'X' or 'O' ."]},
 "LC 399":{sourceUrl:"https://leetcode.com/problems/evaluate-division/",examples:[{"input":"equations = [[\"a\",\"b\"],[\"b\",\"c\"]], values = [2.0,3.0], queries = [[\"a\",\"c\"],[\"b\",\"a\"],[\"a\",\"e\"],[\"a\",\"a\"],[\"x\",\"x\"]]","output":"[6.00000,0.50000,-1.00000,1.00000,-1.00000]","note":"Given: a / b = 2.0 , b / c = 3.0 queries are: a / c = ? , b / a = ? , a / e = ? , a / a = ? , x / x = ? return: [6.0, 0.5, -1.0, 1.0, -1.0 ] note: x is undefined => -1.0"},{"input":"equations = [[\"a\",\"b\"],[\"b\",\"c\"],[\"bc\",\"cd\"]], values = [1.5,2.5,5.0], queries = [[\"a\",\"c\"],[\"c\",\"b\"],[\"bc\",\"cd\"],[\"cd\",\"bc\"]]","output":"[3.75000,0.40000,5.00000,0.20000]"}],constraints:["1 \u003c= equations.length \u003c= 20","equations[i].length == 2","1 \u003c= A i .length, B i .length \u003c= 5","values.length == equations.length","0.0 \u003c values[i] \u003c= 20.0","1 \u003c= queries.length \u003c= 20","queries[i].length == 2","1 \u003c= C j .length, D j .length \u003c= 5"]},
 "LC 210":{sourceUrl:"https://leetcode.com/problems/course-schedule-ii/",examples:[{"input":"numCourses = 2, prerequisites = [[1,0]]","output":"[0,1]","note":"There are a total of 2 courses to take. To take course 1 you should have finished course 0. So the correct course order is [0,1]."},{"input":"numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]","output":"[0,2,1,3]","note":"There are a total of 4 courses to take. To take course 3 you should have finished both courses 1 and 2. Both courses 1 and 2 should be taken after you finished course 0. So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3]."}],constraints:["1 \u003c= numCourses \u003c= 2000","0 \u003c= prerequisites.length \u003c= numCourses * (numCourses - 1)","prerequisites[i].length == 2","0 \u003c= a i , b i \u003c numCourses","a i != b i","All the pairs [a i , b i ] are distinct ."]},
 "LC 909":{sourceUrl:"https://leetcode.com/problems/snakes-and-ladders/",examples:[{"input":"board = [[-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1],[-1,35,-1,-1,13,-1],[-1,-1,-1,-1,-1,-1],[-1,15,-1,-1,-1,-1]]","output":"4","note":"In the beginning, you start at square 1 (at row 5, column 0). You decide to move to square 2 and must take the ladder to square 15. You then decide to move to square 17 and must take the snake to square 13. You then decide to move to square 14 and must take the ladder to square 35. You then decide to move to square 36, ending the game. This is the lowest possible number of moves to reach the last square, so return 4."},{"input":"board = [[-1,-1],[-1,3]]","output":"1"}],constraints:["n == board.length == board[i].length","2 \u003c= n \u003c= 20","board[i][j] is either -1 or in the range [1, n^2] .","The squares labeled 1 and n^2 are not the starting points of any snake or ladder."]},
@@ -2500,11 +2500,11 @@ Object.assign(studyMeta,{
 "LC 4":{sourceUrl:"https://leetcode.com/problems/median-of-two-sorted-arrays/",examples:[{"input":"nums1 = [1,3], nums2 = [2]","output":"2.00000","note":"merged array = [1,2,3] and median is 2."},{"input":"nums1 = [1,2], nums2 = [3,4]","output":"2.50000","note":"merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5."}],constraints:["nums1.length == m","nums2.length == n","0 \u003c= m \u003c= 1000","0 \u003c= n \u003c= 1000","1 \u003c= m + n \u003c= 2000","-10^6 \u003c= nums1[i], nums2[i] \u003c= 10^6"]},
 "LC 502":{sourceUrl:"https://leetcode.com/problems/ipo/",examples:[{"input":"k = 2, w = 0, profits = [1,2,3], capital = [0,1,1]","output":"4","note":"Since your initial capital is 0, you can only start the project indexed 0. After finishing it you will obtain profit 1 and your capital becomes 1. With capital 1, you can either start the project indexed 1 or the project indexed 2. Since you can choose at most 2 projects, you need to finish the project indexed 2 to get the maximum capital. Therefore, output the final maximized capital, which is 0 + 1 + 3 = 4."},{"input":"k = 3, w = 0, profits = [1,2,3], capital = [0,1,2]","output":"6"}],constraints:["1 \u003c= k \u003c= 10^5","0 \u003c= w \u003c= 10^9","n == profits.length","n == capital.length","1 \u003c= n \u003c= 10^5","0 \u003c= profits[i] \u003c= 10^4","0 \u003c= capital[i] \u003c= 10^9"]},
 "LC 373":{sourceUrl:"https://leetcode.com/problems/find-k-pairs-with-smallest-sums/",examples:[{"input":"nums1 = [1,7,11], nums2 = [2,4,6], k = 3","output":"[[1,2],[1,4],[1,6]]","note":"The first 3 pairs are returned from the sequence: [1,2],[1,4],[1,6],[7,2],[7,4],[11,2],[7,6],[11,4],[11,6]"},{"input":"nums1 = [1,1,2], nums2 = [1,2,3], k = 2","output":"[[1,1],[1,1]]","note":"The first 2 pairs are returned from the sequence: [1,1],[1,1],[1,2],[2,1],[1,2],[2,2],[1,3],[1,3],[2,3]"}],constraints:["1 \u003c= nums1.length, nums2.length \u003c= 10^5","-10^9 \u003c= nums1[i], nums2[i] \u003c= 10^9","nums1 and nums2 both are sorted in non-decreasing order .","1 \u003c= k \u003c= 10^4","k \u003c= nums1.length * nums2.length"]},
-"LC 295":{sourceUrl:"https://leetcode.com/problems/find-median-from-data-stream/",examples:[],constraints:["-10^5 \u003c= num \u003c= 10^5","There will be at least one element in the data structure before calling findMedian .","At most 5 * 10^4 calls will be made to addNum and findMedian .","If all integer numbers from the stream are in the range [0, 100] , how would you optimize your solution?","If 99% of all integer numbers from the stream are in the range [0, 100] , how would you optimize your solution?"]},
+"LC 295":{sourceUrl:"https://leetcode.com/problems/find-median-from-data-stream/",examples:[{"input":"operations = [\"MedianFinder\",\"addNum\",\"addNum\",\"findMedian\",\"addNum\",\"findMedian\"], args = [[],[1],[2],[],[3],[]]","output":"[null,null,null,1.5,null,2.0]","note":"After adding 1 and 2, median is 1.5; after adding 3, median is 2.0."}],constraints:["-10^5 \u003c= num \u003c= 10^5","There will be at least one element in the data structure before calling findMedian .","At most 5 * 10^4 calls will be made to addNum and findMedian .","If all integer numbers from the stream are in the range [0, 100] , how would you optimize your solution?","If 99% of all integer numbers from the stream are in the range [0, 100] , how would you optimize your solution?"]},
 "LC 67":{sourceUrl:"https://leetcode.com/problems/add-binary/",examples:[{"input":"a = \"11\", b = \"1\"","output":"\"100\""},{"input":"a = \"1010\", b = \"1011\"","output":"\"10101\""}],constraints:["1 \u003c= a.length, b.length \u003c= 10^4","a and b consist only of '0' or '1' characters.","Each string does not contain leading zeros except for the zero itself."]},
-"LC 190":{sourceUrl:"https://leetcode.com/problems/reverse-bits/",examples:[],constraints:["0 \u003c= n \u003c= 2^31 - 2","n is even."]},
-"LC 191":{sourceUrl:"https://leetcode.com/problems/number-of-1-bits/",examples:[],constraints:["1 \u003c= n \u003c= 2^31 - 1"]},
-"LC 136":{sourceUrl:"https://leetcode.com/problems/single-number/",examples:[],constraints:["1 \u003c= nums.length \u003c= 3 * 10^4","-3 * 10^4 \u003c= nums[i] \u003c= 3 * 10^4","Each element in the array appears twice except for one element which appears only once."]},
+"LC 190":{sourceUrl:"https://leetcode.com/problems/reverse-bits/",examples:[{"input":"n = 43261596","output":"964176192","note":"00000010100101000001111010011100 reverses to 00111001011110000010100101000000."},{"input":"n = 2147483644","output":"1073741822","note":"01111111111111111111111111111100 reverses to 00111111111111111111111111111110."}],constraints:["0 \u003c= n \u003c= 2^31 - 2","n is even."]},
+"LC 191":{sourceUrl:"https://leetcode.com/problems/number-of-1-bits/",examples:[{"input":"n = 11","output":"3","note":"Binary 1011 has three set bits."},{"input":"n = 128","output":"1","note":"Binary 10000000 has one set bit."},{"input":"n = 2147483645","output":"30","note":"Binary 1111111111111111111111111111101 has thirty set bits."}],constraints:["1 \u003c= n \u003c= 2^31 - 1"]},
+"LC 136":{sourceUrl:"https://leetcode.com/problems/single-number/",examples:[{"input":"nums = [2,2,1]","output":"1"},{"input":"nums = [4,1,2,1,2]","output":"4"},{"input":"nums = [1]","output":"1"}],constraints:["1 \u003c= nums.length \u003c= 3 * 10^4","-3 * 10^4 \u003c= nums[i] \u003c= 3 * 10^4","Each element in the array appears twice except for one element which appears only once."]},
 "LC 137":{sourceUrl:"https://leetcode.com/problems/single-number-ii/",examples:[{"input":"nums = [2,2,3,2]","output":"3"},{"input":"nums = [0,1,0,1,0,1,99]","output":"99"}],constraints:["1 \u003c= nums.length \u003c= 3 * 10^4","-2^31 \u003c= nums[i] \u003c= 2^31 - 1","Each element in nums appears exactly three times except for one element which appears once ."]},
 "LC 201":{sourceUrl:"https://leetcode.com/problems/bitwise-and-of-numbers-range/",examples:[{"input":"left = 5, right = 7","output":"4"},{"input":"left = 0, right = 0","output":"0"}],constraints:["0 \u003c= left \u003c= right \u003c= 2^31 - 1"]},
 "LC 9":{sourceUrl:"https://leetcode.com/problems/palindrome-number/",examples:[{"input":"x = 121","output":"true","note":"121 reads as 121 from left to right and from right to left."},{"input":"x = -121","output":"false","note":"From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome."}],constraints:["-2^31 \u003c= x \u003c= 2^31 - 1"]},
@@ -2545,7 +2545,7 @@ Object.assign(studyMeta,{
 "LC 58":{sourceUrl:"https://leetcode.com/problems/length-of-last-word/",examples:[{input:'s = "Hello World"',output:"5"},{input:'s = "   fly me   to   the moon  "',output:"4"}],constraints:["1 <= s.length <= 10^4","s consists of English letters and spaces.","There will be at least one word."]},
 "LC 14":{sourceUrl:"https://leetcode.com/problems/longest-common-prefix/",examples:[{input:'strs = ["flower","flow","flight"]',output:'"fl"'},{input:'strs = ["dog","racecar","car"]',output:'""'}],constraints:["1 <= strs.length <= 200","0 <= strs[i].length <= 200","strs[i] contains lowercase English letters when non-empty."]},
 "LC 151":{sourceUrl:"https://leetcode.com/problems/reverse-words-in-a-string/",examples:[{input:'s = "the sky is blue"',output:'"blue is sky the"'},{input:'s = "  hello world  "',output:'"world hello"'}],constraints:["1 <= s.length <= 10^4","s contains English letters, digits, and spaces.","There is at least one word."]},
-"LC 6":{sourceUrl:"https://leetcode.com/problems/zigzag-conversion/",examples:[{input:'s = "PAYPALISHIRING", numRows = 3',output:'"PAHNAPLSIIGYIR"'},{input:'s = "PAYPALISHIRING", numRows = 4',output:'"PINALSIGYAHRPI"'}],constraints:["1 <= s.length <= 1000","s contains English letters, comma, and period.","1 <= numRows <= 1000"]},
+"LC 6":{sourceUrl:"https://leetcode.com/problems/zigzag-conversion/",examples:[{input:'s = "PAYPALISHIRING", numRows = 3',output:'"PAHNAPLSIIGYIR"',note:"Rows become PAHN / APLSIIG / YIR, then concatenate them."},{input:'s = "PAYPALISHIRING", numRows = 4',output:'"PINALSIGYAHRPI"',note:"Rows become PIN / ALSIG / YAHR / PI, then concatenate them."}],constraints:["1 <= s.length <= 1000","s contains English letters, comma, and period.","1 <= numRows <= 1000"]},
 "LC 28":{sourceUrl:"https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",examples:[{input:'haystack = "sadbutsad", needle = "sad"',output:"0"},{input:'haystack = "leetcode", needle = "leeto"',output:"-1"}],constraints:["1 <= haystack.length, needle.length <= 10^4","haystack and needle contain lowercase English letters."]},
 "LC 383":{sourceUrl:"https://leetcode.com/problems/ransom-note/",examples:[{input:'ransomNote = "a", magazine = "b"',output:"false"},{input:'ransomNote = "aa", magazine = "aab"',output:"true"}],constraints:["1 <= ransomNote.length, magazine.length <= 10^5","ransomNote and magazine consist of lowercase English letters."]},
 "LC 205":{sourceUrl:"https://leetcode.com/problems/isomorphic-strings/",examples:[{input:'s = "egg", t = "add"',output:"true"},{input:'s = "foo", t = "bar"',output:"false"}],constraints:["1 <= s.length <= 5 * 10^4","t.length == s.length","s and t consist of valid ASCII characters."]},
@@ -2808,18 +2808,23 @@ Object.assign(solidSolutionPatches,{
     reverse(ans.begin(), ans.end());
     return ans;
 }`,followups:["Can you do it without reversing?","How would this work for base 10 strings?","What if input is streamed from the end?"],review:"Add Binary is right-to-left addition with a carry."},
-"LC 190":{signal:"Reverse bits by shifting the answer left and copying the low bit of n each round.",hints:["There are exactly 32 bits.","Take n & 1 as the next bit.","Shift ans left before adding that bit.","Shift n right to consume bits."],interviewer:["Why exactly 32 iterations?","Should n be unsigned?","Can you optimize repeated calls?","What is the complexity?"],answer:["Initialize ans = 0.","Repeat 32 times.","Shift ans left and OR the current low bit of n.","Shift n right."],complexity:"O(32) time, O(1) space",code:`uint32_t reverseBits(uint32_t n) {
-    uint32_t ans = 0;
-    for (int i = 0; i < 32; ++i) {
-        ans = (ans << 1) | (n & 1);
-        n >>= 1;
+"LC 190":{signal:"Reverse bits by shifting the answer left and copying the low bit of n each round.",hints:["There are exactly 32 bits.","Take n & 1 as the next bit.","Shift ans left before adding that bit.","Shift n right to consume bits."],interviewer:["Why exactly 32 iterations?","Should n be treated as unsigned while shifting?","Can you optimize repeated calls?","What is the complexity?"],answer:["Initialize ans = 0 and read n as an unsigned bit pattern.","Repeat 32 times.","Shift ans left and OR the current low bit.","Shift the unsigned copy right."],complexity:"O(32) time, O(1) space",code:`class Solution {
+public:
+    int reverseBits(int n) {
+        unsigned int x = static_cast<unsigned int>(n);
+        unsigned int ans = 0;
+        for (int i = 0; i < 32; ++i) {
+            ans = (ans << 1) | (x & 1);
+            x >>= 1;
+        }
+        return static_cast<int>(ans);
     }
-    return ans;
-}`,followups:["How would you cache bytes for many calls?","What if the integer width changes?","Why unsigned matters?"],review:"Reverse Bits copies low bits of n into the high-to-low order of the answer."},
-"LC 191":{signal:"Counting 1 bits can repeatedly remove the lowest set bit.",hints:["n & (n - 1) clears the lowest set bit.","Each loop removes one 1 bit.","Count how many removals happen.","Unsigned input avoids sign issues."],interviewer:["What does n & (n - 1) do?","Is this better than checking all 32 bits?","What if n is zero?","What is the complexity?"],answer:["Initialize count to zero.","While n is nonzero, set n = n & (n - 1).","Increment count each time.","Return count."],complexity:"O(k) time where k is number of set bits, O(1) space",code:`int hammingWeight(uint32_t n) {
+};`,followups:["How would you cache bytes for many calls?","What if the integer width changes?","Why unsigned matters?"],review:"Reverse Bits copies low bits of n into the high-to-low order of the answer."},
+"LC 191":{signal:"Counting 1 bits can repeatedly remove the lowest set bit.",hints:["n & (n - 1) clears the lowest set bit.","Each loop removes one 1 bit.","Count how many removals happen.","Treat n as an unsigned bit pattern while shifting or clearing bits."],interviewer:["What does n & (n - 1) do?","Is this better than checking all 32 bits?","What if n is zero?","What is the complexity?"],answer:["Read n as an unsigned bit pattern.","While the unsigned copy is nonzero, clear its lowest set bit.","Increment count each time.","Return count."],complexity:"O(k) time where k is number of set bits, O(1) space",code:`int hammingWeight(int n) {
+    unsigned int x = static_cast<unsigned int>(n);
     int count = 0;
-    while (n) {
-        n &= (n - 1);
+    while (x) {
+        x &= (x - 1);
         ++count;
     }
     return count;
@@ -3584,6 +3589,176 @@ public:
 };`,hints:["Lower half is a max-heap.","Upper half is a min-heap.","Keep lower half same size or one larger.","Median is top of lower heap or average of both tops."],answer:["Insert into lower heap, then move its top to upper heap.","Rebalance if upper becomes larger.","For odd count, median is lower top.","For even count, average both tops."],review:"Median Finder maintains two balanced heaps split around the median."}
 });
 Object.assign(solidSolutionPatches,{
+"LC 30":{signal:"Fixed-size word chunks plus concatenation coverage points to a word-length sliding window.",complexity:"O(n * wordLen) time, O(words) space",code:`vector<int> findSubstring(string s, vector<string>& words) {
+    vector<int> ans;
+    if (words.empty()) return ans;
+
+    int wordLen = words[0].size();
+    int wordCount = words.size();
+    int totalLen = wordLen * wordCount;
+    if (s.size() < totalLen) return ans;
+
+    unordered_map<string, int> need;
+    for (const string& word : words) need[word]++;
+
+    for (int offset = 0; offset < wordLen; ++offset) {
+        unordered_map<string, int> seen;
+        int left = offset;
+        int matched = 0;
+
+        for (int right = offset; right + wordLen <= s.size(); right += wordLen) {
+            string word = s.substr(right, wordLen);
+
+            if (!need.count(word)) {
+                seen.clear();
+                matched = 0;
+                left = right + wordLen;
+                continue;
+            }
+
+            seen[word]++;
+            matched++;
+
+            while (seen[word] > need[word]) {
+                string drop = s.substr(left, wordLen);
+                seen[drop]--;
+                matched--;
+                left += wordLen;
+            }
+
+            if (matched == wordCount) {
+                ans.push_back(left);
+                string drop = s.substr(left, wordLen);
+                seen[drop]--;
+                matched--;
+                left += wordLen;
+            }
+        }
+    }
+
+    return ans;
+}`,hints:["All words have the same length, so scan in word-sized chunks.","Run one sliding window for each possible offset modulo word length.","Reset the window when a chunk is not in the required word map.","Shrink from the left when a word appears too many times."],answer:["Count how many times each word is required.","For every offset from 0 to wordLen - 1, scan chunks of size wordLen.","Maintain seen word counts inside the current chunk window.","When the window matches all words, record left and slide forward by one word."],review:"Substring with Concatenation is a sliding window over word chunks, with duplicate-word counts preserved."},
+"LC 212":{signal:"Many word searches on one board points to Trie pruning plus DFS backtracking.",complexity:"O(total word chars + mn * 4^L) worst-case time, O(total word chars) space",code:`class Solution {
+    struct TrieNode {
+        TrieNode* child[26] = {};
+        string word;
+    };
+
+    TrieNode* root = new TrieNode();
+
+    void insert(const string& word) {
+        TrieNode* node = root;
+        for (char ch : word) {
+            int idx = ch - 'a';
+            if (!node->child[idx]) node->child[idx] = new TrieNode();
+            node = node->child[idx];
+        }
+        node->word = word;
+    }
+
+    void dfs(vector<vector<char>>& board, int r, int c, TrieNode* node, vector<string>& ans) {
+        if (r < 0 || c < 0 || r >= board.size() || c >= board[0].size()) return;
+        char ch = board[r][c];
+        if (ch == '#') return;
+
+        TrieNode* next = node->child[ch - 'a'];
+        if (!next) return;
+
+        if (!next->word.empty()) {
+            ans.push_back(next->word);
+            next->word.clear();
+        }
+
+        board[r][c] = '#';
+        dfs(board, r + 1, c, next, ans);
+        dfs(board, r - 1, c, next, ans);
+        dfs(board, r, c + 1, next, ans);
+        dfs(board, r, c - 1, next, ans);
+        board[r][c] = ch;
+    }
+
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        for (const string& word : words) insert(word);
+
+        vector<string> ans;
+        for (int r = 0; r < board.size(); ++r) {
+            for (int c = 0; c < board[0].size(); ++c) {
+                dfs(board, r, c, root, ans);
+            }
+        }
+        return ans;
+    }
+};`,hints:["Build one trie for all target words.","During DFS, stop immediately when the current prefix is not in the trie.","Mark the board cell while it is on the current path, then restore it.","Clear a found word so duplicate paths do not add it twice."],answer:["Insert every word into a trie.","Start DFS from every board cell.","Move only into trie children that match the next board character.","When a trie node stores a word, add it and clear it to avoid duplicates."],review:"Word Search II combines Trie prefix pruning with DFS backtracking on the board."},
+"LC 4":{signal:"Two sorted arrays plus logarithmic requirement points to binary search on the partition.",complexity:"O(log min(m,n)) time, O(1) space",code:`double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+    if (nums1.size() > nums2.size()) {
+        return findMedianSortedArrays(nums2, nums1);
+    }
+
+    int m = nums1.size();
+    int n = nums2.size();
+    int totalLeft = (m + n + 1) / 2;
+    int lo = 0, hi = m;
+
+    while (lo <= hi) {
+        int i = lo + (hi - lo) / 2;
+        int j = totalLeft - i;
+
+        int aLeft = (i == 0) ? INT_MIN : nums1[i - 1];
+        int aRight = (i == m) ? INT_MAX : nums1[i];
+        int bLeft = (j == 0) ? INT_MIN : nums2[j - 1];
+        int bRight = (j == n) ? INT_MAX : nums2[j];
+
+        if (aLeft <= bRight && bLeft <= aRight) {
+            if ((m + n) % 2 == 1) return max(aLeft, bLeft);
+            return ((double)max(aLeft, bLeft) + (double)min(aRight, bRight)) / 2.0;
+        }
+
+        if (aLeft > bRight) hi = i - 1;
+        else lo = i + 1;
+    }
+
+    return 0.0;
+}`,hints:["Binary search the cut position in the shorter array.","The other cut is determined by totalLeft - i.","A valid partition has left values <= right values across both arrays.","Use sentinels for empty left or right partitions."],answer:["Always binary search the shorter array.","Choose i items from nums1 and j items from nums2 for the left half.","Check whether max left is <= min right across the partition.","If valid, compute the median from boundary values."],review:"Median of Two Sorted Arrays is binary search over a valid left/right partition."},
+"LC 149":{signal:"Collinear points require normalized slopes from each anchor point.",complexity:"O(n^2) time, O(n) space",code:`int maxPoints(vector<vector<int>>& points) {
+    int n = points.size();
+    if (n <= 2) return n;
+
+    int best = 0;
+    for (int i = 0; i < n; ++i) {
+        unordered_map<string, int> count;
+        int duplicates = 1;
+        int local = 0;
+
+        for (int j = i + 1; j < n; ++j) {
+            long long dx = (long long)points[j][0] - points[i][0];
+            long long dy = (long long)points[j][1] - points[i][1];
+
+            if (dx == 0 && dy == 0) {
+                duplicates++;
+                continue;
+            }
+
+            long long g = std::gcd(llabs(dx), llabs(dy));
+            dx /= g;
+            dy /= g;
+
+            if (dx < 0) {
+                dx = -dx;
+                dy = -dy;
+            }
+            if (dx == 0) dy = 1;
+            if (dy == 0) dx = 1;
+
+            string key = to_string(dy) + "/" + to_string(dx);
+            local = max(local, ++count[key]);
+        }
+
+        best = max(best, local + duplicates);
+    }
+
+    return best;
+}`,hints:["Use each point as an anchor.","Every other point with the same reduced slope lies on the same line through that anchor.","Normalize slope signs and vertical/horizontal lines.","Add duplicate anchor points to the best slope count."],answer:["For each anchor point, count normalized slopes to later points.","Reduce dx and dy by gcd to avoid floating-point precision bugs.","Normalize sign so the same slope has one key.","Combine the largest slope count with duplicates of the anchor."],review:"Max Points on a Line is slope counting with gcd normalization from each anchor."},
 "LC 224":{signal:"Basic Calculator can scan with current result, sign, and a stack for parenthesized contexts.",complexity:"O(n) time, O(n) space",code:`int calculate(string s) {
     long result = 0;
     long number = 0;
@@ -3881,7 +4056,8 @@ function initPatternSignalToggle(){const card=$("patternSignalCard"),btn=$("patt
 function renderAcceptedPatternCard(q){const accepted=acceptedPatterns(q);return `<div class="help-card"><strong>Accepted Patterns</strong><p>Primary: ${esc(q.pattern)}</p>${accepted.length>1?`<ul>${accepted.map(p=>`<li><b>${esc(p)}</b>: ${esc(patternReason(q,p))}</li>`).join("")}</ul>`:""}</div>`;}
 function renderExamples(items){return `<div class="example-list">${items.map((ex,idx)=>`<div class="example-card"><b>Example ${idx+1}</b><span><em>Input:</em> ${esc(ex.input)}</span><span><em>Output:</em> ${esc(ex.output)}</span>${ex.note?`<span><em>Why:</em> ${esc(ex.note)}</span>`:""}</div>`).join("")}</div>`;}
 function renderConstraints(items){return `<ul class="constraint-list">${items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;}
-function renderPrompt(q){const {statement}=splitPrompt(q.prompt),m=meta(q);return `<p class="problem-statement">${esc(statement)}</p><div class="problem-extra"><div><strong>Examples</strong>${renderExamples(m.examples)}</div><div><strong>Constraints</strong>${renderConstraints(m.constraints)}</div>${m.leetcodeFollowUp?`<div class="leetcode-followup"><strong>LeetCode Follow-up</strong><span>${esc(m.leetcodeFollowUp)}</span></div>`:""}<div><strong>Clarify before solving</strong><span>${esc((q.interviewer||[]).slice(0,2).join(" / "))}</span></div><div><strong>Source</strong><a class="source-link" href="${esc(m.sourceUrl)}" target="_blank" rel="noreferrer">Open original LeetCode problem</a></div></div>`;}
+function neutralClarifyQuestions(q){const text=`${q.title||""} ${q.prompt||""}`.toLowerCase(),items=["Can the input be empty or at its minimum size?","What are the input size and value limits?","Should I return a value, indices, nodes, or mutate the input?"];if(text.includes("string"))items.push("What characters can appear, and is case significant?");if(text.includes("linked list"))items.push("Can the list be empty or contain one node?");if(text.includes("tree"))items.push("Can the tree be empty, skewed, or contain duplicate values?");if(text.includes("grid")||text.includes("matrix")||text.includes("board"))items.push("Can I mark cells in-place, and which neighbor directions are valid?");if(text.includes("sorted"))items.push("Are duplicates possible, and is the sorted order guaranteed?");if(text.includes("graph")||text.includes("course"))items.push("Are edges directed, weighted, or possibly disconnected?");return items.slice(0,4).join(" / ");}
+function renderPrompt(q){const {statement}=splitPrompt(q.prompt),m=meta(q);return `<p class="problem-statement">${esc(statement)}</p><div class="problem-extra"><div><strong>Examples</strong>${renderExamples(m.examples)}</div><div><strong>Constraints</strong>${renderConstraints(m.constraints)}</div>${m.leetcodeFollowUp?`<div class="leetcode-followup"><strong>LeetCode Follow-up</strong><span>${esc(m.leetcodeFollowUp)}</span></div>`:""}<div><strong>Clarify before solving</strong><span>${esc(neutralClarifyQuestions(q))}</span></div><div><strong>Source</strong><a class="source-link" href="${esc(m.sourceUrl)}" target="_blank" rel="noreferrer">Open original LeetCode problem</a></div></div>`;}
 function highlightCpp(code){let h=esc(code);h=h.replace(/("(?:\\.|[^"\\])*")/g,'<span class="tok-string">$1</span>');h=h.replace(/\b(class|public|private|return|if|else|for|while|auto|const|void|bool|int|long|string|vector|unordered_map|unordered_set|stack|queue|priority_queue|set|pair|function|true|false|nullptr)\b/g,'<span class="tok-keyword">$1</span>');h=h.replace(/\b(sort|max|min|swap|push|push_back|push_front|pop|pop_back|front|back|count|size|begin|end|erase|insert|substr|move)\b/g,'<span class="tok-fn">$1</span>');h=h.replace(/\b(\d+)\b/g,'<span class="tok-number">$1</span>');return h;}
 function renderCodeBlock(title,note,code){return `<div class="code-panel"><div class="code-title"><span>${esc(title)}</span><small>${esc(note)}</small></div><pre class="sublime"><code>${highlightCpp(code)}</code></pre></div>`;}
 function codeTemplates(q){const multi=acceptedPatterns(q).length>1,alt=alternativeSolutions[q.id],meta=englishAltMeta[q.id]||[alt&&alt.title||"Alternative Solution",alt&&alt.note||"Use this as a discussion variant."],isSkeleton=(q.code||"").startsWith("// Study skeleton");const entries=[];if(multi&&bruteForceTemplates[q.id])entries.push(bruteForceTemplates[q.id]);entries.push({title:isSkeleton?`Study Skeleton: ${q.pattern}`:`Primary: ${q.pattern}`,note:isSkeleton?`Scaffold for this newly added LC150 problem. Use it to preserve the invariant before writing the final C++ solution. ${q.complexity}`:`Recommended first in interviews. ${q.complexity}`,code:q.code});if(alt)entries.push({title:meta[0],note:meta[1],code:alt.code});if(multi&&patternApproachExtras[q.id])entries.push(...patternApproachExtras[q.id]);const seen=new Set();return entries.filter(entry=>{const key=entry.code.replace(/\s+/g," ").trim();if(seen.has(key))return false;seen.add(key);return true;});}
@@ -3952,8 +4128,8 @@ function showRecite(){const q=filtered[current%filtered.length];$("reciteBox").c
 function showInterview(){const q=filtered[current%filtered.length];$("interviewBox").classList.add("show");$("interviewQuestions").innerHTML=renderInterviewScript(q);$("interviewBtn").disabled=true;revealPanel("interviewBox");}
 function nextQuestion(){current=(current+1)%filtered.length;renderQuestion();}
 function setMode(mode){activeMode=mode;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode===mode));const isLibrary=mode==="library";$("mainPanel").classList.toggle("hidden",isLibrary);$("libraryPanel").classList.toggle("hidden",!isLibrary);if(isLibrary)renderLibrary();else renderQuestion();}
-function renderLibrary(){const q=($("librarySearch").value||"").toLowerCase().trim();const list=$("libraryList");list.innerHTML="";problems.filter(p=>{const n=note(p);const blob=`${p.id} ${p.title} ${patternLabel(p)} ${n.signal} ${p.interviewer.join(" ")} ${p.followups.join(" ")}`.toLowerCase();return !q||blob.includes(q);}).forEach(p=>{const n=note(p);const div=document.createElement("div");div.className="library-item";div.innerHTML=`<strong>${esc(p.id)} · ${esc(p.title)}</strong><span>${esc(patternLabel(p))} · ${esc(p.difficulty)} · ${esc(p.complexity)}</span><p class="tiny">${esc(n.review)}</p>`;div.onclick=()=>openProblem(p);list.appendChild(div);});if(!list.innerHTML)list.innerHTML='<div class="tiny">No matching problems.</div>';}
-function problemSearchMatches(query){const q=query.toLowerCase().trim();if(!q)return [];return problems.filter(p=>{const n=note(p);const blob=`${p.id} ${p.title} ${patternLabel(p)} ${p.difficulty} ${n.signal} ${n.review}`.toLowerCase();return blob.includes(q);}).slice(0,8);}
+function renderLibrary(){const q=($("librarySearch").value||"").toLowerCase().trim();const list=$("libraryList");list.innerHTML="";problems.filter(p=>{const n=note(p);const blob=`${p.id} ${p.title} ${p.source||""} ${patternLabel(p)} ${n.signal} ${p.interviewer.join(" ")} ${p.followups.join(" ")}`.toLowerCase();return !q||blob.includes(q);}).forEach(p=>{const n=note(p);const div=document.createElement("div");div.className="library-item";div.innerHTML=`<strong>${esc(p.id)} · ${esc(p.title)}</strong><span>${esc(patternLabel(p))} · ${esc(p.difficulty)}${p.source?` · ${esc(p.source)}`:""} · ${esc(p.complexity)}</span><p class="tiny">${esc(n.review)}</p>`;div.onclick=()=>openProblem(p);list.appendChild(div);});if(!list.innerHTML)list.innerHTML='<div class="tiny">No matching problems.</div>';}
+function problemSearchMatches(query){const q=query.toLowerCase().trim();if(!q)return [];return problems.filter(p=>{const n=note(p);const blob=`${p.id} ${p.title} ${p.source||""} ${patternLabel(p)} ${p.difficulty} ${n.signal} ${n.review}`.toLowerCase();return blob.includes(q);}).slice(0,8);}
 function openProblem(q){const pool=scopedProblemPool();filtered=pool.includes(q)?pool:[q,...pool.filter(p=>p.id!==q.id)];current=Math.max(0,filtered.findIndex(p=>p.id===q.id));activeMode="drill";document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode==="drill"));$("mainPanel").classList.remove("hidden");$("libraryPanel").classList.add("hidden");renderQuestion();}
 function renderProblemSearch(){const input=$("problemSearch"),box=$("problemSearchResults");if(!input||!box)return;const matches=problemSearchMatches(input.value);box.innerHTML="";box.classList.toggle("show",Boolean(input.value.trim()));if(!matches.length){box.innerHTML='<div class="tiny">No matching problems.</div>';return;}matches.forEach(q=>{const btn=document.createElement("button");btn.type="button";btn.className="problem-search-item";btn.innerHTML=`<strong>${esc(q.id)}. ${esc(q.title)}</strong><span>${esc(patternLabel(q))} · ${esc(q.difficulty)}</span>`;btn.onclick=()=>{input.value=`${q.id}. ${q.title}`;box.classList.remove("show");openProblem(q);};box.appendChild(btn);});}
 function initTheme(){const btn=$("themeToggle"),label=$("themeToggleText");if(!btn)return;const apply=theme=>{const isDark=theme==="dark";document.documentElement.dataset.theme=theme;btn.classList.toggle("is-dark",isDark);btn.setAttribute("aria-pressed",String(isDark));btn.setAttribute("aria-label",isDark?"Switch to light mode":"Switch to dark mode");if(label)label.textContent=isDark?"Light mode":"Dark mode";};const animateSwitch=()=>{btn.classList.remove("is-animating");void btn.offsetWidth;btn.classList.add("is-animating");setTimeout(()=>btn.classList.remove("is-animating"),520);};const saved=localStorage.getItem("lc_theme_ext")||"light";apply(saved);btn.addEventListener("click",()=>{const next=document.documentElement.dataset.theme==="dark"?"light":"dark";localStorage.setItem("lc_theme_ext",next);animateSwitch();apply(next);});}
