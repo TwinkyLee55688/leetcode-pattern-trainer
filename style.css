@@ -326,6 +326,47 @@ h1 {
   margin-bottom: 14px;
 }
 
+.topbar-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.source-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.source-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.source-badge.lc150 { color: #1d4ed8; background: #dbeafe; border-color: #93c5fd; }
+.source-badge.neet { color: #047857; background: #d1fae5; border-color: #6ee7b7; }
+.source-badge.wave-1 { color: #7c2d12; background: #ffedd5; border-color: #fdba74; }
+.source-badge.wave-2 { color: #6d28d9; background: #ede9fe; border-color: #c4b5fd; }
+.source-badge.wave-3 { color: #be123c; background: #ffe4e6; border-color: #fda4af; }
+
+[data-theme="dark"] .source-badge.lc150 { color: #bfdbfe; background: rgba(37, 99, 235, .22); border-color: rgba(147, 197, 253, .42); }
+[data-theme="dark"] .source-badge.neet { color: #a7f3d0; background: rgba(4, 120, 87, .28); border-color: rgba(110, 231, 183, .38); }
+[data-theme="dark"] .source-badge.wave-1 { color: #fed7aa; background: rgba(194, 65, 12, .26); border-color: rgba(253, 186, 116, .38); }
+[data-theme="dark"] .source-badge.wave-2 { color: #ddd6fe; background: rgba(109, 40, 217, .28); border-color: rgba(196, 181, 253, .36); }
+[data-theme="dark"] .source-badge.wave-3 { color: #fecdd3; background: rgba(190, 18, 60, .26); border-color: rgba(253, 164, 175, .36); }
+
 .pill {
   display: inline-flex;
   align-items: center;
@@ -1237,12 +1278,15 @@ code { font-family: "Consolas", "Monaco", "Courier New", ui-monospace, monospace
 
 .pattern-signal-list {
   grid-column: 1 / -1;
-  display: contents;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
 }
 
 .left-rail .memory-card {
   box-sizing: border-box;
   align-self: stretch;
+  width: 100%;
   height: 112px;
   max-height: 112px;
   min-height: 0;
@@ -1698,6 +1742,10 @@ input[type="checkbox"] { accent-color: var(--primary); }
 
   .right-rail {
     position: static;
+  }
+
+  .pattern-signal-list {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
 

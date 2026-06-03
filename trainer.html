@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leetcode Pattern Trainer - LC150 + NeetCode</title>
-  <link rel="stylesheet" href="style.css?v=20260603-neetcode-wave1" />
+  <title>Leetcode Pattern Trainer - Top Interview 150 + NeetCode</title>
+  <link rel="stylesheet" href="style.css?v=20260603-neetcode-wave3" />
 </head>
 <body>
   <main class="app">
     <header class="app-header">
       <div>
-        <h1>Leetcode Pattern Trainer - LC150 + NeetCode</h1>
+        <h1>Leetcode Pattern Trainer - Top Interview 150 + NeetCode</h1>
         <p class="subtitle">Train pattern recognition, hint-driven solving, and Google-style interview explanations.</p>
       </div>
       <div class="header-tools">
@@ -75,6 +75,13 @@
           </div>
         </div>
 
+        <div class="card side-card neet-picks-card">
+          <div class="card-body">
+            <div class="section-title">NeetCode Next Picks</div>
+            <div class="review-list" id="neetRecommendations"></div>
+          </div>
+        </div>
+
         <div class="card side-card">
           <div class="card-body">
             <div class="calendar-head">
@@ -83,8 +90,8 @@
                 <p class="tiny" id="calendarSummary">No answers today yet</p>
               </div>
               <div class="calendar-nav">
-                <button class="icon-btn" id="calendarPrev" type="button" aria-label="Previous month">‹</button>
-                <button class="icon-btn" id="calendarNext" type="button" aria-label="Next month">›</button>
+                <button class="icon-btn" id="calendarPrev" type="button" aria-label="Previous month">&lt;</button>
+                <button class="icon-btn" id="calendarNext" type="button" aria-label="Next month">&gt;</button>
               </div>
             </div>
             <div class="calendar-month" id="calendarMonth"></div>
@@ -101,7 +108,10 @@
           <div class="card-body">
             <div id="mainPanel">
               <div class="topbar">
-                <span class="pill" id="questionIndex">Question 1</span>
+                <div class="topbar-left">
+                  <div class="source-tags" id="sourceTags"></div>
+                  <span class="pill" id="questionIndex">Question 1</span>
+                </div>
                 <span class="difficulty medium" id="difficulty">Medium</span>
               </div>
               <h2 class="title" id="title"></h2>
@@ -178,7 +188,9 @@
       </aside>
     </section>
   </main>
-  <script src="trainer.js?v=20260603-neetcode-wave1"></script>
-  <script src="neetcode-wave1.js?v=20260603-neetcode-wave1"></script>
+  <script src="trainer.js?v=20260603-neetcode-wave3"></script>
+  <script src="neetcode-wave1.js?v=20260603-neetcode-wave3"></script>
+  <script src="neetcode-wave2.js?v=20260603-neetcode-wave3"></script>
+  <script src="neetcode-wave3.js?v=20260603-neetcode-wave3"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 (() => {
+globalThis.neetcode150Ids=["LC 1","LC 2","LC 3","LC 4","LC 5","LC 518","LC 7","LC 1448","LC 10","LC 11","LC 994","LC 15","LC 17","LC 19","LC 20","LC 21","LC 22","LC 23","LC 25","LC 543","LC 33","LC 36","LC 39","LC 40","LC 42","LC 43","LC 45","LC 46","LC 48","LC 49","LC 50","LC 51","LC 53","LC 54","LC 55","LC 56","LC 57","LC 567","LC 572","LC 62","LC 66","LC 70","LC 72","LC 73","LC 74","LC 76","LC 78","LC 79","LC 84","LC 90","LC 91","LC 2013","LC 97","LC 98","LC 100","LC 102","LC 1046","LC 104","LC 105","LC 621","LC 110","LC 115","LC 121","LC 124","LC 125","LC 127","LC 128","LC 130","LC 131","LC 133","LC 134","LC 647","LC 136","LC 138","LC 139","LC 141","LC 143","LC 146","LC 150","LC 152","LC 153","LC 155","LC 678","LC 167","LC 1584","LC 684","LC 695","LC 190","LC 191","LC 198","LC 199","LC 200","LC 202","LC 206","LC 207","LC 208","LC 210","LC 211","LC 212","LC 213","LC 215","LC 217","LC 226","LC 739","LC 1143","LC 230","LC 743","LC 235","LC 746","LC 238","LC 239","LC 242","LC 252","LC 253","LC 763","LC 261","LC 268","LC 269","LC 271","LC 703","LC 704","LC 778","LC 286","LC 287","LC 787","LC 295","LC 297","LC 300","LC 309","LC 312","LC 322","LC 323","LC 329","LC 332","LC 338","LC 347","LC 355","LC 846","LC 371","LC 853","LC 875","LC 416","LC 417","LC 424","LC 435","LC 1851","LC 1899","LC 494","LC 973","LC 981"];
 const neetcodeWave1Ids=["LC 206","LC 143","LC 739","LC 84","LC 239","LC 704","LC 875","LC 424","LC 567","LC 647","LC 91","LC 62","LC 78","LC 90","LC 994","LC 695","LC 743","LC 684"];
 const existing=new Set(problems.map(p=>p.id));
 const add=[
@@ -276,6 +277,7 @@ const add=[
     return {};
 }`,followups:["Can DFS detect the cycle?","How does path compression help?","What changes for directed graph version?"],review:"Redundant Connection is cycle detection by Union-Find."}
 ];
+add.forEach(p=>p.wave="Wave 1");
 problems.push(...add.filter(p=>!existing.has(p.id)));
 Object.assign(studyMeta,{
 "LC 206":{sourceUrl:"https://leetcode.com/problems/reverse-linked-list/",examples:[{input:"head = [1,2,3,4,5]",output:"[5,4,3,2,1]"},{input:"head = []",output:"[]"}],constraints:["0 <= number of nodes <= 5000","-5000 <= Node.val <= 5000"]},
