@@ -37,7 +37,9 @@
 
     <section class="layout">
       <aside class="left-rail">
-        <div class="card side-card pattern-signal-card" id="patternSignalCard">
+        <button class="mobile-extras-toggle" id="mobileExtrasToggle" type="button" aria-expanded="false">Show study extras</button>
+
+        <div class="card side-card pattern-signal-card mobile-extra-card" id="patternSignalCard">
           <div class="card-body">
             <div class="section-title signal-title-row">
               <span>3-Second Pattern Signals</span>
@@ -47,7 +49,7 @@
           </div>
         </div>
 
-        <div class="card side-card review-card">
+        <div class="card side-card review-card mobile-extra-card">
           <div class="card-body">
             <div class="section-title">Wrong / Review Queue</div>
             <div class="review-list" id="reviewList"></div>
@@ -82,7 +84,7 @@
           </div>
         </div>
 
-        <div class="card side-card">
+        <div class="card side-card calendar-card mobile-extra-card">
           <div class="card-body">
             <div class="calendar-head">
               <div>

@@ -1216,6 +1216,10 @@ code { font-family: "Consolas", "Monaco", "Courier New", ui-monospace, monospace
 
 .side-card { margin-bottom: 18px; }
 
+.mobile-extras-toggle {
+  display: none;
+}
+
 .left-rail .side-card {
   margin-bottom: 0;
 }
@@ -1752,7 +1756,26 @@ input[type="checkbox"] { accent-color: var(--primary); }
 @media (max-width: 640px) {
   .app {
     width: 100%;
-    padding: 12px 8px 32px;
+    padding: 12px 8px 120px;
+  }
+
+  body.mobile-extras-hidden .mobile-extra-card {
+    display: none;
+  }
+
+  .mobile-extras-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    margin: 0 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--heading);
+    font-weight: 850;
+    box-shadow: var(--shadow-soft);
   }
 
   .layout,
@@ -1803,12 +1826,34 @@ input[type="checkbox"] { accent-color: var(--primary); }
   }
 
   .workspace-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    z-index: 40;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+    backdrop-filter: blur(14px);
     overflow-x: visible;
   }
 
   .actions button {
     min-width: 0;
+    min-height: 48px;
+    padding: 8px 8px;
+    font-size: 13px;
+    line-height: 1.15;
+  }
+
+  #reciteBtn {
+    display: none;
   }
 
   .script-row {
