@@ -267,8 +267,8 @@ h1 {
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 22px;
+  grid-template-columns: minmax(360px, var(--center-panel-fr, 1fr)) 18px minmax(360px, var(--right-panel-fr, 1fr));
+  gap: 12px;
   align-items: start;
 }
 
@@ -279,6 +279,67 @@ h1 {
 
 .center-stage {
   min-width: 0;
+}
+
+.panel-resizer {
+  position: sticky;
+  top: 14px;
+  align-self: stretch;
+  min-height: 520px;
+  width: 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.panel-resizer::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  bottom: 8px;
+  width: 4px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 72%, transparent);
+  transition: background .16s ease, box-shadow .16s ease, width .16s ease;
+}
+
+.panel-resizer::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9px;
+  height: 54px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at center 8px, var(--muted) 1.4px, transparent 1.8px),
+    radial-gradient(circle at center 18px, var(--muted) 1.4px, transparent 1.8px),
+    radial-gradient(circle at center 28px, var(--muted) 1.4px, transparent 1.8px),
+    radial-gradient(circle at center 38px, var(--muted) 1.4px, transparent 1.8px),
+    radial-gradient(circle at center 48px, var(--muted) 1.4px, transparent 1.8px);
+  opacity: .8;
+}
+
+.panel-resizer:hover::before,
+.panel-resizer:focus-visible::before,
+body.is-resizing-panels .panel-resizer::before {
+  width: 6px;
+  background: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.panel-resizer:focus-visible {
+  outline: 0;
+}
+
+body.is-resizing-panels {
+  cursor: col-resize;
+  user-select: none;
 }
 
 .right-rail {
@@ -1809,6 +1870,10 @@ input[type="checkbox"] { accent-color: var(--primary); }
   .app-header,
   .layout {
     grid-template-columns: 1fr;
+  }
+
+  .panel-resizer {
+    display: none;
   }
 
   .left-rail,
