@@ -1259,6 +1259,52 @@ pre.sublime {
 
 code { font-family: "Consolas", "Monaco", "Courier New", ui-monospace, monospace; }
 
+body.code-focus-mode {
+  overflow: hidden;
+}
+
+.code-panel {
+  touch-action: manipulation;
+}
+
+.code-focus-active {
+  position: fixed;
+  inset: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  border-radius: 18px;
+}
+
+.code-focus-active .code-title {
+  position: relative;
+  padding-right: 128px;
+}
+
+.code-focus-active .code-title::after {
+  content: "Double-tap to close";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #e6db74;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.code-focus-active pre.sublime {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: clamp(11px, 2.9vw, 14px);
+  line-height: 1.52;
+  padding: 14px;
+}
+
 .side-card { margin-bottom: 18px; }
 
 .mobile-extras-toggle {
@@ -1898,10 +1944,6 @@ input[type="checkbox"] { accent-color: var(--primary); }
     padding: 8px 8px;
     font-size: 13px;
     line-height: 1.15;
-  }
-
-  #reciteBtn {
-    display: none;
   }
 
   .script-row {
