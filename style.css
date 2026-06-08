@@ -474,6 +474,7 @@ body.is-resizing-panels {
   margin: 6px 0 0;
   color: var(--text);
   line-height: 1.55;
+  white-space: pre-line;
 }
 
 .daily-tip .icon-btn {
