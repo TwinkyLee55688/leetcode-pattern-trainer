@@ -76,6 +76,26 @@ h1 {
   justify-items: end;
 }
 
+.header-link {
+  display: inline-flex;
+  min-height: 38px;
+  padding: 8px 14px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--heading);
+  font-size: 13px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.header-link:hover {
+  border-color: rgba(96, 165, 250, .55);
+  color: var(--primary);
+}
+
 .theme-toggle {
   position: relative;
   isolation: isolate;
@@ -270,6 +290,100 @@ h1 {
   grid-template-columns: minmax(360px, var(--center-panel-fr, 1fr)) 18px minmax(360px, var(--right-panel-fr, 1fr));
   gap: 12px;
   align-items: start;
+}
+
+.notes-app {
+  max-width: 1180px;
+}
+
+.notes-header {
+  margin-bottom: 22px;
+}
+
+.notes-layout {
+  display: grid;
+  gap: 16px;
+}
+
+.notes-card .card-body {
+  display: grid;
+  gap: 14px;
+}
+
+.note-block,
+.note-callout,
+.quiz-note {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.note-block,
+.quiz-note {
+  padding: 16px;
+}
+
+.note-block p,
+.quiz-note p {
+  margin: 8px 0 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.note-callout {
+  padding: 14px 16px;
+  border-color: rgba(34, 197, 94, .42);
+  background: rgba(34, 197, 94, .09);
+  color: var(--heading);
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.phrase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.phrase-grid span,
+.phrase-row {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.quiz-note h2 {
+  margin: 0;
+  color: var(--heading);
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.phrase-row {
+  margin-top: 12px;
+  color: var(--primary);
+  font-weight: 750;
+}
+
+.template-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.template-list li {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .left-rail,
@@ -2005,6 +2119,10 @@ input[type="checkbox"] { accent-color: var(--primary); }
   .tabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+  }
+
+  .phrase-grid {
+    grid-template-columns: 1fr;
   }
 
   .pattern-signal-list {

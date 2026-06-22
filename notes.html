@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leetcode Pattern Trainer - Notes</title>
+  <link rel="stylesheet" href="style.css?v=20260622-notes" />
+</head>
+<body data-theme="dark">
+  <main class="app notes-app">
+    <header class="app-header notes-header">
+      <div>
+        <h1>Study Notes</h1>
+        <p class="subtitle">ChatGPT review notes from 2026-06-14 to 2026-06-20.</p>
+      </div>
+      <div class="header-tools">
+        <a class="header-link" href="trainer.html">Back to Trainer</a>
+      </div>
+    </header>
+
+    <section class="notes-layout">
+      <article class="card notes-card">
+        <div class="card-body">
+          <div class="section-title">Grammar Upgrade</div>
+          <div class="note-block">
+            <strong>Natural request</strong>
+            <p>Before we start Quiz 11, can you summarize my answers from the first 10 quizzes and rewrite them in polished, interview-style English? I want to memorize them to improve my vocabulary. Would that help?</p>
+          </div>
+          <div class="note-callout">
+            Memorize sentence patterns, not full answers word for word.
+          </div>
+          <div class="phrase-grid">
+            <span>The key insight is that...</span>
+            <span>I would use... to maintain...</span>
+            <span>This gives O(n) time and O(n) space.</span>
+            <span>Since the input does not guarantee..., I should not assume...</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card notes-card">
+        <div class="card-body">
+          <div class="section-title">Quiz 1-10 Interview Sentences</div>
+
+          <section class="quiz-note">
+            <h2>Quiz 1: Contains Duplicate</h2>
+            <p>I would use a hash set to track the numbers I have already seen. If the current number already exists in the set, I can immediately return true.</p>
+            <div class="phrase-row">straightforward approach / track numbers already seen / immediately return true</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 2: Two Sum</h2>
+            <p>If the array is already sorted, I can use two pointers. Since the original problem does not guarantee sorted order and asks for original indices, I should use a hash map to look up complements.</p>
+            <div class="phrase-row">does not guarantee sorted / original indices / look up complements</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 3: Move Zeroes</h2>
+            <p>Since we need to preserve the relative order of non-zero elements, I can use two pointers. One pointer scans, and the slow pointer tracks the next position where a valid element should be placed.</p>
+            <div class="phrase-row">preserve relative order / in-place / slow pointer tracks next valid position</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 4: Valid Anagram</h2>
+            <p>I would use frequency counting. Since anagrams must have exactly the same character counts, I can count each character in both strings and compare the counts.</p>
+            <div class="phrase-row">frequency counting / character counts / exactly the same</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 5: Group Anagrams</h2>
+            <p>The key insight is that anagrams should map to the same canonical representation. I can use either a sorted string or a frequency-count signature as the key.</p>
+            <div class="phrase-row">canonical representation / frequency-count signature / group by same key</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 6: Valid Palindrome</h2>
+            <p>I can preprocess the string by keeping only alphanumeric characters and converting them to lowercase. To optimize space, I can skip invalid characters on the fly.</p>
+            <div class="phrase-row">alphanumeric / lowercase / skip invalid characters on the fly</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 7: Subarray Sum Equals K</h2>
+            <p>My first instinct is sliding window because the problem involves continuous subarrays. However, if the array can contain negative numbers, the window sum is not monotonic, so I should use prefix sum with a hash map.</p>
+            <div class="phrase-row">not monotonic / previous prefix sums / ending at current index</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 8: Product of Array Except Self</h2>
+            <p>For each index, the answer is the product of all numbers before it times the product of all numbers after it. We can compute this with one left-to-right pass and one right-to-left pass.</p>
+            <div class="phrase-row">two passes / prefix products / suffix products</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 9: Longest Substring Without Repeating Characters</h2>
+            <p>This is a sliding-window problem. I would maintain a window with no repeated characters. The right pointer expands, and the left pointer moves forward when a duplicate appears.</p>
+            <div class="phrase-row">window invariant / encounter duplicate / update maxLen</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>Quiz 10: Merge Intervals</h2>
+            <p>Since merging depends on interval order, I should first sort by start time. Then I scan from left to right while maintaining the last merged interval.</p>
+            <div class="phrase-row">sort by start time / maintain last merged interval / overlaps with</div>
+          </section>
+        </div>
+      </article>
+
+      <article class="card notes-card">
+        <div class="card-body">
+          <div class="section-title">10 Sentence Templates To Memorize</div>
+          <ol class="template-list">
+            <li>The straightforward approach is to use...</li>
+            <li>The key insight is that...</li>
+            <li>I would maintain...</li>
+            <li>One pointer scans..., while the other tracks...</li>
+            <li>Since the input does not guarantee..., I should not assume...</li>
+            <li>This works only if...</li>
+            <li>To optimize space, I can...</li>
+            <li>The window invariant is...</li>
+            <li>If the next element violates the condition, I move...</li>
+            <li>This gives O(...) time and O(...) space.</li>
+          </ol>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
