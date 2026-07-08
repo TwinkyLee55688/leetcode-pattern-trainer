@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leetcode Pattern Trainer - Graph Practice Notes</title>
+  <link rel="stylesheet" href="style.css?v=20260709-graph-notes" />
+</head>
+<body data-theme="dark">
+  <main class="app notes-app">
+    <header class="app-header notes-header">
+      <div>
+        <h1>Graph Practice Notes</h1>
+        <p class="subtitle">Timestamp: 2026-07-09 01:37 Asia/Taipei</p>
+      </div>
+      <div class="header-tools">
+        <a class="header-link" href="notes.html">Interview Notes</a>
+        <a class="header-link" href="trainer.html">Back to Trainer</a>
+      </div>
+    </header>
+
+    <section class="notes-layout">
+      <article class="card notes-card">
+        <div class="card-body">
+          <div class="section-title">Graph and Union-Find Practice</div>
+
+          <section class="quiz-note">
+            <h2>1. Graph Valid Tree</h2>
+            <h3>My original sentence</h3>
+            <p>The condition to form a valid tree is to make sure these edges don't form a cycle inside the graph. So the problem becomes to detect if all the edges form a cycle or not. And my solution to the problem is also unified, because I can build a vector to record the parent of each component. And if the new input edge, which component has been found united, then I can return false, because united means the two components are already in the same connected component. And so the new edge is added up a second is formed.</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>A valid tree must be connected and acyclic. I can use Union-Find to detect cycles while processing the edges. If an edge connects two nodes that already have the same root, then adding that edge creates a cycle, so I return false.</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> A valid tree must be connected and acyclic. Since a tree with <code>n</code> nodes must have exactly <code>n - 1</code> edges, I first check the edge count, then use Union-Find to ensure no edge creates a cycle.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>2. Union-Find Optimization</h2>
+            <h3>My original sentence</h3>
+            <p>The first thing first is we need to compress the path to shorten the time complexity by recursive calling the function itself. And second is I can use a rank to record the in the tree to control the length of branches in case the branching expand to a non-controllable length that increases the time complexity as well.</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>I remember two Union-Find optimizations: path compression and union by rank. Path compression flattens the tree during <code>find</code>, and union by rank keeps the tree shallow during <code>union</code>.</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> Path compression flattens the tree during <code>find</code>, and union by rank prevents the tree from becoming too tall during <code>union</code>.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>3. Accounts Merge</h2>
+            <h3>My original sentence</h3>
+            <p>That's also another twisted unified problem, where you unite the same email account together. The key idea is how you store this email account efficiently. And my solution to this is to use a hash map. And the key is the ID or the name. And the value is the vector of string, where you can store or record the email account. Then if the email account happens on two different IDs, then you can unite the two IDs together.</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>This is another Union-Find problem where we merge accounts that share the same email. I can use a hash map from email to account index. If the same email appears in two different accounts, I union those two account indices.</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> I treat each account index as a Union-Find node, and use a hash map from email to account index. If two accounts share an email, I union their indices.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>4. Number of Islands</h2>
+            <h3>My original sentence</h3>
+            <p>The problem asks us to count the number of the connected components. So the first thing first is to calculate the connected components. And my solution to approach so is to apply a breadth-first search or the depth-first search, depends on the need. I prefer DFS for its consistency. And the approach of DFS is pretty straightforward.</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>This is a connected components problem on a grid. I scan every cell. When I find a land cell that hasn't been visited, I count one island and run DFS to mark all connected land cells as visited.</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> I treat each island as a connected component. Every time I find an unvisited land cell, I increment the answer and use DFS to mark the entire island as visited.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>5. Number of Islands with Union-Find</h2>
+            <h3>My original sentence</h3>
+            <p>Can I solve this using Union-Find?</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>Can I solve this problem using Union-Find?</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> Yes. I can solve it with Union-Find by treating each land cell as a node and unioning adjacent land cells. The final number of connected components is the number of islands.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>6. Evaluate Division - Graph Model</h2>
+            <h3>My original sentence</h3>
+            <p>I want to explain this problem can use a bi-directional weighting graph to solve, and this weighting presents the division relationship. If from A to B is x, then B to A is 1 divided by x.</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>We can model Evaluate Division as a bidirectional weighted graph. Each edge weight represents a division ratio. If <code>A / B = x</code>, then <code>A -&gt; B</code> has weight <code>x</code>, and <code>B -&gt; A</code> has weight <code>1 / x</code>.</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> I'll build a bidirectional weighted graph. For each equation <code>A / B = x</code>, I add <code>A -&gt; B</code> with weight <code>x</code> and <code>B -&gt; A</code> with weight <code>1 / x</code>.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>7. Evaluate Division - Query Answer</h2>
+            <h3>My original sentence</h3>
+            <p>I knew the evaluate division problem is related to building a bidirectional weighted graph from the equations, and the answers to the queries would be the products of weighting along the path.</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>I understand that Evaluate Division can be solved by building a bidirectional weighted graph from the equations. The answer to each query is the product of edge weights along a path.</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> After building the graph, I answer each query by running BFS or DFS from the numerator to the denominator while maintaining the accumulated product along the path.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>8. Evaluate Division - BFS State</h2>
+            <h3>My original sentence</h3>
+            <p>According to my solution, the time complexity should be <code>O(V + E)</code>, with <code>V</code> as vertices and <code>E</code> as edges. The space complexity is the same.</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>For one query, BFS may traverse the whole graph, so the time complexity is <code>O(V + E)</code>. With <code>Q</code> queries, the total time complexity is <code>O(Q * (V + E))</code>. The space complexity is <code>O(V + E)</code> for the graph.</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> Building the graph takes <code>O(E)</code>. For each query, BFS may traverse the whole graph, so each query costs <code>O(V + E)</code>. With <code>Q</code> queries, total time is <code>O(Q * (V + E))</code>, and space is <code>O(V + E)</code>.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>9. Evaluate Division - Weighted Union-Find</h2>
+            <h3>My original sentence</h3>
+            <p>How should I build with Weighted Union-Find?</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>How should I build the Weighted Union-Find solution?</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> In Weighted Union-Find, <code>weight[x]</code> represents the ratio between <code>x</code> and its parent. During path compression, I update <code>weight[x]</code> so it directly represents <code>x / root</code>. For a query <code>A / B</code>, if they share the same root, the answer is <code>weight[A] / weight[B]</code>.</div>
+          </section>
+
+          <section class="quiz-note">
+            <h2>10. Weighted Union-Find Performance</h2>
+            <h3>My original sentence</h3>
+            <p>How about its performances?</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>What is the time and space complexity of the Weighted Union-Find solution?</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> Compared with BFS, Weighted Union-Find is better when there are many queries. BFS may traverse the graph for every query, while Union-Find can answer each query in almost constant time after preprocessing.</div>
+            <h3>Complexity</h3>
+            <ul>
+              <li><code>V</code> = number of variables</li>
+              <li><code>E</code> = number of equations</li>
+              <li><code>Q</code> = number of queries</li>
+              <li>Build time: <code>O(E * alpha(V))</code></li>
+              <li>Query time: <code>O(Q * alpha(V))</code></li>
+              <li>Total time: <code>O((E + Q) * alpha(V))</code></li>
+              <li>Space: <code>O(V)</code></li>
+            </ul>
+            <p><code>alpha(V)</code> is the inverse Ackermann function. It grows extremely slowly, so in practice it is almost constant.</p>
+          </section>
+
+          <section class="quiz-note">
+            <h2>11. Union by Rank</h2>
+            <h3>My original sentence</h3>
+            <p>Recall the union by rank for me.</p>
+            <h3>Grammar correction / simple version</h3>
+            <p>Could you remind me how union by rank works?</p>
+            <div class="note-callout"><strong>Best interview sentence:</strong> Union by rank keeps the tree shallow by attaching the smaller-rank root under the larger-rank root. If both ranks are equal, we choose one root and increase its rank by one.</div>
+          </section>
+        </div>
+      </article>
+
+      <article class="card notes-card">
+        <div class="card-body">
+          <div class="section-title">Core Templates to Remember</div>
+          <section class="quiz-note">
+            <h2>DFS visited idea</h2>
+            <p>Every time I find an unvisited node or land cell, I start DFS/BFS and mark the entire connected component as visited.</p>
+          </section>
+          <section class="quiz-note">
+            <h2>Union-Find cycle idea</h2>
+            <p>If two nodes already have the same root, adding an edge between them creates a cycle.</p>
+          </section>
+          <section class="quiz-note">
+            <h2>Union-Find component count idea</h2>
+            <p>Every node starts as its own component. Each successful union merges two components and reduces the component count by one.</p>
+          </section>
+          <section class="quiz-note">
+            <h2>Weighted graph idea</h2>
+            <p>Each edge weight represents a ratio. The answer to a query is the product of weights along a valid path.</p>
+          </section>
+          <section class="quiz-note">
+            <h2>Weighted Union-Find idea</h2>
+            <p><code>weight[x] = x / parent[x]</code>. After path compression, <code>weight[x] = x / root</code>. Therefore, if <code>A</code> and <code>B</code> share the same root, <code>A / B = weight[A] / weight[B]</code>.</p>
+          </section>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
