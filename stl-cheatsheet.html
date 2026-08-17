@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Leetcode Pattern Trainer - STL Cheat Sheet</title>
 
-  <link rel="stylesheet" href="style.css?v=20260817-stl-cheatsheet" />
+  <link rel="stylesheet" href="style.css?v=20260817-stl-cheatsheet-v2" />
 
   <style>
     .cheat-table-wrap {
@@ -16,7 +16,7 @@
     .cheat-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 720px;
+      min-width: 920px;
       font-size: 14px;
     }
 
@@ -36,14 +36,8 @@
       letter-spacing: .04em;
     }
 
-    .cheat-table code,
-    .mini-code {
+    .cheat-table code {
       white-space: nowrap;
-    }
-
-    .memory-rule {
-      margin: 8px 0;
-      font-weight: 700;
     }
 
     .cheat-code {
@@ -87,173 +81,463 @@
 </head>
 
 <body data-theme="dark">
+
   <main class="app notes-app">
 
+    <!-- Header -->
     <header class="app-header notes-header">
+
       <div>
         <h1>STL Interview Cheat Sheet</h1>
+
         <p class="subtitle">
           C++ operations worth making automatic before an interview.
         </p>
       </div>
 
       <div class="header-tools">
-        <a class="header-link" href="notes.html">Notes</a>
-        <a class="header-link" href="note2.html">Graph Notes</a>
-        <a class="header-link" href="trainer.html">Back to Trainer</a>
+
+        <a class="header-link" href="notes.html">
+          Notes
+        </a>
+
+        <a class="header-link" href="note2.html">
+          Graph Notes
+        </a>
+
+        <a class="header-link" href="trainer.html">
+          Back to Trainer
+        </a>
+
       </div>
+
     </header>
 
 
     <section class="notes-layout">
 
-      <!-- Core operations -->
+
+      <!-- ===================================================== -->
+      <!-- Core STL Operations -->
+      <!-- ===================================================== -->
+
       <article class="card notes-card">
+
         <div class="card-body">
 
-          <div class="section-title">Core STL Operations</div>
+          <div class="section-title">
+            Core STL Operations
+          </div>
 
           <div class="cheat-table-wrap">
+
             <table class="cheat-table">
 
               <thead>
+
                 <tr>
                   <th>Structure</th>
+                  <th>Initialize</th>
                   <th>Add</th>
                   <th>Read</th>
                   <th>Remove</th>
                   <th>Common</th>
                 </tr>
+
               </thead>
+
 
               <tbody>
 
-                <tr>
-                  <td><code>vector</code></td>
-                  <td><code>push_back(x)</code></td>
-                  <td><code>v[i]</code><br><code>back()</code></td>
-                  <td><code>pop_back()</code></td>
-                  <td><code>size()</code></td>
-                </tr>
+
+                <!-- VECTOR -->
 
                 <tr>
-                  <td><code>stack</code></td>
-                  <td><code>push(x)</code></td>
-                  <td><code>top()</code></td>
-                  <td><code>pop()</code></td>
-                  <td><code>empty()</code></td>
-                </tr>
 
-                <tr>
-                  <td><code>queue</code></td>
-                  <td><code>push(x)</code></td>
-                  <td><code>front()</code></td>
-                  <td><code>pop()</code></td>
-                  <td><code>empty()</code></td>
-                </tr>
-
-                <tr>
-                  <td><code>priority_queue</code></td>
-                  <td><code>push(x)</code></td>
-                  <td><code>top()</code></td>
-                  <td><code>pop()</code></td>
-                  <td><code>empty()</code></td>
-                </tr>
-
-                <tr>
-                  <td><code>deque</code></td>
                   <td>
-                    <code>push_front(x)</code><br>
+                    <code>vector</code>
+                  </td>
+
+                  <td>
+                    <code>vector&lt;int&gt; v;</code>
+                    <br>
+                    <code>vector&lt;int&gt; v(n, 0);</code>
+                  </td>
+
+                  <td>
                     <code>push_back(x)</code>
                   </td>
+
                   <td>
-                    <code>front()</code><br>
+                    <code>v[i]</code>
+                    <br>
+                    <code>front()</code>
+                    <br>
                     <code>back()</code>
                   </td>
+
                   <td>
-                    <code>pop_front()</code><br>
                     <code>pop_back()</code>
                   </td>
-                  <td><code>size()</code></td>
+
+                  <td>
+                    <code>size()</code>
+                    <br>
+                    <code>empty()</code>
+                  </td>
+
                 </tr>
 
+
+                <!-- STACK -->
+
                 <tr>
+
                   <td>
-                    <code>set</code><br>
+                    <code>stack</code>
+                  </td>
+
+                  <td>
+                    <code>stack&lt;int&gt; st;</code>
+                  </td>
+
+                  <td>
+                    <code>push(x)</code>
+                  </td>
+
+                  <td>
+                    <code>top()</code>
+                  </td>
+
+                  <td>
+                    <code>pop()</code>
+                  </td>
+
+                  <td>
+                    <code>empty()</code>
+                    <br>
+                    <code>size()</code>
+                  </td>
+
+                </tr>
+
+
+                <!-- QUEUE -->
+
+                <tr>
+
+                  <td>
+                    <code>queue</code>
+                  </td>
+
+                  <td>
+                    <code>queue&lt;int&gt; q;</code>
+                  </td>
+
+                  <td>
+                    <code>push(x)</code>
+                  </td>
+
+                  <td>
+                    <code>front()</code>
+                    <br>
+                    <code>back()</code>
+                  </td>
+
+                  <td>
+                    <code>pop()</code>
+                  </td>
+
+                  <td>
+                    <code>empty()</code>
+                    <br>
+                    <code>size()</code>
+                  </td>
+
+                </tr>
+
+
+                <!-- PRIORITY QUEUE -->
+
+                <tr>
+
+                  <td>
+                    <code>priority_queue</code>
+                  </td>
+
+                  <td>
+
+                    Max heap:
+                    <br>
+                    <code>priority_queue&lt;int&gt; pq;</code>
+
+                    <br><br>
+
+                    Min heap:
+                    <br>
+                    <code>
+                      priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; pq;
+                    </code>
+
+                  </td>
+
+                  <td>
+                    <code>push(x)</code>
+                  </td>
+
+                  <td>
+                    <code>top()</code>
+                  </td>
+
+                  <td>
+                    <code>pop()</code>
+                  </td>
+
+                  <td>
+                    <code>empty()</code>
+                    <br>
+                    <code>size()</code>
+                  </td>
+
+                </tr>
+
+
+                <!-- DEQUE -->
+
+                <tr>
+
+                  <td>
+                    <code>deque</code>
+                  </td>
+
+                  <td>
+                    <code>deque&lt;int&gt; dq;</code>
+                    <br>
+                    <code>deque&lt;int&gt; dq(n, 0);</code>
+                  </td>
+
+                  <td>
+                    <code>push_front(x)</code>
+                    <br>
+                    <code>push_back(x)</code>
+                  </td>
+
+                  <td>
+                    <code>front()</code>
+                    <br>
+                    <code>back()</code>
+                  </td>
+
+                  <td>
+                    <code>pop_front()</code>
+                    <br>
+                    <code>pop_back()</code>
+                  </td>
+
+                  <td>
+                    <code>size()</code>
+                    <br>
+                    <code>empty()</code>
+                  </td>
+
+                </tr>
+
+
+                <!-- SET -->
+
+                <tr>
+
+                  <td>
+                    <code>set</code>
+                    <br>
                     <code>unordered_set</code>
                   </td>
-                  <td><code>insert(x)</code></td>
-                  <td><code>find(x)</code></td>
-                  <td><code>erase(x)</code></td>
-                  <td><code>count(x)</code></td>
+
+                  <td>
+                    <code>set&lt;int&gt; s;</code>
+                    <br>
+                    <code>unordered_set&lt;int&gt; s;</code>
+                  </td>
+
+                  <td>
+                    <code>insert(x)</code>
+                  </td>
+
+                  <td>
+                    <code>find(x)</code>
+                  </td>
+
+                  <td>
+                    <code>erase(x)</code>
+                  </td>
+
+                  <td>
+                    <code>count(x)</code>
+                    <br>
+                    <code>size()</code>
+                  </td>
+
                 </tr>
 
+
+                <!-- MAP -->
+
                 <tr>
+
                   <td>
-                    <code>map</code><br>
+                    <code>map</code>
+                    <br>
                     <code>unordered_map</code>
                   </td>
-                  <td><code>mp[k] = v</code></td>
-                  <td><code>mp[k]</code></td>
-                  <td><code>erase(k)</code></td>
+
                   <td>
-                    <code>count(k)</code><br>
-                    <code>find(k)</code>
+                    <code>map&lt;int, int&gt; mp;</code>
+                    <br>
+                    <code>unordered_map&lt;int, int&gt; mp;</code>
                   </td>
+
+                  <td>
+                    <code>mp[key] = value</code>
+                    <br>
+                    <code>insert({k, v})</code>
+                  </td>
+
+                  <td>
+                    <code>mp[key]</code>
+                    <br>
+                    <code>find(key)</code>
+                  </td>
+
+                  <td>
+                    <code>erase(key)</code>
+                  </td>
+
+                  <td>
+                    <code>count(key)</code>
+                    <br>
+                    <code>size()</code>
+                  </td>
+
                 </tr>
+
+
+                <!-- PAIR -->
 
                 <tr>
-                  <td><code>pair</code></td>
-                  <td><code>{a, b}</code></td>
+
                   <td>
-                    <code>.first</code><br>
-                    <code>.second</code>
+                    <code>pair</code>
                   </td>
-                  <td>—</td>
-                  <td><code>auto [a,b] = p</code></td>
+
+                  <td>
+                    <code>pair&lt;int, int&gt; p = {1, 2};</code>
+                    <br>
+                    <code>auto p = make_pair(1, 2);</code>
+                  </td>
+
+                  <td>
+                    —
+                  </td>
+
+                  <td>
+                    <code>p.first</code>
+                    <br>
+                    <code>p.second</code>
+                  </td>
+
+                  <td>
+                    —
+                  </td>
+
+                  <td>
+                    <code>auto [a, b] = p;</code>
+                  </td>
+
                 </tr>
 
+
               </tbody>
+
             </table>
+
           </div>
 
         </div>
+
       </article>
 
 
-      <!-- Memory rules -->
+
+      <!-- ===================================================== -->
+      <!-- Memory Rules -->
+      <!-- ===================================================== -->
+
       <article class="card notes-card">
+
         <div class="card-body">
 
-          <div class="section-title">Memory Rules</div>
+          <div class="section-title">
+            Memory Rules
+          </div>
 
           <div class="phrase-grid">
-            <span>Vector has a back → push_back / pop_back</span>
-            <span>Stack / Queue / Heap → push / pop</span>
-            <span>Stack & Heap expose the top → top()</span>
-            <span>Queue exposes the next in line → front()</span>
-            <span>Set is a collection → insert / erase / count</span>
-            <span>Map is key → value → mp[key]</span>
-            <span>Pair has two fields → first / second</span>
-          </div>
 
-          <div class="note-callout">
-            If I need a tail while building a linked structure,
-            I should probably think about using a dummy node too.
+            <span>
+              Vector has a back → push_back / pop_back
+            </span>
+
+            <span>
+              Stack / Queue / Heap → push / pop
+            </span>
+
+            <span>
+              Stack & Heap expose the top → top()
+            </span>
+
+            <span>
+              Queue exposes the next in line → front()
+            </span>
+
+            <span>
+              Set is a collection → insert / erase / count
+            </span>
+
+            <span>
+              Map is key → value → mp[key]
+            </span>
+
+            <span>
+              Pair has two fields → first / second
+            </span>
+
           </div>
 
         </div>
+
       </article>
 
 
-      <!-- Interview gotchas -->
+
+      <!-- ===================================================== -->
+      <!-- Interview Gotchas -->
+      <!-- ===================================================== -->
+
       <article class="card notes-card">
+
         <div class="card-body">
 
-          <div class="section-title">Interview Gotchas</div>
+          <div class="section-title">
+            Interview Gotchas
+          </div>
+
+
+          <!-- pop -->
 
           <div class="note-block gotcha">
-            <strong>1. pop() removes — it does NOT return.</strong>
+
+            <strong>
+              1. pop() removes — it does NOT return.
+            </strong>
 
             <pre class="cheat-code"><code>// queue
 int x = q.front();
@@ -266,14 +550,20 @@ st.pop();
 // priority_queue
 int x = pq.top();
 pq.pop();</code></pre>
+
           </div>
 
 
+          <!-- map -->
+
           <div class="note-block gotcha">
-            <strong>2. mp[key] may create a missing key.</strong>
+
+            <strong>
+              2. mp[key] may create a missing key.
+            </strong>
 
             <p>
-              If you only want to check existence:
+              If you only want to check whether the key exists:
             </p>
 
             <pre class="cheat-code"><code>if (mp.count(key)) {
@@ -281,14 +571,21 @@ pq.pop();</code></pre>
 }
 
 // or
+
 if (mp.find(key) != mp.end()) {
     ...
 }</code></pre>
+
           </div>
 
 
+          <!-- structured binding -->
+
           <div class="note-block gotcha">
-            <strong>3. Structured binding makes pair/map code cleaner.</strong>
+
+            <strong>
+              3. Structured binding makes pair/map code cleaner.
+            </strong>
 
             <pre class="cheat-code"><code>pair&lt;int, int&gt; p = {3, 5};
 
@@ -298,111 +595,142 @@ auto [a, b] = p;
 for (auto&amp; [key, value] : mp) {
     ...
 }</code></pre>
+
           </div>
 
         </div>
+
       </article>
 
 
-      <!-- Useful declarations -->
+
+      <!-- ===================================================== -->
+      <!-- 10 Second Recall -->
+      <!-- ===================================================== -->
+
       <article class="card notes-card">
+
         <div class="card-body">
 
-          <div class="section-title">Common Declarations</div>
-
-          <pre class="cheat-code"><code>vector&lt;int&gt; v;
-
-stack&lt;int&gt; st;
-
-queue&lt;int&gt; q;
-
-priority_queue&lt;int&gt; maxHeap;
-
-priority_queue&lt;int,
-               vector&lt;int&gt;,
-               greater&lt;int&gt;&gt; minHeap;
-
-unordered_set&lt;int&gt; seen;
-
-unordered_map&lt;int, int&gt; mp;
-
-pair&lt;int, int&gt; p;</code></pre>
-
-        </div>
-      </article>
-
-
-      <!-- 10-second recall -->
-      <article class="card notes-card">
-        <div class="card-body">
-
-          <div class="section-title">10-Second Recall</div>
+          <div class="section-title">
+            10-Second Recall
+          </div>
 
           <pre class="cheat-code"><code>// vector
+vector&lt;int&gt; v;
 v.push_back(x);
 v.back();
 v.pop_back();
 
 
 // stack
+stack&lt;int&gt; st;
 st.push(x);
 st.top();
 st.pop();
 
 
 // queue
+queue&lt;int&gt; q;
 q.push(x);
 q.front();
 q.pop();
 
 
-// priority queue
+// max heap
+priority_queue&lt;int&gt; pq;
 pq.push(x);
 pq.top();
 pq.pop();
 
 
+// min heap
+priority_queue&lt;int,
+               vector&lt;int&gt;,
+               greater&lt;int&gt;&gt; pq;
+
+
 // set
+unordered_set&lt;int&gt; s;
 s.insert(x);
 s.count(x);
 s.erase(x);
 
 
-// unordered_map
+// map
+unordered_map&lt;int, int&gt; mp;
 mp[key] = value;
 mp.count(key);
 mp.erase(key);
 
 
 // pair
+pair&lt;int, int&gt; p = {1, 2};
 p.first;
 p.second;</code></pre>
 
         </div>
+
       </article>
 
 
-      <!-- Pattern association -->
+
+      <!-- ===================================================== -->
+      <!-- Pattern Association -->
+      <!-- ===================================================== -->
+
       <article class="card notes-card">
+
         <div class="card-body">
 
-          <div class="section-title">Which One Should Pop Into My Mind?</div>
+          <div class="section-title">
+            Which One Should Pop Into My Mind?
+          </div>
 
           <div class="phrase-grid">
-            <span>BFS → queue</span>
-            <span>DFS iterative → stack</span>
-            <span>Top K → priority_queue</span>
-            <span>Existence / visited → unordered_set</span>
-            <span>Key → value lookup → unordered_map</span>
-            <span>Dynamic array → vector</span>
-            <span>Two values traveling together → pair</span>
-            <span>Both ends matter → deque</span>
+
+            <span>
+              BFS → queue
+            </span>
+
+            <span>
+              DFS iterative → stack
+            </span>
+
+            <span>
+              Top K → priority_queue
+            </span>
+
+            <span>
+              Existence / visited → unordered_set
+            </span>
+
+            <span>
+              Key → value lookup → unordered_map
+            </span>
+
+            <span>
+              Dynamic array → vector
+            </span>
+
+            <span>
+              Two values traveling together → pair
+            </span>
+
+            <span>
+              Both ends matter → deque
+            </span>
+
           </div>
 
         </div>
+
       </article>
 
+
     </section>
+
   </main>
+
 </body>
 </html>
