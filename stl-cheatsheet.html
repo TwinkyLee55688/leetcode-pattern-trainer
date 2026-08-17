@@ -3,20 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Leetcode Pattern Trainer - STL Cheat Sheet</title>
 
-  <link rel="stylesheet" href="style.css?v=20260817-stl-cheatsheet-v2" />
+  <link rel="stylesheet" href="style.css?v=20260818-stl-v3" />
 
   <style>
+    /* =========================================================
+       STL Cheat Sheet V3
+       ========================================================= */
+
     .cheat-table-wrap {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      margin-top: 12px;
     }
 
     .cheat-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 920px;
+      min-width: 980px;
       font-size: 14px;
     }
 
@@ -43,15 +49,56 @@
     .cheat-code {
       overflow-x: auto;
       padding: 16px;
+      margin: 10px 0 0;
       border-radius: 14px;
       background: var(--code-bg);
       color: var(--code-text);
       font-size: 13px;
-      line-height: 1.7;
+      line-height: 1.65;
     }
 
     .cheat-code code {
       white-space: pre;
+    }
+
+    .visual-grid,
+    .pattern-grid,
+    .init-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .mini-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .mini-card h3 {
+      margin: 0 0 8px;
+      color: var(--heading);
+      font-size: 16px;
+    }
+
+    .mini-card p {
+      margin: 6px 0;
+      line-height: 1.55;
+    }
+
+    .mental-model {
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .pattern-label {
+      display: inline-block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      color: var(--heading);
     }
 
     .gotcha {
@@ -60,6 +107,14 @@
 
     .gotcha strong {
       color: var(--heading);
+    }
+
+    @media (max-width: 760px) {
+      .visual-grid,
+      .pattern-grid,
+      .init-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 640px) {
@@ -76,661 +131,1454 @@
       .cheat-table td {
         padding: 9px 8px;
       }
+
+      .cheat-code {
+        padding: 13px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 
+
 <body data-theme="dark">
 
-  <main class="app notes-app">
+<main class="app notes-app">
 
-    <!-- Header -->
-    <header class="app-header notes-header">
 
-      <div>
-        <h1>STL Interview Cheat Sheet</h1>
+  <!-- =========================================================
+       HEADER
+       ========================================================= -->
 
-        <p class="subtitle">
-          C++ operations worth making automatic before an interview.
-        </p>
-      </div>
+  <header class="app-header notes-header">
 
-      <div class="header-tools">
+    <div>
+      <h1>STL Interview Cheat Sheet</h1>
 
-        <a class="header-link" href="notes.html">
-          Notes
-        </a>
+      <p class="subtitle">
+        Syntax + mental models + patterns worth making automatic.
+      </p>
+    </div>
 
-        <a class="header-link" href="note2.html">
-          Graph Notes
-        </a>
+    <div class="header-tools">
 
-        <a class="header-link" href="trainer.html">
-          Back to Trainer
-        </a>
+      <a class="header-link" href="notes.html">
+        Notes
+      </a>
 
-      </div>
+      <a class="header-link" href="note2.html">
+        Graph Notes
+      </a>
 
-    </header>
+      <a class="header-link" href="trainer.html">
+        Back to Trainer
+      </a>
 
+    </div>
 
-    <section class="notes-layout">
+  </header>
 
 
-      <!-- ===================================================== -->
-      <!-- Core STL Operations -->
-      <!-- ===================================================== -->
+  <section class="notes-layout">
 
-      <article class="card notes-card">
 
-        <div class="card-body">
+    <!-- =========================================================
+         1. QUICK REFERENCE
+         ========================================================= -->
 
-          <div class="section-title">
-            Core STL Operations
-          </div>
+    <article class="card notes-card">
 
-          <div class="cheat-table-wrap">
+      <div class="card-body">
 
-            <table class="cheat-table">
+        <div class="section-title">
+          1. Quick Reference
+        </div>
 
-              <thead>
+        <div class="cheat-table-wrap">
 
-                <tr>
-                  <th>Structure</th>
-                  <th>Initialize</th>
-                  <th>Add</th>
-                  <th>Read</th>
-                  <th>Remove</th>
-                  <th>Common</th>
-                </tr>
+          <table class="cheat-table">
 
-              </thead>
+            <thead>
 
+              <tr>
+                <th>Structure</th>
+                <th>Initialize</th>
+                <th>Insert</th>
+                <th>Peek</th>
+                <th>Remove</th>
+                <th>Behavior</th>
+              </tr>
 
-              <tbody>
+            </thead>
 
 
-                <!-- VECTOR -->
+            <tbody>
 
-                <tr>
 
-                  <td>
-                    <code>vector</code>
-                  </td>
+              <!-- VECTOR -->
 
-                  <td>
-                    <code>vector&lt;int&gt; v;</code>
-                    <br>
-                    <code>vector&lt;int&gt; v(n, 0);</code>
-                  </td>
+              <tr>
 
-                  <td>
-                    <code>push_back(x)</code>
-                  </td>
+                <td>
+                  <code>vector</code>
+                </td>
 
-                  <td>
-                    <code>v[i]</code>
-                    <br>
-                    <code>front()</code>
-                    <br>
-                    <code>back()</code>
-                  </td>
+                <td>
+                  <code>vector&lt;int&gt; v;</code>
+                  <br>
+                  <code>vector&lt;int&gt; v(n, 0);</code>
+                </td>
 
-                  <td>
-                    <code>pop_back()</code>
-                  </td>
+                <td>
+                  <code>push_back(x)</code>
+                </td>
 
-                  <td>
-                    <code>size()</code>
-                    <br>
-                    <code>empty()</code>
-                  </td>
+                <td>
+                  <code>v[i]</code>
+                  <br>
+                  <code>front()</code>
+                  <br>
+                  <code>back()</code>
+                </td>
 
-                </tr>
+                <td>
+                  <code>pop_back()</code>
+                </td>
 
+                <td>
+                  Dynamic array
+                  <br>
+                  Random access O(1)
+                </td>
 
-                <!-- STACK -->
+              </tr>
 
-                <tr>
 
-                  <td>
-                    <code>stack</code>
-                  </td>
+              <!-- STACK -->
 
-                  <td>
-                    <code>stack&lt;int&gt; st;</code>
-                  </td>
+              <tr>
 
-                  <td>
-                    <code>push(x)</code>
-                  </td>
+                <td>
+                  <code>stack</code>
+                </td>
 
-                  <td>
-                    <code>top()</code>
-                  </td>
+                <td>
+                  <code>stack&lt;int&gt; st;</code>
+                </td>
 
-                  <td>
-                    <code>pop()</code>
-                  </td>
+                <td>
+                  <code>push(x)</code>
+                </td>
 
-                  <td>
-                    <code>empty()</code>
-                    <br>
-                    <code>size()</code>
-                  </td>
+                <td>
+                  <code>top()</code>
+                </td>
 
-                </tr>
+                <td>
+                  <code>pop()</code>
+                </td>
 
+                <td>
+                  LIFO
+                  <br>
+                  Last In First Out
+                </td>
 
-                <!-- QUEUE -->
+              </tr>
 
-                <tr>
 
-                  <td>
-                    <code>queue</code>
-                  </td>
+              <!-- QUEUE -->
 
-                  <td>
-                    <code>queue&lt;int&gt; q;</code>
-                  </td>
+              <tr>
 
-                  <td>
-                    <code>push(x)</code>
-                  </td>
+                <td>
+                  <code>queue</code>
+                </td>
 
-                  <td>
-                    <code>front()</code>
-                    <br>
-                    <code>back()</code>
-                  </td>
+                <td>
+                  <code>queue&lt;int&gt; q;</code>
+                  <br>
+                  <code>queue&lt;pair&lt;int,int&gt;&gt; q;</code>
+                </td>
 
-                  <td>
-                    <code>pop()</code>
-                  </td>
+                <td>
+                  <code>push(x)</code>
+                  <br>
+                  → BACK
+                </td>
 
-                  <td>
-                    <code>empty()</code>
-                    <br>
-                    <code>size()</code>
-                  </td>
+                <td>
+                  <code>front()</code>
+                  <br>
+                  <code>back()</code>
+                </td>
 
-                </tr>
+                <td>
+                  <code>pop()</code>
+                  <br>
+                  ← FRONT
+                </td>
 
+                <td>
+                  FIFO
+                  <br>
+                  BFS
+                </td>
 
-                <!-- PRIORITY QUEUE -->
+              </tr>
 
-                <tr>
 
-                  <td>
-                    <code>priority_queue</code>
-                  </td>
+              <!-- PRIORITY QUEUE -->
 
-                  <td>
+              <tr>
 
-                    Max heap:
-                    <br>
-                    <code>priority_queue&lt;int&gt; pq;</code>
+                <td>
+                  <code>priority_queue</code>
+                </td>
 
-                    <br><br>
+                <td>
+                  <code>priority_queue&lt;int&gt; pq;</code>
 
-                    Min heap:
-                    <br>
-                    <code>
-                      priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; pq;
-                    </code>
+                  <br><br>
 
-                  </td>
+                  <code>
+                    priority_queue&lt;int,
+                    vector&lt;int&gt;,
+                    greater&lt;int&gt;&gt; pq;
+                  </code>
+                </td>
 
-                  <td>
-                    <code>push(x)</code>
-                  </td>
+                <td>
+                  <code>push(x)</code>
+                </td>
 
-                  <td>
-                    <code>top()</code>
-                  </td>
+                <td>
+                  <code>top()</code>
+                </td>
 
-                  <td>
-                    <code>pop()</code>
-                  </td>
+                <td>
+                  <code>pop()</code>
+                </td>
 
-                  <td>
-                    <code>empty()</code>
-                    <br>
-                    <code>size()</code>
-                  </td>
+                <td>
+                  Default = Max Heap
+                  <br>
+                  <code>greater</code> = Min Heap
+                </td>
 
-                </tr>
+              </tr>
 
 
-                <!-- DEQUE -->
+              <!-- DEQUE -->
 
-                <tr>
+              <tr>
 
-                  <td>
-                    <code>deque</code>
-                  </td>
+                <td>
+                  <code>deque</code>
+                </td>
 
-                  <td>
-                    <code>deque&lt;int&gt; dq;</code>
-                    <br>
-                    <code>deque&lt;int&gt; dq(n, 0);</code>
-                  </td>
+                <td>
+                  <code>deque&lt;int&gt; dq;</code>
+                </td>
 
-                  <td>
-                    <code>push_front(x)</code>
-                    <br>
-                    <code>push_back(x)</code>
-                  </td>
+                <td>
+                  <code>push_front(x)</code>
+                  <br>
+                  <code>push_back(x)</code>
+                </td>
 
-                  <td>
-                    <code>front()</code>
-                    <br>
-                    <code>back()</code>
-                  </td>
+                <td>
+                  <code>front()</code>
+                  <br>
+                  <code>back()</code>
+                </td>
 
-                  <td>
-                    <code>pop_front()</code>
-                    <br>
-                    <code>pop_back()</code>
-                  </td>
+                <td>
+                  <code>pop_front()</code>
+                  <br>
+                  <code>pop_back()</code>
+                </td>
 
-                  <td>
-                    <code>size()</code>
-                    <br>
-                    <code>empty()</code>
-                  </td>
+                <td>
+                  Both ends accessible
+                </td>
 
-                </tr>
+              </tr>
 
 
-                <!-- SET -->
+              <!-- SET -->
 
-                <tr>
+              <tr>
 
-                  <td>
-                    <code>set</code>
-                    <br>
-                    <code>unordered_set</code>
-                  </td>
+                <td>
+                  <code>set</code>
+                  <br>
+                  <code>unordered_set</code>
+                </td>
 
-                  <td>
-                    <code>set&lt;int&gt; s;</code>
-                    <br>
-                    <code>unordered_set&lt;int&gt; s;</code>
-                  </td>
+                <td>
+                  <code>unordered_set&lt;int&gt; seen;</code>
+                </td>
 
-                  <td>
-                    <code>insert(x)</code>
-                  </td>
+                <td>
+                  <code>insert(x)</code>
+                </td>
 
-                  <td>
-                    <code>find(x)</code>
-                  </td>
+                <td>
+                  <code>count(x)</code>
+                  <br>
+                  <code>find(x)</code>
+                </td>
 
-                  <td>
-                    <code>erase(x)</code>
-                  </td>
+                <td>
+                  <code>erase(x)</code>
+                </td>
 
-                  <td>
-                    <code>count(x)</code>
-                    <br>
-                    <code>size()</code>
-                  </td>
+                <td>
+                  Existence
+                  <br>
+                  Visited
+                </td>
 
-                </tr>
+              </tr>
 
 
-                <!-- MAP -->
+              <!-- MAP -->
 
-                <tr>
+              <tr>
 
-                  <td>
-                    <code>map</code>
-                    <br>
-                    <code>unordered_map</code>
-                  </td>
+                <td>
+                  <code>map</code>
+                  <br>
+                  <code>unordered_map</code>
+                </td>
 
-                  <td>
-                    <code>map&lt;int, int&gt; mp;</code>
-                    <br>
-                    <code>unordered_map&lt;int, int&gt; mp;</code>
-                  </td>
+                <td>
+                  <code>unordered_map&lt;int,int&gt; mp;</code>
+                </td>
 
-                  <td>
-                    <code>mp[key] = value</code>
-                    <br>
-                    <code>insert({k, v})</code>
-                  </td>
+                <td>
+                  <code>mp[k] = v</code>
+                  <br>
+                  <code>insert({k,v})</code>
+                </td>
 
-                  <td>
-                    <code>mp[key]</code>
-                    <br>
-                    <code>find(key)</code>
-                  </td>
+                <td>
+                  <code>mp[k]</code>
+                  <br>
+                  <code>find(k)</code>
+                </td>
 
-                  <td>
-                    <code>erase(key)</code>
-                  </td>
+                <td>
+                  <code>erase(k)</code>
+                </td>
 
-                  <td>
-                    <code>count(key)</code>
-                    <br>
-                    <code>size()</code>
-                  </td>
+                <td>
+                  Key → Value
+                  <br>
+                  Frequency
+                </td>
 
-                </tr>
+              </tr>
 
 
-                <!-- PAIR -->
+              <!-- PAIR -->
 
-                <tr>
+              <tr>
 
-                  <td>
-                    <code>pair</code>
-                  </td>
+                <td>
+                  <code>pair</code>
+                </td>
 
-                  <td>
-                    <code>pair&lt;int, int&gt; p = {1, 2};</code>
-                    <br>
-                    <code>auto p = make_pair(1, 2);</code>
-                  </td>
+                <td>
+                  <code>pair&lt;int,int&gt; p = {1,2};</code>
+                  <br>
+                  <code>auto p = make_pair(1,2);</code>
+                </td>
 
-                  <td>
-                    —
-                  </td>
+                <td>
+                  —
+                </td>
 
-                  <td>
-                    <code>p.first</code>
-                    <br>
-                    <code>p.second</code>
-                  </td>
+                <td>
+                  <code>p.first</code>
+                  <br>
+                  <code>p.second</code>
+                </td>
 
-                  <td>
-                    —
-                  </td>
+                <td>
+                  —
+                </td>
 
-                  <td>
-                    <code>auto [a, b] = p;</code>
-                  </td>
+                <td>
+                  Two values travel together
+                </td>
 
-                </tr>
+              </tr>
 
 
-              </tbody>
+            </tbody>
 
-            </table>
-
-          </div>
+          </table>
 
         </div>
 
-      </article>
+      </div>
+
+    </article>
 
 
 
-      <!-- ===================================================== -->
-      <!-- Memory Rules -->
-      <!-- ===================================================== -->
+    <!-- =========================================================
+         2. VISUAL MEMORY
+         ========================================================= -->
 
-      <article class="card notes-card">
+    <article class="card notes-card">
 
-        <div class="card-body">
+      <div class="card-body">
 
-          <div class="section-title">
-            Memory Rules
-          </div>
-
-          <div class="phrase-grid">
-
-            <span>
-              Vector has a back → push_back / pop_back
-            </span>
-
-            <span>
-              Stack / Queue / Heap → push / pop
-            </span>
-
-            <span>
-              Stack & Heap expose the top → top()
-            </span>
-
-            <span>
-              Queue exposes the next in line → front()
-            </span>
-
-            <span>
-              Set is a collection → insert / erase / count
-            </span>
-
-            <span>
-              Map is key → value → mp[key]
-            </span>
-
-            <span>
-              Pair has two fields → first / second
-            </span>
-
-          </div>
-
+        <div class="section-title">
+          2. Visual Memory — Don't Memorize Blindly
         </div>
 
-      </article>
+
+        <div class="visual-grid">
 
 
+          <!-- STACK -->
 
-      <!-- ===================================================== -->
-      <!-- Interview Gotchas -->
-      <!-- ===================================================== -->
+          <div class="mini-card">
 
-      <article class="card notes-card">
+            <h3>Stack — LIFO</h3>
 
-        <div class="card-body">
+            <pre class="cheat-code"><code>        push(x)
+           ↓
+        ┌─────┐
+ top() →│  C  │← pop()
+        ├─────┤
+        │  B  │
+        ├─────┤
+        │  A  │
+        └─────┘
 
-          <div class="section-title">
-            Interview Gotchas
-          </div>
+Last In → First Out</code></pre>
 
-
-          <!-- pop -->
-
-          <div class="note-block gotcha">
-
-            <strong>
-              1. pop() removes — it does NOT return.
-            </strong>
-
-            <pre class="cheat-code"><code>// queue
-int x = q.front();
-q.pop();
-
-// stack
-int x = st.top();
-st.pop();
-
-// priority_queue
-int x = pq.top();
-pq.pop();</code></pre>
-
-          </div>
-
-
-          <!-- map -->
-
-          <div class="note-block gotcha">
-
-            <strong>
-              2. mp[key] may create a missing key.
-            </strong>
-
-            <p>
-              If you only want to check whether the key exists:
+            <p class="mental-model">
+              Think: a stack of plates.
             </p>
 
-            <pre class="cheat-code"><code>if (mp.count(key)) {
+          </div>
+
+
+          <!-- QUEUE -->
+
+          <div class="mini-card">
+
+            <h3>Queue — FIFO</h3>
+
+            <pre class="cheat-code"><code>pop() ← [ A ][ B ][ C ][ D ] ← push()
+          ↑               ↑
+       front()           back()
+
+First In → First Out
+
+push() → BACK
+pop()  ← FRONT</code></pre>
+
+            <p class="mental-model">
+              back() means “look at the back”.
+              It does NOT mean queue exposes push_back().
+            </p>
+
+          </div>
+
+
+          <!-- DEQUE -->
+
+          <div class="mini-card">
+
+            <h3>Deque — Both Ends</h3>
+
+            <pre class="cheat-code"><code>push_front()
+      ↓
+      [ A ][ B ][ C ]
+        ↑         ↑
+     front()    back()
+        ↓         ↓
+ pop_front()   pop_back()
+                  ↑
+             push_back()</code></pre>
+
+            <p class="mental-model">
+              Queue restricts you. Deque gives both ends.
+            </p>
+
+          </div>
+
+
+          <!-- PRIORITY QUEUE -->
+
+          <div class="mini-card">
+
+            <h3>Priority Queue — Heap</h3>
+
+            <pre class="cheat-code"><code>          top()
+            ↓
+          [ 9 ]
+         /     \
+       [ 7 ]   [ 5 ]
+       /   \
+     [ 2 ] [ 3 ]
+
+priority_queue&lt;int&gt;
+        ↓
+     MAX HEAP</code></pre>
+
+            <p class="mental-model">
+              top() = highest priority, not oldest element.
+            </p>
+
+          </div>
+
+
+          <!-- VECTOR -->
+
+          <div class="mini-card">
+
+            <h3>Vector — Dynamic Array</h3>
+
+            <pre class="cheat-code"><code>index    0     1     2     3
+         ↓     ↓     ↓     ↓
+       [ A ][ B ][ C ][ D ]
+         ↑               ↑
+      front()           back()
+                          ↑
+                     push_back()
+                     pop_back()
+
+Random access:
+v[i]</code></pre>
+
+          </div>
+
+
+          <!-- PAIR -->
+
+          <div class="mini-card">
+
+            <h3>Pair — Travel Together</h3>
+
+            <pre class="cheat-code"><code>pair&lt;string,int&gt;
+
+┌──────────────────┐
+│  "word"  │   3   │
+└──────────────────┘
+      ↑         ↑
+    first     second
+
+auto [word, steps] = p;</code></pre>
+
+            <p class="mental-model">
+              Useful when one object needs metadata.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- =========================================================
+         3. INITIALIZATION COOKBOOK
+         ========================================================= -->
+
+    <article class="card notes-card">
+
+      <div class="card-body">
+
+        <div class="section-title">
+          3. Initialization Cookbook
+        </div>
+
+
+        <div class="init-grid">
+
+
+          <!-- VECTOR -->
+
+          <div class="mini-card">
+
+            <h3>Vector</h3>
+
+            <pre class="cheat-code"><code>// Empty
+vector&lt;int&gt; v;
+
+
+// Size = n, initialized to 0
+vector&lt;int&gt; v(n, 0);
+
+
+// Size = n, initialized to -1
+vector&lt;int&gt; dist(n, -1);
+
+
+// Copy from another container
+vector&lt;int&gt; copy(nums.begin(), nums.end());
+
+
+// 2D matrix: m × n
+vector&lt;vector&lt;int&gt;&gt; grid(
+    m,
+    vector&lt;int&gt;(n, 0)
+);
+
+
+// Adjacency list
+vector&lt;vector&lt;int&gt;&gt; graph(n);
+
+
+// Weighted adjacency list
+vector&lt;vector&lt;pair&lt;int,int&gt;&gt;&gt; graph(n);</code></pre>
+
+          </div>
+
+
+          <!-- QUEUE -->
+
+          <div class="mini-card">
+
+            <h3>Queue</h3>
+
+            <pre class="cheat-code"><code>// Basic BFS
+queue&lt;int&gt; q;
+
+
+// Node + distance
+queue&lt;pair&lt;int,int&gt;&gt; q;
+
+q.push({start, 0});
+
+
+// Word + number of transformations
+queue&lt;pair&lt;string,int&gt;&gt; q;
+
+q.push({beginWord, 1});
+
+
+// Grid BFS: row + col
+queue&lt;pair&lt;int,int&gt;&gt; q;
+
+q.push({r, c});</code></pre>
+
+          </div>
+
+
+          <!-- SET -->
+
+          <div class="mini-card">
+
+            <h3>Set / Unordered Set</h3>
+
+            <pre class="cheat-code"><code>// Empty visited set
+unordered_set&lt;int&gt; seen;
+
+
+// String visited set
+unordered_set&lt;string&gt; visited;
+
+
+// Initialize directly from vector
+unordered_set&lt;string&gt; dict(
+    wordList.begin(),
+    wordList.end()
+);
+
+
+// Check existence
+if (dict.count(word)) {
     ...
 }
 
-// or
 
-if (mp.find(key) != mp.end()) {
+// find() version
+if (dict.find(word) != dict.end()) {
     ...
 }</code></pre>
 
           </div>
 
 
-          <!-- structured binding -->
+          <!-- MAP -->
 
-          <div class="note-block gotcha">
+          <div class="mini-card">
 
-            <strong>
-              3. Structured binding makes pair/map code cleaner.
-            </strong>
+            <h3>Map / Unordered Map</h3>
 
-            <pre class="cheat-code"><code>pair&lt;int, int&gt; p = {3, 5};
+            <pre class="cheat-code"><code>// Frequency table
+unordered_map&lt;int,int&gt; freq;
 
+for (int x : nums) {
+    freq[x]++;
+}
+
+
+// String → integer
+unordered_map&lt;string,int&gt; id;
+
+
+// Adjacency list
+unordered_map&lt;string,
+              vector&lt;string&gt;&gt; graph;
+
+
+// Weighted graph
+unordered_map&lt;
+    string,
+    vector&lt;pair&lt;string,double&gt;&gt;
+&gt; graph;
+
+
+graph["A"].push_back({"B", 2.0});
+graph["B"].push_back({"A", 0.5});</code></pre>
+
+          </div>
+
+
+          <!-- PRIORITY QUEUE -->
+
+          <div class="mini-card">
+
+            <h3>Priority Queue</h3>
+
+            <pre class="cheat-code"><code>// MAX HEAP
+priority_queue&lt;int&gt; pq;
+
+
+// MIN HEAP
+priority_queue&lt;
+    int,
+    vector&lt;int&gt;,
+    greater&lt;int&gt;
+&gt; pq;
+
+
+// Min heap of {distance, node}
+priority_queue&lt;
+    pair&lt;int,int&gt;,
+    vector&lt;pair&lt;int,int&gt;&gt;,
+    greater&lt;pair&lt;int,int&gt;&gt;
+&gt; pq;
+
+
+pq.push({0, start});</code></pre>
+
+          </div>
+
+
+          <!-- PAIR -->
+
+          <div class="mini-card">
+
+            <h3>Pair + Structured Binding</h3>
+
+            <pre class="cheat-code"><code>pair&lt;int,int&gt; p = {3, 5};
+
+
+// Read
+int a = p.first;
+int b = p.second;
+
+
+// Cleaner
 auto [a, b] = p;
 
 
-for (auto&amp; [key, value] : mp) {
-    ...
-}</code></pre>
+// Pair inside queue
+queue&lt;pair&lt;int,int&gt;&gt; q;
+
+q.push({node, distance});
+
+auto [node, dist] = q.front();
+
+
+// Pair inside vector
+vector&lt;pair&lt;int,int&gt;&gt; edges;
+
+edges.push_back({u, v});</code></pre>
 
           </div>
+
 
         </div>
 
-      </article>
+      </div>
+
+    </article>
 
 
 
-      <!-- ===================================================== -->
-      <!-- 10 Second Recall -->
-      <!-- ===================================================== -->
+    <!-- =========================================================
+         4. INTERVIEW PATTERNS
+         ========================================================= -->
 
-      <article class="card notes-card">
+    <article class="card notes-card">
 
-        <div class="card-body">
+      <div class="card-body">
 
-          <div class="section-title">
-            10-Second Recall
+        <div class="section-title">
+          4. Interview Patterns — Structure → Code
+        </div>
+
+
+        <div class="pattern-grid">
+
+
+          <!-- BFS -->
+
+          <div class="mini-card">
+
+            <span class="pattern-label">
+              BFS → queue
+            </span>
+
+            <pre class="cheat-code"><code>queue&lt;pair&lt;int,int&gt;&gt; q;
+unordered_set&lt;int&gt; visited;
+
+q.push({start, 0});
+visited.insert(start);
+
+while (!q.empty()) {
+
+    auto [node, dist] = q.front();
+    q.pop();
+
+    if (node == target)
+        return dist;
+
+    for (int nei : graph[node]) {
+
+        if (!visited.count(nei)) {
+
+            visited.insert(nei);
+
+            q.push({
+                nei,
+                dist + 1
+            });
+        }
+    }
+}</code></pre>
+
+            <p>
+              Queue preserves level / distance order.
+            </p>
+
           </div>
 
-          <pre class="cheat-code"><code>// vector
-vector&lt;int&gt; v;
+
+          <!-- WORD LADDER -->
+
+          <div class="mini-card">
+
+            <span class="pattern-label">
+              Word Mutation BFS
+            </span>
+
+            <pre class="cheat-code"><code>unordered_set&lt;string&gt; dict(
+    wordList.begin(),
+    wordList.end()
+);
+
+queue&lt;pair&lt;string,int&gt;&gt; q;
+
+q.push({beginWord, 1});
+
+
+while (!q.empty()) {
+
+    auto [word, steps] = q.front();
+    q.pop();
+
+    if (word == endWord)
+        return steps;
+
+    for (int i = 0;
+         i &lt; word.size();
+         i++) {
+
+        string next = word;
+
+        for (char c = 'a';
+             c &lt;= 'z';
+             c++) {
+
+            next[i] = c;
+
+            if (dict.count(next)) {
+
+                dict.erase(next);
+
+                q.push({
+                    next,
+                    steps + 1
+                });
+            }
+        }
+    }
+}</code></pre>
+
+            <p>
+              Mutation problem → implicit graph → BFS.
+            </p>
+
+          </div>
+
+
+          <!-- FREQUENCY MAP -->
+
+          <div class="mini-card">
+
+            <span class="pattern-label">
+              Frequency → unordered_map
+            </span>
+
+            <pre class="cheat-code"><code>unordered_map&lt;int,int&gt; freq;
+
+for (int x : nums) {
+    freq[x]++;
+}
+
+
+for (auto&amp; [value, count] : freq) {
+
+    cout &lt;&lt; value
+         &lt;&lt; " appears "
+         &lt;&lt; count
+         &lt;&lt; " times";
+}</code></pre>
+
+            <p>
+              Need value → count? Think hash map.
+            </p>
+
+          </div>
+
+
+          <!-- DIJKSTRA -->
+
+          <div class="mini-card">
+
+            <span class="pattern-label">
+              Dijkstra → Min Heap
+            </span>
+
+            <pre class="cheat-code"><code>using P = pair&lt;int,int&gt;;
+// {distance, node}
+
+priority_queue&lt;
+    P,
+    vector&lt;P&gt;,
+    greater&lt;P&gt;
+&gt; pq;
+
+vector&lt;int&gt; dist(n, INT_MAX);
+
+dist[start] = 0;
+pq.push({0, start});
+
+
+while (!pq.empty()) {
+
+    auto [d, node] = pq.top();
+    pq.pop();
+
+    if (d &gt; dist[node])
+        continue;
+
+    for (auto [nei, weight]
+         : graph[node]) {
+
+        int nd = d + weight;
+
+        if (nd &lt; dist[nei]) {
+
+            dist[nei] = nd;
+
+            pq.push({
+                nd,
+                nei
+            });
+        }
+    }
+}</code></pre>
+
+            <p>
+              Need the smallest current distance → min heap.
+            </p>
+
+          </div>
+
+
+          <!-- MONOTONIC STACK -->
+
+          <div class="mini-card">
+
+            <span class="pattern-label">
+              Next Greater → Monotonic Stack
+            </span>
+
+            <pre class="cheat-code"><code>stack&lt;int&gt; st;
+// store indices
+
+for (int i = 0;
+     i &lt; nums.size();
+     i++) {
+
+    while (!st.empty() &amp;&amp;
+           nums[st.top()] &lt; nums[i]) {
+
+        int j = st.top();
+        st.pop();
+
+        ans[j] = i - j;
+    }
+
+    st.push(i);
+}</code></pre>
+
+            <p>
+              Stack often stores indices, not values.
+            </p>
+
+          </div>
+
+
+          <!-- SLIDING WINDOW MAX -->
+
+          <div class="mini-card">
+
+            <span class="pattern-label">
+              Sliding Window Maximum → deque
+            </span>
+
+            <pre class="cheat-code"><code>deque&lt;int&gt; dq;
+// store indices
+
+for (int i = 0;
+     i &lt; nums.size();
+     i++) {
+
+    // Remove expired index
+    if (!dq.empty() &amp;&amp;
+        dq.front() &lt;= i - k) {
+
+        dq.pop_front();
+    }
+
+
+    // Maintain decreasing values
+    while (!dq.empty() &amp;&amp;
+           nums[dq.back()] &lt;= nums[i]) {
+
+        dq.pop_back();
+    }
+
+
+    dq.push_back(i);
+
+
+    if (i &gt;= k - 1) {
+
+        ans.push_back(
+            nums[dq.front()]
+        );
+    }
+}</code></pre>
+
+            <p>
+              Need both ends → deque, not queue.
+            </p>
+
+          </div>
+
+
+          <!-- WEIGHTED GRAPH -->
+
+          <div class="mini-card">
+
+            <span class="pattern-label">
+              Weighted Graph → pair
+            </span>
+
+            <pre class="cheat-code"><code>vector&lt;
+    vector&lt;pair&lt;int,int&gt;&gt;
+&gt; graph(n);
+
+
+// edge: u → v, weight w
+graph[u].push_back({v, w});
+
+
+for (auto [nei, weight]
+     : graph[u]) {
+
+    cout &lt;&lt; nei
+         &lt;&lt; " "
+         &lt;&lt; weight;
+}</code></pre>
+
+            <p>
+              Neighbor and weight must travel together.
+            </p>
+
+          </div>
+
+
+          <!-- LEVEL ORDER -->
+
+          <div class="mini-card">
+
+            <span class="pattern-label">
+              Level Order → queue
+            </span>
+
+            <pre class="cheat-code"><code>queue&lt;TreeNode*&gt; q;
+
+q.push(root);
+
+
+while (!q.empty()) {
+
+    int size = q.size();
+
+    for (int i = 0;
+         i &lt; size;
+         i++) {
+
+        TreeNode* node = q.front();
+        q.pop();
+
+        if (node-&gt;left)
+            q.push(node-&gt;left);
+
+        if (node-&gt;right)
+            q.push(node-&gt;right);
+    }
+
+    // One whole level finished here
+}</code></pre>
+
+            <p>
+              Snapshot q.size() before processing a level.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- =========================================================
+         5. GOTCHAS
+         ========================================================= -->
+
+    <article class="card notes-card">
+
+      <div class="card-body">
+
+        <div class="section-title">
+          5. Interview Gotchas
+        </div>
+
+
+        <div class="note-block gotcha">
+
+          <strong>
+            1. pop() removes — it does NOT return.
+          </strong>
+
+          <pre class="cheat-code"><code>// Queue
+int x = q.front();
+q.pop();
+
+
+// Stack
+int x = st.top();
+st.pop();
+
+
+// Heap
+int x = pq.top();
+pq.pop();</code></pre>
+
+        </div>
+
+
+        <div class="note-block gotcha">
+
+          <strong>
+            2. mp[key] can INSERT a missing key.
+          </strong>
+
+          <pre class="cheat-code"><code>unordered_map&lt;string,int&gt; mp;
+
+
+// This may create "apple"
+int x = mp["apple"];
+
+
+// Only checking existence?
+if (mp.count("apple")) {
+    ...
+}
+
+
+// Or
+if (mp.find("apple") != mp.end()) {
+    ...
+}</code></pre>
+
+        </div>
+
+
+        <div class="note-block gotcha">
+
+          <strong>
+            3. queue is intentionally restrictive.
+          </strong>
+
+          <pre class="cheat-code"><code>queue&lt;int&gt; q;
+
+q.push(x);       // add BACK
+
+q.front();       // peek FRONT
+q.back();        // peek BACK
+
+q.pop();         // remove FRONT
+
+
+// NOT AVAILABLE:
+q.push_front(x); // ❌
+q.pop_back();    // ❌</code></pre>
+
+          <p>
+            A queue is a container adapter.
+            It intentionally hides operations that could violate FIFO.
+          </p>
+
+        </div>
+
+
+        <div class="note-block gotcha">
+
+          <strong>
+            4. priority_queue is MAX heap by default.
+          </strong>
+
+          <pre class="cheat-code"><code>// Largest element first
+priority_queue&lt;int&gt; maxHeap;
+
+
+// Smallest element first
+priority_queue&lt;
+    int,
+    vector&lt;int&gt;,
+    greater&lt;int&gt;
+&gt; minHeap;</code></pre>
+
+        </div>
+
+
+        <div class="note-block gotcha">
+
+          <strong>
+            5. Insert into visited when ENQUEUING.
+          </strong>
+
+          <pre class="cheat-code"><code>if (!visited.count(nei)) {
+
+    visited.insert(nei);
+
+    q.push(nei);
+}</code></pre>
+
+          <p>
+            Don't wait until pop(), or the same node may be
+            enqueued many times.
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </article>
+
+
+
+    <!-- =========================================================
+         6. 10 SECOND RECALL
+         ========================================================= -->
+
+    <article class="card notes-card">
+
+      <div class="card-body">
+
+        <div class="section-title">
+          6. 10-Second Recall
+        </div>
+
+        <pre class="cheat-code"><code>// VECTOR
+vector&lt;int&gt; v(n, 0);
 v.push_back(x);
-v.back();
+v[i];
 v.pop_back();
 
 
-// stack
+// STACK
 stack&lt;int&gt; st;
 st.push(x);
 st.top();
 st.pop();
 
 
-// queue
+// QUEUE
 queue&lt;int&gt; q;
-q.push(x);
+q.push(x);        // BACK
 q.front();
-q.pop();
+q.back();
+q.pop();          // FRONT
 
 
-// max heap
-priority_queue&lt;int&gt; pq;
-pq.push(x);
-pq.top();
-pq.pop();
+// DEQUE
+deque&lt;int&gt; dq;
+dq.push_front(x);
+dq.push_back(x);
+dq.front();
+dq.back();
+dq.pop_front();
+dq.pop_back();
 
 
-// min heap
-priority_queue&lt;int,
-               vector&lt;int&gt;,
-               greater&lt;int&gt;&gt; pq;
+// MAX HEAP
+priority_queue&lt;int&gt; maxHeap;
 
 
-// set
-unordered_set&lt;int&gt; s;
-s.insert(x);
-s.count(x);
-s.erase(x);
+// MIN HEAP
+priority_queue&lt;
+    int,
+    vector&lt;int&gt;,
+    greater&lt;int&gt;
+&gt; minHeap;
 
 
-// map
-unordered_map&lt;int, int&gt; mp;
+// SET
+unordered_set&lt;int&gt; seen;
+seen.insert(x);
+seen.count(x);
+seen.erase(x);
+
+
+// MAP
+unordered_map&lt;int,int&gt; mp;
 mp[key] = value;
 mp.count(key);
 mp.erase(key);
 
 
-// pair
-pair&lt;int, int&gt; p = {1, 2};
-p.first;
-p.second;</code></pre>
+// PAIR
+pair&lt;int,int&gt; p = {node, dist};
+
+auto [node, dist] = p;</code></pre>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- =========================================================
+         FINAL MENTAL MAP
+         ========================================================= -->
+
+    <article class="card notes-card">
+
+      <div class="card-body">
+
+        <div class="section-title">
+          Final Mental Map
+        </div>
+
+        <div class="phrase-grid">
+
+          <span>
+            BFS → queue
+          </span>
+
+          <span>
+            DFS iterative → stack
+          </span>
+
+          <span>
+            Level order → queue + q.size()
+          </span>
+
+          <span>
+            Shortest weighted path → min heap
+          </span>
+
+          <span>
+            Top K → priority_queue
+          </span>
+
+          <span>
+            Visited / existence → unordered_set
+          </span>
+
+          <span>
+            Frequency → unordered_map
+          </span>
+
+          <span>
+            Neighbor + weight → pair
+          </span>
+
+          <span>
+            Node + distance → pair
+          </span>
+
+          <span>
+            Both ends → deque
+          </span>
+
+          <span>
+            Next greater / smaller → monotonic stack
+          </span>
+
+          <span>
+            Matrix → vector&lt;vector&lt;T&gt;&gt;
+          </span>
 
         </div>
 
-      </article>
+      </div>
+
+    </article>
 
 
+  </section>
 
-      <!-- ===================================================== -->
-      <!-- Pattern Association -->
-      <!-- ===================================================== -->
-
-      <article class="card notes-card">
-
-        <div class="card-body">
-
-          <div class="section-title">
-            Which One Should Pop Into My Mind?
-          </div>
-
-          <div class="phrase-grid">
-
-            <span>
-              BFS → queue
-            </span>
-
-            <span>
-              DFS iterative → stack
-            </span>
-
-            <span>
-              Top K → priority_queue
-            </span>
-
-            <span>
-              Existence / visited → unordered_set
-            </span>
-
-            <span>
-              Key → value lookup → unordered_map
-            </span>
-
-            <span>
-              Dynamic array → vector
-            </span>
-
-            <span>
-              Two values traveling together → pair
-            </span>
-
-            <span>
-              Both ends matter → deque
-            </span>
-
-          </div>
-
-        </div>
-
-      </article>
-
-
-    </section>
-
-  </main>
+</main>
 
 </body>
 </html>
