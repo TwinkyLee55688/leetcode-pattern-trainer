@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leetcode Pattern Trainer - STL Cheat Sheet</title>
+
+  <link rel="stylesheet" href="style.css?v=20260817-stl-cheatsheet" />
+
+  <style>
+    .cheat-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .cheat-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+      font-size: 14px;
+    }
+
+    .cheat-table th,
+    .cheat-table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .cheat-table th {
+      color: var(--heading);
+      background: var(--surface);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .cheat-table code,
+    .mini-code {
+      white-space: nowrap;
+    }
+
+    .memory-rule {
+      margin: 8px 0;
+      font-weight: 700;
+    }
+
+    .cheat-code {
+      overflow-x: auto;
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .cheat-code code {
+      white-space: pre;
+    }
+
+    .gotcha {
+      margin-top: 14px;
+    }
+
+    .gotcha strong {
+      color: var(--heading);
+    }
+
+    @media (max-width: 640px) {
+      .notes-app {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .notes-card .card-body {
+        padding: 16px;
+      }
+
+      .cheat-table th,
+      .cheat-table td {
+        padding: 9px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <main class="app notes-app">
+
+    <header class="app-header notes-header">
+      <div>
+        <h1>STL Interview Cheat Sheet</h1>
+        <p class="subtitle">
+          C++ operations worth making automatic before an interview.
+        </p>
+      </div>
+
+      <div class="header-tools">
+        <a class="header-link" href="notes.html">Notes</a>
+        <a class="header-link" href="note2.html">Graph Notes</a>
+        <a class="header-link" href="trainer.html">Back to Trainer</a>
+      </div>
+    </header>
+
+
+    <section class="notes-layout">
+
+      <!-- Core operations -->
+      <article class="card notes-card">
+        <div class="card-body">
+
+          <div class="section-title">Core STL Operations</div>
+
+          <div class="cheat-table-wrap">
+            <table class="cheat-table">
+
+              <thead>
+                <tr>
+                  <th>Structure</th>
+                  <th>Add</th>
+                  <th>Read</th>
+                  <th>Remove</th>
+                  <th>Common</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr>
+                  <td><code>vector</code></td>
+                  <td><code>push_back(x)</code></td>
+                  <td><code>v[i]</code><br><code>back()</code></td>
+                  <td><code>pop_back()</code></td>
+                  <td><code>size()</code></td>
+                </tr>
+
+                <tr>
+                  <td><code>stack</code></td>
+                  <td><code>push(x)</code></td>
+                  <td><code>top()</code></td>
+                  <td><code>pop()</code></td>
+                  <td><code>empty()</code></td>
+                </tr>
+
+                <tr>
+                  <td><code>queue</code></td>
+                  <td><code>push(x)</code></td>
+                  <td><code>front()</code></td>
+                  <td><code>pop()</code></td>
+                  <td><code>empty()</code></td>
+                </tr>
+
+                <tr>
+                  <td><code>priority_queue</code></td>
+                  <td><code>push(x)</code></td>
+                  <td><code>top()</code></td>
+                  <td><code>pop()</code></td>
+                  <td><code>empty()</code></td>
+                </tr>
+
+                <tr>
+                  <td><code>deque</code></td>
+                  <td>
+                    <code>push_front(x)</code><br>
+                    <code>push_back(x)</code>
+                  </td>
+                  <td>
+                    <code>front()</code><br>
+                    <code>back()</code>
+                  </td>
+                  <td>
+                    <code>pop_front()</code><br>
+                    <code>pop_back()</code>
+                  </td>
+                  <td><code>size()</code></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <code>set</code><br>
+                    <code>unordered_set</code>
+                  </td>
+                  <td><code>insert(x)</code></td>
+                  <td><code>find(x)</code></td>
+                  <td><code>erase(x)</code></td>
+                  <td><code>count(x)</code></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <code>map</code><br>
+                    <code>unordered_map</code>
+                  </td>
+                  <td><code>mp[k] = v</code></td>
+                  <td><code>mp[k]</code></td>
+                  <td><code>erase(k)</code></td>
+                  <td>
+                    <code>count(k)</code><br>
+                    <code>find(k)</code>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td><code>pair</code></td>
+                  <td><code>{a, b}</code></td>
+                  <td>
+                    <code>.first</code><br>
+                    <code>.second</code>
+                  </td>
+                  <td>—</td>
+                  <td><code>auto [a,b] = p</code></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </article>
+
+
+      <!-- Memory rules -->
+      <article class="card notes-card">
+        <div class="card-body">
+
+          <div class="section-title">Memory Rules</div>
+
+          <div class="phrase-grid">
+            <span>Vector has a back → push_back / pop_back</span>
+            <span>Stack / Queue / Heap → push / pop</span>
+            <span>Stack & Heap expose the top → top()</span>
+            <span>Queue exposes the next in line → front()</span>
+            <span>Set is a collection → insert / erase / count</span>
+            <span>Map is key → value → mp[key]</span>
+            <span>Pair has two fields → first / second</span>
+          </div>
+
+          <div class="note-callout">
+            If I need a tail while building a linked structure,
+            I should probably think about using a dummy node too.
+          </div>
+
+        </div>
+      </article>
+
+
+      <!-- Interview gotchas -->
+      <article class="card notes-card">
+        <div class="card-body">
+
+          <div class="section-title">Interview Gotchas</div>
+
+          <div class="note-block gotcha">
+            <strong>1. pop() removes — it does NOT return.</strong>
+
+            <pre class="cheat-code"><code>// queue
+int x = q.front();
+q.pop();
+
+// stack
+int x = st.top();
+st.pop();
+
+// priority_queue
+int x = pq.top();
+pq.pop();</code></pre>
+          </div>
+
+
+          <div class="note-block gotcha">
+            <strong>2. mp[key] may create a missing key.</strong>
+
+            <p>
+              If you only want to check existence:
+            </p>
+
+            <pre class="cheat-code"><code>if (mp.count(key)) {
+    ...
+}
+
+// or
+if (mp.find(key) != mp.end()) {
+    ...
+}</code></pre>
+          </div>
+
+
+          <div class="note-block gotcha">
+            <strong>3. Structured binding makes pair/map code cleaner.</strong>
+
+            <pre class="cheat-code"><code>pair&lt;int, int&gt; p = {3, 5};
+
+auto [a, b] = p;
+
+
+for (auto&amp; [key, value] : mp) {
+    ...
+}</code></pre>
+          </div>
+
+        </div>
+      </article>
+
+
+      <!-- Useful declarations -->
+      <article class="card notes-card">
+        <div class="card-body">
+
+          <div class="section-title">Common Declarations</div>
+
+          <pre class="cheat-code"><code>vector&lt;int&gt; v;
+
+stack&lt;int&gt; st;
+
+queue&lt;int&gt; q;
+
+priority_queue&lt;int&gt; maxHeap;
+
+priority_queue&lt;int,
+               vector&lt;int&gt;,
+               greater&lt;int&gt;&gt; minHeap;
+
+unordered_set&lt;int&gt; seen;
+
+unordered_map&lt;int, int&gt; mp;
+
+pair&lt;int, int&gt; p;</code></pre>
+
+        </div>
+      </article>
+
+
+      <!-- 10-second recall -->
+      <article class="card notes-card">
+        <div class="card-body">
+
+          <div class="section-title">10-Second Recall</div>
+
+          <pre class="cheat-code"><code>// vector
+v.push_back(x);
+v.back();
+v.pop_back();
+
+
+// stack
+st.push(x);
+st.top();
+st.pop();
+
+
+// queue
+q.push(x);
+q.front();
+q.pop();
+
+
+// priority queue
+pq.push(x);
+pq.top();
+pq.pop();
+
+
+// set
+s.insert(x);
+s.count(x);
+s.erase(x);
+
+
+// unordered_map
+mp[key] = value;
+mp.count(key);
+mp.erase(key);
+
+
+// pair
+p.first;
+p.second;</code></pre>
+
+        </div>
+      </article>
+
+
+      <!-- Pattern association -->
+      <article class="card notes-card">
+        <div class="card-body">
+
+          <div class="section-title">Which One Should Pop Into My Mind?</div>
+
+          <div class="phrase-grid">
+            <span>BFS → queue</span>
+            <span>DFS iterative → stack</span>
+            <span>Top K → priority_queue</span>
+            <span>Existence / visited → unordered_set</span>
+            <span>Key → value lookup → unordered_map</span>
+            <span>Dynamic array → vector</span>
+            <span>Two values traveling together → pair</span>
+            <span>Both ends matter → deque</span>
+          </div>
+
+        </div>
+      </article>
+
+    </section>
+  </main>
+</body>
+</html>
