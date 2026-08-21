@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Leetcode Pattern Trainer - Complexity Cheat Sheet</title>
+
+  <link rel="stylesheet" href="style.css?v=20260821-complexity-v1" />
+
+  <style>
+    .table-wrap {
+      position: relative;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .complexity-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 980px;
+      font-size: 14px;
+    }
+
+    .complexity-table th,
+    .complexity-table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+      background: var(--card);
+    }
+
+    .complexity-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .complexity-table th {
+      color: var(--heading);
+      background: var(--surface);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .complexity-table th:first-child,
+    .complexity-table td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      min-width: 150px;
+      border-right: 1px solid var(--border);
+      box-shadow: 5px 0 10px rgba(0, 0, 0, .06);
+    }
+
+    .complexity-table th:first-child {
+      z-index: 3;
+      background: var(--surface);
+    }
+
+    .complexity-table td:first-child {
+      background: var(--card);
+      color: var(--heading);
+      font-weight: 800;
+    }
+
+    .complexity-table code {
+      white-space: nowrap;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .mini-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+    }
+
+    .mini-card h3 {
+      margin: 0 0 8px;
+      color: var(--heading);
+      font-size: 16px;
+    }
+
+    .mini-card p {
+      margin: 6px 0;
+      line-height: 1.55;
+    }
+
+    .cheat-code {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 14px;
+      margin: 10px 0 0;
+      border-radius: 14px;
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .cheat-code code {
+      white-space: pre;
+    }
+
+    .scroll-hint {
+      display: none;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-line {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .fast {
+      font-weight: 800;
+    }
+
+    @media (max-width: 760px) {
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .scroll-hint {
+        display: block;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .notes-app {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .notes-card .card-body {
+        padding: 16px;
+      }
+
+      .complexity-table th,
+      .complexity-table td {
+        padding: 9px 8px;
+      }
+
+      .complexity-table th:first-child,
+      .complexity-table td:first-child {
+        min-width: 125px;
+      }
+
+      .cheat-code {
+        font-size: 12px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+
+<main class="app notes-app">
+
+  <header class="app-header notes-header">
+    <div>
+      <h1>Complexity Cheat Sheet</h1>
+      <p class="subtitle">
+        Data structures, sorting, searching, and common interview algorithms.
+      </p>
+    </div>
+
+    <div class="header-tools">
+      <a class="header-link" href="notes.html">Notes</a>
+      <a class="header-link" href="stl-cheatsheet.html">STL Cheat Sheet</a>
+      <a class="header-link" href="trainer.html">Back to Trainer</a>
+    </div>
+  </header>
+
+
+  <section class="notes-layout">
+
+    <!-- =====================================================
+         1. DATA STRUCTURES
+         ===================================================== -->
+
+    <article class="card notes-card">
+      <div class="card-body">
+
+        <div class="section-title">
+          1. Data Structure Complexity
+        </div>
+
+        <p class="scroll-hint">
+          ↔ Swipe horizontally. The structure column stays pinned.
+        </p>
+
+        <div class="table-wrap">
+          <table class="complexity-table">
+
+            <thead>
+              <tr>
+                <th>Structure</th>
+                <th>Access</th>
+                <th>Search</th>
+                <th>Insert</th>
+                <th>Delete</th>
+                <th>Space</th>
+                <th>Interview Note</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>Array / Vector</td>
+                <td><strong>O(1)</strong></td>
+                <td>O(n)</td>
+                <td>
+                  end: amortized O(1)<br>
+                  middle: O(n)
+                </td>
+                <td>
+                  end: O(1)<br>
+                  middle: O(n)
+                </td>
+                <td>O(n)</td>
+                <td>Random access is the main advantage.</td>
+              </tr>
+
+              <tr>
+                <td>Linked List</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>
+                  known node: O(1)
+                </td>
+                <td>
+                  known node: O(1)
+                </td>
+                <td>O(n)</td>
+                <td>No random access. Pointer rewiring is cheap.</td>
+              </tr>
+
+              <tr>
+                <td>Stack</td>
+                <td>
+                  top: <strong>O(1)</strong>
+                </td>
+                <td>—</td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+                <td>O(n)</td>
+                <td>LIFO. Useful for DFS and monotonic stack.</td>
+              </tr>
+
+              <tr>
+                <td>Queue</td>
+                <td>
+                  front/back: <strong>O(1)</strong>
+                </td>
+                <td>—</td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+                <td>O(n)</td>
+                <td>FIFO. Standard BFS structure.</td>
+              </tr>
+
+              <tr>
+                <td>Deque</td>
+                <td>
+                  front/back: <strong>O(1)</strong>
+                </td>
+                <td>O(n)</td>
+                <td>
+                  either end: O(1)
+                </td>
+                <td>
+                  either end: O(1)
+                </td>
+                <td>O(n)</td>
+                <td>Use when both ends matter.</td>
+              </tr>
+
+              <tr>
+                <td>Heap / Priority Queue</td>
+                <td>
+                  top: <strong>O(1)</strong>
+                </td>
+                <td>—</td>
+                <td>O(log n)</td>
+                <td>O(log n)</td>
+                <td>O(n)</td>
+                <td>Top K, scheduling, Dijkstra.</td>
+              </tr>
+
+              <tr>
+                <td>Hash Set / Hash Map</td>
+                <td>—</td>
+                <td>
+                  avg <strong>O(1)</strong><br>
+                  worst O(n)
+                </td>
+                <td>
+                  avg <strong>O(1)</strong><br>
+                  worst O(n)
+                </td>
+                <td>
+                  avg <strong>O(1)</strong><br>
+                  worst O(n)
+                </td>
+                <td>O(n)</td>
+                <td>Default choice when ordering is irrelevant.</td>
+              </tr>
+
+              <tr>
+                <td>Tree Set / Tree Map</td>
+                <td>—</td>
+                <td>O(log n)</td>
+                <td>O(log n)</td>
+                <td>O(log n)</td>
+                <td>O(n)</td>
+                <td>Ordered keys. Usually balanced BST.</td>
+              </tr>
+
+              <tr>
+                <td>Balanced BST</td>
+                <td>O(log n)</td>
+                <td>O(log n)</td>
+                <td>O(log n)</td>
+                <td>O(log n)</td>
+                <td>O(n)</td>
+                <td>Assumes balanced tree.</td>
+              </tr>
+
+              <tr>
+                <td>Graph Adjacency List</td>
+                <td>neighbors: O(deg(v))</td>
+                <td>edge check: O(deg(v))</td>
+                <td>edge: O(1)</td>
+                <td>depends</td>
+                <td>O(V + E)</td>
+                <td>Best for sparse graphs.</td>
+              </tr>
+
+              <tr>
+                <td>Graph Adjacency Matrix</td>
+                <td>edge check: O(1)</td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+                <td>O(V²)</td>
+                <td>Good for dense graphs.</td>
+              </tr>
+
+              <tr>
+                <td>Union-Find</td>
+                <td>find: ~O(α(n))</td>
+                <td>same set: ~O(α(n))</td>
+                <td>union: ~O(α(n))</td>
+                <td>—</td>
+                <td>O(n)</td>
+                <td>Path compression + union by rank/size.</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+        <p class="note-line">
+          α(n) is the inverse Ackermann function — effectively constant for practical input sizes.
+        </p>
+
+      </div>
+    </article>
+
+
+    <!-- =====================================================
+         2. SORTING
+         ===================================================== -->
+
+    <article class="card notes-card">
+      <div class="card-body">
+
+        <div class="section-title">
+          2. Sorting Complexity
+        </div>
+
+        <p class="scroll-hint">
+          ↔ Swipe horizontally for the full table.
+        </p>
+
+        <div class="table-wrap">
+          <table class="complexity-table">
+
+            <thead>
+              <tr>
+                <th>Algorithm</th>
+                <th>Best</th>
+                <th>Average</th>
+                <th>Worst</th>
+                <th>Space</th>
+                <th>Stable?</th>
+                <th>Memory Hook</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>Bubble Sort</td>
+                <td>O(n)</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(1)</td>
+                <td>Yes</td>
+                <td>Repeated adjacent swaps.</td>
+              </tr>
+
+              <tr>
+                <td>Selection Sort</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(1)</td>
+                <td>No</td>
+                <td>Repeatedly choose minimum.</td>
+              </tr>
+
+              <tr>
+                <td>Insertion Sort</td>
+                <td>O(n)</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(1)</td>
+                <td>Yes</td>
+                <td>Great for nearly sorted input.</td>
+              </tr>
+
+              <tr>
+                <td>Merge Sort</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>O(n)</td>
+                <td>Yes</td>
+                <td>Split + merge.</td>
+              </tr>
+
+              <tr>
+                <td>Quick Sort</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>O(n²)</td>
+                <td>avg O(log n)</td>
+                <td>No</td>
+                <td>Partition around pivot.</td>
+              </tr>
+
+              <tr>
+                <td>Heap Sort</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>O(1)</td>
+                <td>No</td>
+                <td>Build heap, repeatedly extract top.</td>
+              </tr>
+
+              <tr>
+                <td>std::sort</td>
+                <td>—</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>implementation-dependent</td>
+                <td>No</td>
+                <td>Use this unless interviewer asks you to implement sorting.</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </article>
+
+
+    <!-- =====================================================
+         3. SEARCH / SELECTION
+         ===================================================== -->
+
+    <article class="card notes-card">
+      <div class="card-body">
+
+        <div class="section-title">
+          3. Searching / Selection
+        </div>
+
+        <div class="mini-grid">
+
+          <div class="mini-card">
+            <h3>Binary Search</h3>
+
+            <pre class="cheat-code"><code>Time:  O(log n)
+Space: O(1) iterative
+
+Invariant:
+discard half every step.</code></pre>
+          </div>
+
+          <div class="mini-card">
+            <h3>lower_bound / upper_bound</h3>
+
+            <pre class="cheat-code"><code>lower_bound:
+first index >= target
+
+upper_bound:
+first index > target
+
+Time: O(log n)</code></pre>
+          </div>
+
+          <div class="mini-card">
+            <h3>Quickselect</h3>
+
+            <pre class="cheat-code"><code>Average: O(n)
+Worst:   O(n²)
+
+Idea:
+partition once,
+continue only on
+the target side.</code></pre>
+          </div>
+
+          <div class="mini-card">
+            <h3>Linear Search</h3>
+
+            <pre class="cheat-code"><code>Time:  O(n)
+Space: O(1)
+
+Use when data
+is unsorted and
+no index/hash exists.</code></pre>
+          </div>
+
+        </div>
+
+      </div>
+    </article>
+
+
+    <!-- =====================================================
+         4. GRAPH ALGORITHMS
+         ===================================================== -->
+
+    <article class="card notes-card">
+      <div class="card-body">
+
+        <div class="section-title">
+          4. Graph Algorithms
+        </div>
+
+        <div class="table-wrap">
+          <table class="complexity-table">
+
+            <thead>
+              <tr>
+                <th>Algorithm</th>
+                <th>Time</th>
+                <th>Space</th>
+                <th>Why</th>
+                <th>Typical Use</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>BFS</td>
+                <td>O(V + E)</td>
+                <td>O(V)</td>
+                <td>Visit each node/edge once.</td>
+                <td>Shortest path in unweighted graph.</td>
+              </tr>
+
+              <tr>
+                <td>DFS</td>
+                <td>O(V + E)</td>
+                <td>O(V)</td>
+                <td>Visit each node/edge once.</td>
+                <td>Components, cycle detection, traversal.</td>
+              </tr>
+
+              <tr>
+                <td>Dijkstra + Heap</td>
+                <td>O((V + E) log V)</td>
+                <td>O(V + E)</td>
+                <td>Each relaxation may touch heap.</td>
+                <td>Shortest path with non-negative weights.</td>
+              </tr>
+
+              <tr>
+                <td>Topological Sort</td>
+                <td>O(V + E)</td>
+                <td>O(V)</td>
+                <td>Process each node/edge once.</td>
+                <td>DAG dependency ordering.</td>
+              </tr>
+
+              <tr>
+                <td>Union-Find</td>
+                <td>~O(E α(V))</td>
+                <td>O(V)</td>
+                <td>Each union/find almost constant.</td>
+                <td>Connectivity, redundant edge, MST support.</td>
+              </tr>
+
+              <tr>
+                <td>Floyd-Warshall</td>
+                <td>O(V³)</td>
+                <td>O(V²)</td>
+                <td>Triple nested DP.</td>
+                <td>All-pairs shortest path.</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </article>
+
+
+    <!-- =====================================================
+         5. COMMON INTERVIEW PATTERNS
+         ===================================================== -->
+
+    <article class="card notes-card">
+      <div class="card-body">
+
+        <div class="section-title">
+          5. Common Interview Patterns
+        </div>
+
+        <div class="table-wrap">
+          <table class="complexity-table">
+
+            <thead>
+              <tr>
+                <th>Pattern</th>
+                <th>Typical Time</th>
+                <th>Space</th>
+                <th>Core Reason</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>Two Pointers</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+                <td>Each pointer moves forward only.</td>
+              </tr>
+
+              <tr>
+                <td>Sliding Window</td>
+                <td>O(n)</td>
+                <td>O(1) or O(k)</td>
+                <td>Each element enters/leaves window once.</td>
+              </tr>
+
+              <tr>
+                <td>Prefix Sum</td>
+                <td>build O(n), query O(1)</td>
+                <td>O(n)</td>
+                <td>Precompute cumulative information.</td>
+              </tr>
+
+              <tr>
+                <td>Monotonic Stack</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>Each index pushed/popped at most once.</td>
+              </tr>
+
+              <tr>
+                <td>Heap Top-K</td>
+                <td>O(n log k)</td>
+                <td>O(k)</td>
+                <td>Keep only k candidates in heap.</td>
+              </tr>
+
+              <tr>
+                <td>Backtracking</td>
+                <td>usually exponential</td>
+                <td>O(depth)</td>
+                <td>Explore decision tree.</td>
+              </tr>
+
+              <tr>
+                <td>Dynamic Programming</td>
+                <td>states × transitions</td>
+                <td>number of stored states</td>
+                <td>Cache repeated subproblems.</td>
+              </tr>
+
+              <tr>
+                <td>KMP</td>
+                <td>O(n + m)</td>
+                <td>O(m)</td>
+                <td>Prefix table avoids rechecking.</td>
+              </tr>
+
+              <tr>
+                <td>Floyd Cycle Detection</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+                <td>Slow + fast pointers.</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </article>
+
+
+    <!-- =====================================================
+         6. TREE / RECURSION
+         ===================================================== -->
+
+    <article class="card notes-card">
+      <div class="card-body">
+
+        <div class="section-title">
+          6. Tree / Recursion
+        </div>
+
+        <div class="mini-grid">
+
+          <div class="mini-card">
+            <h3>Binary Tree DFS</h3>
+
+            <pre class="cheat-code"><code>Time:  O(n)
+Space: O(h)
+
+Balanced:
+h = O(log n)
+
+Worst skewed:
+h = O(n)</code></pre>
+          </div>
+
+          <div class="mini-card">
+            <h3>Binary Tree BFS</h3>
+
+            <pre class="cheat-code"><code>Time:  O(n)
+Space: O(w)
+
+w = maximum
+tree width.</code></pre>
+          </div>
+
+          <div class="mini-card">
+            <h3>BST Search</h3>
+
+            <pre class="cheat-code"><code>Balanced:
+O(log n)
+
+Worst skewed:
+O(n)</code></pre>
+          </div>
+
+          <div class="mini-card">
+            <h3>Build Tree from Traversals</h3>
+
+            <pre class="cheat-code"><code>With hashmap index:
+Time:  O(n)
+Space: O(n)
+
+Without hashmap:
+can degrade to O(n²)</code></pre>
+          </div>
+
+        </div>
+
+      </div>
+    </article>
+
+
+    <!-- =====================================================
+         7. MEMORY HOOKS
+         ===================================================== -->
+
+    <article class="card notes-card">
+      <div class="card-body">
+
+        <div class="section-title">
+          7. 10-Second Complexity Memory
+        </div>
+
+        <div class="phrase-grid">
+
+          <span>Binary Search → O(log n)</span>
+          <span>Sort → O(n log n)</span>
+          <span>BFS / DFS → O(V + E)</span>
+          <span>Hash lookup → avg O(1)</span>
+          <span>Tree map/set → O(log n)</span>
+          <span>Heap push/pop → O(log n)</span>
+          <span>Heap top → O(1)</span>
+          <span>Two pointers → usually O(n)</span>
+          <span>Sliding window → usually O(n)</span>
+          <span>Monotonic stack → O(n)</span>
+          <span>Top K heap → O(n log k)</span>
+          <span>Quickselect → avg O(n)</span>
+          <span>Union-Find → ~O(α(n))</span>
+          <span>Backtracking → usually exponential</span>
+          <span>DP → states × transitions</span>
+          <span>Graph matrix space → O(V²)</span>
+
+        </div>
+
+      </div>
+    </article>
+
+
+  </section>
+
+</main>
+
+</body>
+</html>
